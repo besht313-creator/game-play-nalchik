@@ -4,7 +4,7 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5.jpg";
 import ps4Img from "@/assets/ps4.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
-import logoAsset from "@/assets/logo.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
