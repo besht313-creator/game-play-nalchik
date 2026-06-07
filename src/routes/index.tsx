@@ -101,8 +101,8 @@ function Index() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <h1 className="font-display font-bold text-5xl sm:text-7xl lg:text-8xl leading-[0.95] uppercase">
-            GAMEPLAY — <br />
-            <span className="text-gradient">посуточная аренда</span><br />
+<span><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#F14FF0" }}>PLAY</span></span> — <br />
+            посуточная аренда<br />
             игровых приставок
           </h1>
           <p className="mt-8 max-w-2xl mx-auto text-lg text-muted-foreground">
