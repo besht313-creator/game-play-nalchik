@@ -65,9 +65,11 @@ function Index() {
             <a href="#reviews" className="hover:text-foreground transition">Отзывы</a>
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
-          <a href={PHONE_HREF} className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition shadow-[var(--shadow-neon)]">
-            Забронировать
-          </a>
+          <ContactDialog>
+            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition shadow-[var(--shadow-neon)] cursor-pointer">
+              Забронировать
+            </span>
+          </ContactDialog>
           <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2" aria-label="Menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               {menuOpen ? <path d="M18 6 6 18M6 6l12 12"/> : <path d="M3 12h18M3 6h18M3 18h18"/>}
@@ -133,9 +135,11 @@ function Index() {
                       <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
                       <span className="text-muted-foreground ml-2">/ сутки</span>
                     </div>
-                    <a href={`https://wa.me/79034953348?text=Хочу+арендовать+${c.name}`} className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:opacity-90 transition">
-                      Арендовать
-                    </a>
+                    <ContactDialog>
+                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:opacity-90 transition cursor-pointer">
+                        Арендовать
+                      </span>
+                    </ContactDialog>
                   </div>
                 </div>
               </div>
@@ -242,8 +246,8 @@ function Index() {
             <p className="text-muted-foreground text-sm mt-2">Работаем ежедневно</p>
           </div>
           <div className="flex md:justify-end items-start gap-3">
-            <a href="https://wa.me/79034953348" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="WhatsApp">W</a>
-            <a href="https://t.me/" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="Telegram">T</a>
+            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="WhatsApp">W</a>
+            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="Telegram">T</a>
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest">
