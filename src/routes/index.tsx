@@ -59,7 +59,7 @@ function Index() {
       <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
-            <span className="font-display font-bold text-2xl tracking-wider"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#C85CFF" }}>PLAY</span></span>
+            <span className="font-display font-bold text-2xl tracking-wider"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#F14FF0" }}>PLAY</span></span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#consoles" className="hover:text-foreground transition">Приставки</a>
@@ -243,7 +243,7 @@ function Index() {
       <footer className="border-t border-border py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            <div className="font-display font-bold text-2xl"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#C85CFF" }}>PLAY</span></div>
+            <div className="font-display font-bold text-2xl"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#F14FF0" }}>PLAY</span></div>
             <p className="text-muted-foreground text-sm mt-2">Аренда консолей в Нальчике</p>
           </div>
           <div>
