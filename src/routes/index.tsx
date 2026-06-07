@@ -4,6 +4,7 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5.jpg";
 import ps4Img from "@/assets/ps4.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
+import { MessageCircle, Send } from "lucide-react";
 
 
 export const Route = createFileRoute("/")({
@@ -80,15 +81,23 @@ function Index() {
           </button>
         </div>
         {menuOpen && (
-          <div className="md:hidden bg-background border-t border-border px-6 py-4 flex flex-col gap-4 text-sm">
-            <a href="#consoles" onClick={() => setMenuOpen(false)}>Приставки</a>
-            <a href="#how" onClick={() => setMenuOpen(false)}>Как это работает</a>
-            <a href="#games" onClick={() => setMenuOpen(false)}>Игры</a>
-            <a href="#reviews" onClick={() => setMenuOpen(false)}>Отзывы</a>
-            <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+          <div className="md:hidden bg-background border-t border-border px-6 py-8 flex flex-col gap-6 text-2xl font-display font-bold uppercase tracking-wider">
+            <a href="#consoles" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Приставки</a>
+            <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
+            <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
+            <a href="#reviews" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Отзывы</a>
+            <a href="#faq" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">FAQ</a>
             <ContactDialog>
-              <span className="text-primary font-semibold cursor-pointer">{PHONE}</span>
+              <span className="text-primary cursor-pointer">{PHONE}</span>
             </ContactDialog>
+            <div className="flex items-center gap-4 pt-4 border-t border-border">
+              <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-95 transition">
+                <MessageCircle className="w-7 h-7" />
+              </a>
+              <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_20px_#0088cc80] hover:scale-110 active:scale-95 transition">
+                <Send className="w-7 h-7" />
+              </a>
+            </div>
           </div>
         )}
       </header>
