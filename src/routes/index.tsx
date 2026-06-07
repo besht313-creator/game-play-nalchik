@@ -69,11 +69,11 @@ function Index() {
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
           <ContactDialog>
-            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition shadow-[var(--shadow-neon)] cursor-pointer">
+            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)] cursor-pointer">
               Забронировать
             </span>
           </ContactDialog>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2" aria-label="Menu">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2 rounded-lg hover:bg-primary/10 active:scale-[0.92] transition" aria-label="Menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               {menuOpen ? <path d="M18 6 6 18M6 6l12 12"/> : <path d="M3 12h18M3 6h18M3 18h18"/>}
             </svg>
@@ -109,10 +109,10 @@ function Index() {
             Хотите окунуться в мир новейших игр и развлечений? Возьмите в прокат Sony PlayStation 5!
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#consoles" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:opacity-90 transition shadow-[var(--shadow-neon)]">
+            <a href="#consoles" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
               Каталог приставок
             </a>
-            <a href={PHONE_HREF} className="rounded-full px-8 py-4 border border-border bg-card/50 backdrop-blur font-display font-bold uppercase tracking-wider hover:bg-card transition">
+            <a href={PHONE_HREF} className="rounded-full px-8 py-4 border border-border bg-card/50 backdrop-blur font-display font-bold uppercase tracking-wider hover:bg-card hover:border-primary hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition">
               {PHONE}
             </a>
           </div>
@@ -141,7 +141,7 @@ function Index() {
                       <span className="text-muted-foreground ml-2">/ сутки</span>
                     </div>
                     <ContactDialog>
-                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:opacity-90 transition cursor-pointer">
+                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition cursor-pointer">
                         Арендовать
                       </span>
                     </ContactDialog>
