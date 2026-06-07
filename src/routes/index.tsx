@@ -112,9 +112,6 @@ function Index() {
             <a href="#consoles" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
               Каталог приставок
             </a>
-            <a href={PHONE_HREF} className="rounded-full px-8 py-4 border border-border bg-card/50 backdrop-blur font-display font-bold uppercase tracking-wider hover:bg-card hover:border-primary hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition">
-              {PHONE}
-            </a>
           </div>
         </div>
       </section>
