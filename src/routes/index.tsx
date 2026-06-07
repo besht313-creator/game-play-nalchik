@@ -4,7 +4,7 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5.jpg";
 import ps4Img from "@/assets/ps4.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
-import logoAsset from "@/assets/logo.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,7 +59,6 @@ function Index() {
       <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="GamePlay logo" className="h-10 w-10 object-contain" />
             <span className="font-display font-bold text-2xl tracking-wider text-gradient">GAMEPLAY</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
