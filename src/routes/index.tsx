@@ -83,7 +83,9 @@ function Index() {
             <a href="#games" onClick={() => setMenuOpen(false)}>Игры</a>
             <a href="#reviews" onClick={() => setMenuOpen(false)}>Отзывы</a>
             <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-            <a href={PHONE_HREF} className="text-primary font-semibold">{PHONE}</a>
+            <ContactDialog>
+              <span className="text-primary font-semibold cursor-pointer">{PHONE}</span>
+            </ContactDialog>
           </div>
         )}
       </header>
