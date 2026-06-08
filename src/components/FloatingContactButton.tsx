@@ -24,50 +24,56 @@ export function FloatingContactButton() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
-      {open && (
-        <>
-          {actions.map((a, i) => {
-            const Icon = a.icon;
-            return (
-              <a
-                key={a.label}
-                href={a.href}
-                target={a.href.startsWith("tel:") ? undefined : "_blank"}
-                rel={a.href.startsWith("tel:") ? undefined : "noopener noreferrer"}
-                aria-label={a.label}
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border transition-all duration-150 hover:scale-110 active:scale-90 active:brightness-125"
-                style={{
-                  color: a.color,
-                  animation: `slide-up 0.25s ease-out ${i * 0.05}s both`,
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = a.color;
-                  (e.currentTarget as HTMLElement).style.boxShadow = `0 0 15px ${a.shadow}`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "";
-                }}
-              >
-                <Icon className="w-5 h-5" />
-              </a>
-            );
-          })}
-        </>
-      )}
+      <div className="flex flex-col items-center gap-3" aria-hidden={!open}>
+        {actions.map((a, i) => {
+          const Icon = a.icon;
+          const total = actions.length;
+          const delay = open ? i * 0.05 : (total - 1 - i) * 0.05;
+          return (
+            <a
+              key={a.label}
+              href={a.href}
+              target={a.href.startsWith("tel:") ? undefined : "_blank"}
+              rel={a.href.startsWith("tel:") ? undefined : "noopener noreferrer"}
+              aria-label={a.label}
+              tabIndex={open ? 0 : -1}
+              className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:scale-110 active:scale-90 active:brightness-125"
+              style={{
+                color: a.color,
+                opacity: open ? 1 : 0,
+                transform: open ? "translateY(0) scale(1)" : "translateY(20px) scale(0.8)",
+                pointerEvents: open ? "auto" : "none",
+                transition: `opacity 0.25s ease-out ${delay}s, transform 0.25s ease-out ${delay}s, border-color 0.15s, box-shadow 0.15s`,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = a.color;
+                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 15px ${a.shadow}`;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "";
+                (e.currentTarget as HTMLElement).style.boxShadow = "";
+              }}
+            >
+              <Icon className="w-5 h-5" />
+            </a>
+          );
+        })}
+      </div>
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Закрыть" : "Связаться"}
-        className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-[var(--shadow-neon)] hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-150"
+        className="relative w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-[var(--shadow-neon)] hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-200"
+        style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
       >
-        {open ? <X className="w-6 h-6" /> : <Phone className="w-6 h-6" />}
+        <Phone
+          className="w-6 h-6 absolute transition-all duration-300"
+          style={{ opacity: open ? 0 : 1, transform: open ? "scale(0.5) rotate(-180deg)" : "scale(1) rotate(0deg)" }}
+        />
+        <X
+          className="w-6 h-6 absolute transition-all duration-300"
+          style={{ opacity: open ? 1 : 0, transform: open ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(180deg)" }}
+        />
       </button>
-      <style>{`
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(20px) scale(0.8); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
     </div>
   );
 }
