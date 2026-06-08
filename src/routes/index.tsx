@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero-ps5.jpg";
-import ps5Img from "@/assets/ps5.jpg";
-import ps4Img from "@/assets/ps4.jpg";
+import ps5Asset from "@/assets/ps5.jpg.asset.json";
+import ps4Asset from "@/assets/ps4.jpg.asset.json";
+const ps5Img = ps5Asset.url;
+const ps4Img = ps4Asset.url;
 import { ContactDialog } from "@/components/ContactDialog";
 import { MessageCircle, Send, Instagram } from "lucide-react";
 
