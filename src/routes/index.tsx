@@ -4,7 +4,16 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5.jpg";
 import ps4Img from "@/assets/ps4.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
-import { MessageCircle, Send } from "lucide-react";
+import { MessageCircle, Send, Instagram } from "lucide-react";
+
+const INSTAGRAM_URL = "https://www.instagram.com/gameplay_nalchik?igsh=a3l4ZWFrYXp4MTh2";
+const VK_URL = "https://vk.ru/club237840986";
+
+const VkIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.162 18.994c.609 0 .858-.406.851-.915-.031-1.917.714-2.949 2.059-1.604 1.488 1.488 1.796 2.519 3.603 2.519h3.2c.808 0 1.126-.26 1.126-.668 0-.863-1.421-2.386-2.625-3.504-1.685-1.565-1.765-1.602-.313-3.486 1.81-2.35 4.207-5.59 2.16-5.59h-3.66c-.787 0-.854.444-1.131 1.114-1.012 2.428-2.91 5.4-3.62 4.94-.74-.477-.4-2.413-.345-5.802.015-.736.005-1.244-1.12-1.504-.611-.141-1.205-.205-1.756-.205-2.21 0-3.74.97-2.88 1.13.853.158 1.418.428 1.418 2.131 0 2.213.286 4.358-1.18 4.358-.69 0-2.27-2.213-3.27-4.778-.45-1.146-.32-1.847-1.84-1.847H1.74c-.94 0-1.74.176-1.74.794 0 1.052.802 3.96 3.61 7.66 2.243 2.97 4.62 4.96 7.94 4.96.7 0 1.205-.072 1.612-.137z"/>
+  </svg>
+);
 
 
 export const Route = createFileRoute("/")({
@@ -90,12 +99,18 @@ function Index() {
             <ContactDialog>
               <span className="text-primary cursor-pointer">{PHONE}</span>
             </ContactDialog>
-            <div className="flex items-center gap-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-4 pt-4 border-t border-border flex-wrap">
               <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-95 transition">
                 <MessageCircle className="w-7 h-7" />
               </a>
               <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_20px_#0088cc80] hover:scale-110 active:scale-95 transition">
                 <Send className="w-7 h-7" />
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_20px_#E1306C80] hover:scale-110 active:scale-95 transition">
+                <Instagram className="w-7 h-7" />
+              </a>
+              <a href={VK_URL} target="_blank" rel="noopener noreferrer" aria-label="VK" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_20px_#0077FF80] hover:scale-110 active:scale-95 transition">
+                <VkIcon className="w-7 h-7" />
               </a>
             </div>
           </div>
@@ -256,9 +271,19 @@ function Index() {
             <a href={PHONE_HREF} className="font-display text-xl font-bold hover:text-primary transition">{PHONE}</a>
             <p className="text-muted-foreground text-sm mt-2">Работаем ежедневно</p>
           </div>
-          <div className="flex md:justify-end items-start gap-3">
-            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="WhatsApp">W</a>
-            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="Telegram">T</a>
+          <div className="flex md:justify-end items-start gap-3 flex-wrap">
+            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 transition" aria-label="WhatsApp">
+              <MessageCircle className="w-5 h-5" />
+            </a>
+            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_15px_#0088cc80] hover:scale-110 transition" aria-label="Telegram">
+              <Send className="w-5 h-5" />
+            </a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_15px_#E1306C80] hover:scale-110 transition" aria-label="Instagram">
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_15px_#0077FF80] hover:scale-110 transition" aria-label="VK">
+              <VkIcon className="w-5 h-5" />
+            </a>
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest">
