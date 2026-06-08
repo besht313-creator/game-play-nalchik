@@ -35,7 +35,7 @@ export function FloatingContactButton() {
                 target={a.href.startsWith("tel:") ? undefined : "_blank"}
                 rel={a.href.startsWith("tel:") ? undefined : "noopener noreferrer"}
                 aria-label={a.label}
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border transition hover:scale-110 active:scale-95"
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border transition-all duration-150 hover:scale-110 active:scale-90 active:brightness-125"
                 style={{
                   color: a.color,
                   animation: `slide-up 0.25s ease-out ${i * 0.05}s both`,
@@ -58,7 +58,7 @@ export function FloatingContactButton() {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Закрыть" : "Связаться"}
-        className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-[var(--shadow-neon)] hover:brightness-110 active:scale-95 transition"
+        className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-[var(--shadow-neon)] hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-150"
       >
         {open ? <X className="w-6 h-6" /> : <Phone className="w-6 h-6" />}
       </button>
