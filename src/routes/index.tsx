@@ -99,12 +99,18 @@ function Index() {
             <ContactDialog>
               <span className="text-primary cursor-pointer">{PHONE}</span>
             </ContactDialog>
-            <div className="flex items-center gap-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-4 pt-4 border-t border-border flex-wrap">
               <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-95 transition">
                 <MessageCircle className="w-7 h-7" />
               </a>
               <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_20px_#0088cc80] hover:scale-110 active:scale-95 transition">
                 <Send className="w-7 h-7" />
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_20px_#E1306C80] hover:scale-110 active:scale-95 transition">
+                <Instagram className="w-7 h-7" />
+              </a>
+              <a href={VK_URL} target="_blank" rel="noopener noreferrer" aria-label="VK" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_20px_#0077FF80] hover:scale-110 active:scale-95 transition">
+                <VkIcon className="w-7 h-7" />
               </a>
             </div>
           </div>
