@@ -294,7 +294,7 @@ function Index() {
             <a href={PHONE_HREF} className="font-display text-xl font-bold hover:text-primary transition">{PHONE}</a>
             <p className="text-muted-foreground text-sm mt-2">Работаем ежедневно</p>
           </div>
-          <div className="flex md:justify-end items-start gap-3 flex-wrap">
+          <div className="flex justify-center md:justify-end items-start gap-3 flex-wrap">
             <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 transition" aria-label="WhatsApp">
               <MessageCircle className="w-5 h-5" />
             </a>
