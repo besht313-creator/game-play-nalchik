@@ -108,7 +108,7 @@ function GamesPage() {
             <button
               key={c.id}
               onClick={() => setActive(c.id)}
-              className={`px-4 py-2 rounded-full text-sm font-display font-bold uppercase tracking-wider border transition active:scale-[0.96] ${
+              className={`px-4 py-2 rounded-full text-sm font-display font-bold uppercase tracking-wider border transition-all duration-150 active:scale-[0.92] active:brightness-110 ${
                 active === c.id
                   ? "bg-primary text-primary-foreground border-primary shadow-[var(--shadow-neon)]"
                   : "bg-card text-muted-foreground border-border hover:border-primary hover:text-foreground"
@@ -129,7 +129,7 @@ function GamesPage() {
               {filtered.map((g) => (
                 <div
                   key={g.title}
-                  className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-border flex items-center justify-center p-4 text-center font-display font-bold uppercase hover:border-primary transition hover:shadow-[var(--shadow-neon)]"
+                  className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-border flex items-center justify-center p-4 text-center font-display font-bold uppercase hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] active:brightness-110"
                 >
                   {g.title}
                 </div>
