@@ -314,6 +314,7 @@ function Index() {
           © 2026 GAMEPLAY NALCHIK. Все права защищены.
         </div>
       </footer>
+      <FloatingContactButton />
     </div>
   );
 }
