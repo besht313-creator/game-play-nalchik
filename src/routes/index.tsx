@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Asset from "@/assets/ps5.jpg.asset.json";
@@ -213,6 +213,11 @@ function Index() {
                 {g}
               </div>
             ))}
+          </div>
+          <div className="mt-12 flex justify-center">
+            <Link to="/games" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
+              Полная библиотека игр
+            </Link>
           </div>
         </div>
       </section>
