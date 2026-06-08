@@ -6,7 +6,7 @@ import ps4Asset from "@/assets/ps4.jpg.asset.json";
 const ps5Img = ps5Asset.url;
 const ps4Img = ps4Asset.url;
 import { ContactDialog } from "@/components/ContactDialog";
-import { MessageCircle, Send, Instagram } from "lucide-react";
+import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
 
 const INSTAGRAM_URL = "https://www.instagram.com/gameplay_nalchik?igsh=a3l4ZWFrYXp4MTh2";
 const VK_URL = "https://vk.ru/club237840986";
@@ -40,10 +40,10 @@ const consoles = [
 ];
 
 const steps = [
-  { n: "01", title: "Выбор", text: "Выбираете консоль на нашем сайте." },
-  { n: "02", title: "Заявка", text: "Позвоните или напишите нам в WhatsApp/Telegram для брони." },
-  { n: "03", title: "Получение", text: "Забираете комплект (потребуется паспорт для оформления договора)." },
-  { n: "04", title: "Игра", text: "Подключаете к ТВ и наслаждаетесь классной игровой атмосферой!" },
+  { n: "01", title: "Выбор", text: "Выбираете консоль на нашем сайте.", icon: Monitor },
+  { n: "02", title: "Заявка", text: "Позвоните или напишите нам в WhatsApp/Telegram для брони.", icon: Phone },
+  { n: "03", title: "Получение", text: "Забираете комплект (потребуется паспорт для оформления договора).", icon: PackageCheck },
+  { n: "04", title: "Игра", text: "Подключаете к ТВ и наслаждаетесь классной игровой атмосферой!", icon: Gamepad2 },
 ];
 
 const games = ["GTA V", "FIFA 26", "Mortal Kombat 1", "UFC 5", "Call of Duty", "Spider-Man 2"];
@@ -181,13 +181,19 @@ function Index() {
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Как это работает</SectionTitle>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {steps.map((s) => (
-              <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
-                <div className="font-display text-5xl font-bold text-gradient mb-4">{s.n}</div>
-                <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
-                <p className="text-muted-foreground text-sm">{s.text}</p>
-              </div>
-            ))}
+            {steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
+                    <Icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
+                  <p className="text-muted-foreground text-sm">{s.text}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
