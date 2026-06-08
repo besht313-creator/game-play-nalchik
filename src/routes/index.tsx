@@ -246,7 +246,8 @@ function Index() {
                     </div>
                     <div>
                       <div className="font-bold">{r.name}</div>
-                      <div className="text-accent text-xs">★★★★★</div>
+                      <div className="text-muted-foreground text-xs">{r.date} · Клиент</div>
+                      <div className="text-accent text-xs mt-0.5">★★★★★</div>
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed">"{r.text}"</p>
