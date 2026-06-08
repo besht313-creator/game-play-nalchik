@@ -271,9 +271,19 @@ function Index() {
             <a href={PHONE_HREF} className="font-display text-xl font-bold hover:text-primary transition">{PHONE}</a>
             <p className="text-muted-foreground text-sm mt-2">Работаем ежедневно</p>
           </div>
-          <div className="flex md:justify-end items-start gap-3">
-            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="WhatsApp">W</a>
-            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary transition" aria-label="Telegram">T</a>
+          <div className="flex md:justify-end items-start gap-3 flex-wrap">
+            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 transition" aria-label="WhatsApp">
+              <MessageCircle className="w-5 h-5" />
+            </a>
+            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_15px_#0088cc80] hover:scale-110 transition" aria-label="Telegram">
+              <Send className="w-5 h-5" />
+            </a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_15px_#E1306C80] hover:scale-110 transition" aria-label="Instagram">
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_15px_#0077FF80] hover:scale-110 transition" aria-label="VK">
+              <VkIcon className="w-5 h-5" />
+            </a>
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest">
