@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
+import { FloatingContactButton } from "@/components/FloatingContactButton";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
@@ -142,6 +143,7 @@ function GamesPage() {
       <footer className="border-t border-border py-8 px-4 sm:px-6 text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} GamePlay Нальчик
       </footer>
+      <FloatingContactButton />
     </div>
   );
 }
