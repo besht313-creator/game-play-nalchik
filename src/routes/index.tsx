@@ -6,6 +6,7 @@ import ps4Asset from "@/assets/ps4.jpg.asset.json";
 const ps5Img = ps5Asset.url;
 const ps4Img = ps4Asset.url;
 import { ContactDialog } from "@/components/ContactDialog";
+import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
 
 const INSTAGRAM_URL = "https://www.instagram.com/gameplay_nalchik?igsh=a3l4ZWFrYXp4MTh2";
