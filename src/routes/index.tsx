@@ -105,16 +105,16 @@ function Index() {
               <span className="text-primary cursor-pointer">{PHONE}</span>
             </ContactDialog>
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-border flex-wrap">
-              <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-95 transition">
+              <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
                 <MessageCircle className="w-7 h-7" />
               </a>
-              <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_20px_#0088cc80] hover:scale-110 active:scale-95 transition">
+              <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_20px_#0088cc80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
                 <Send className="w-7 h-7" />
               </a>
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_20px_#E1306C80] hover:scale-110 active:scale-95 transition">
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_20px_#E1306C80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
                 <Instagram className="w-7 h-7" />
               </a>
-              <a href={VK_URL} target="_blank" rel="noopener noreferrer" aria-label="VK" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_20px_#0077FF80] hover:scale-110 active:scale-95 transition">
+              <a href={VK_URL} target="_blank" rel="noopener noreferrer" aria-label="VK" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_20px_#0077FF80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
                 <VkIcon className="w-7 h-7" />
               </a>
             </div>
@@ -212,13 +212,13 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {games.map((g) => (
-              <div key={g} className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-border flex items-center justify-center p-4 text-center font-display font-bold uppercase hover:border-primary transition hover:shadow-[var(--shadow-neon)]">
+              <div key={g} className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-border flex items-center justify-center p-4 text-center font-display font-bold uppercase hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] active:brightness-110">
                 {g}
               </div>
             ))}
           </div>
           <div className="mt-12 flex justify-center">
-            <Link to="/games" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
+            <Link to="/games" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)]">
               Полная библиотека игр
             </Link>
           </div>
@@ -257,7 +257,7 @@ function Index() {
             </div>
           </div>
           <div className="mt-10 flex justify-center">
-            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-accent text-accent-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-cyan)] active:scale-[0.96] transition shadow-[var(--shadow-cyan)]">
+            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-accent text-accent-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-cyan)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-cyan)]">
               Смотреть отзывы на Avito
             </a>
           </div>
