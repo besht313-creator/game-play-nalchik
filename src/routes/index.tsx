@@ -99,7 +99,7 @@ function Index() {
             <ContactDialog>
               <span className="text-primary cursor-pointer">{PHONE}</span>
             </ContactDialog>
-            <div className="flex items-center justify-end gap-4 pt-4 border-t border-border flex-wrap">
+            <div className="flex items-center justify-center gap-4 pt-4 border-t border-border flex-wrap">
               <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-95 transition">
                 <MessageCircle className="w-7 h-7" />
               </a>
