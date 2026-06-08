@@ -256,7 +256,7 @@ function Index() {
             </div>
           </div>
           <div className="mt-10 flex justify-center">
-            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
+            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-accent text-accent-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-cyan)] active:scale-[0.96] transition shadow-[var(--shadow-cyan)]">
               Смотреть отзывы на Avito
             </a>
           </div>
