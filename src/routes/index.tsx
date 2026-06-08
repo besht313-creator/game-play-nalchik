@@ -88,14 +88,18 @@ function Index() {
               Забронировать
             </span>
           </ContactDialog>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2 rounded-lg hover:bg-primary/10 active:scale-[0.88] active:brightness-125 transition-all duration-150" aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {menuOpen ? <path d="M18 6 6 18M6 6l12 12"/> : <path d="M3 12h18M3 6h18M3 18h18"/>}
-            </svg>
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2 rounded-lg hover:bg-primary/10 active:scale-[0.88] active:brightness-125 transition-all duration-150" aria-label="Menu" aria-expanded={menuOpen}>
+            <div className="relative w-6 h-6">
+              <span className={`absolute left-0 top-1/2 block h-0.5 w-6 bg-current rounded transition-all duration-300 ease-out ${menuOpen ? "rotate-45 translate-y-0" : "-translate-y-2"}`} />
+              <span className={`absolute left-0 top-1/2 block h-0.5 w-6 bg-current rounded transition-all duration-200 ease-out ${menuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"}`} />
+              <span className={`absolute left-0 top-1/2 block h-0.5 w-6 bg-current rounded transition-all duration-300 ease-out ${menuOpen ? "-rotate-45 translate-y-0" : "translate-y-2"}`} />
+            </div>
           </button>
         </div>
-        {menuOpen && (
-          <div className="md:hidden bg-background border-t border-border px-6 py-8 flex flex-col gap-6 text-2xl font-display font-bold uppercase tracking-wider">
+        <div
+          className={`md:hidden overflow-hidden bg-background border-t border-border transition-[max-height,opacity] duration-500 ease-in-out ${menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}
+        >
+          <div className="px-6 py-8 flex flex-col gap-6 text-2xl font-display font-bold uppercase tracking-wider">
             <a href="#consoles" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Приставки</a>
             <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
@@ -119,7 +123,7 @@ function Index() {
               </a>
             </div>
           </div>
-        )}
+        </div>
       </header>
 
       {/* Hero */}
