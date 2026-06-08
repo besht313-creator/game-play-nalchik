@@ -48,10 +48,13 @@ const steps = [
 
 const games = ["GTA V", "FIFA 26", "Mortal Kombat 1", "UFC 5", "Call of Duty", "Spider-Man 2"];
 
+const AVITO_URL = "https://www.avito.ru/nalchik/predlozheniya_uslug/arenda_ps5ps4_prokat_pleysteshen_5_3639072809";
+
 const reviews = [
   { name: "Алексей", text: "Все отлично! Приставка в идеальном состоянии, игры на любой вкус. Договорились быстро, привезли вовремя. Рекомендую!" },
   { name: "Марина", text: "Брали на выходные PS5. Дети в восторге от Спайдермена. Сервис на высоте, всё очень просто и понятно. Спасибо!" },
   { name: "Дмитрий", text: "Лучшая аренда в Нальчике. Всегда всё чистое, рабочее, джойстики заряжены. Самый большой выбор игр." },
+  { name: "Аслан", text: "Брал PS5 на день рождения сына. Всё прошло шикарно! Огромная библиотека игр, оба геймпада полностью заряжены. Однозначно обращусь ещё." },
 ];
 
 const faqs = [
@@ -233,22 +236,29 @@ function Index() {
             {"★★★★★".split("").map((s, i) => <span key={i} className="text-2xl">{s}</span>)}
             <span className="ml-2 text-foreground font-semibold">Рейтинг 5.0</span>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            {reviews.map((r) => (
-              <div key={r.name} className="p-6 rounded-2xl bg-card border border-border">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center font-bold text-primary-foreground">
-                    {r.name[0]}
+          <div className="mt-12 relative overflow-hidden group" style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
+            <div className="flex gap-6 w-max animate-marquee group-hover:[animation-play-state:paused]">
+              {[...reviews, ...reviews].map((r, idx) => (
+                <div key={idx} className="p-6 rounded-2xl bg-card border border-border w-[320px] sm:w-[360px] shrink-0">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center font-bold text-primary-foreground">
+                      {r.name[0]}
+                    </div>
+                    <div>
+                      <div className="font-bold">{r.name}</div>
+                      <div className="text-accent text-xs">★★★★★</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-bold">{r.name}</div>
-                    <div className="text-accent text-xs">★★★★★</div>
-                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">"{r.text}"</p>
+                  <div className="mt-4 text-xs text-primary font-semibold">✓ Сделка состоялась</div>
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">"{r.text}"</p>
-                <div className="mt-4 text-xs text-primary font-semibold">✓ Сделка состоялась</div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="mt-10 flex justify-center">
+            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] transition shadow-[var(--shadow-neon)]">
+              Смотреть отзывы на Avito
+            </a>
           </div>
         </div>
       </section>
