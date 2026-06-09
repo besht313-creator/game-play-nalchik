@@ -231,10 +231,11 @@ function Index() {
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {games.map((g) => (
-              <div key={g} className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-border flex items-center justify-center p-4 text-center font-display font-bold uppercase hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] active:brightness-110">
-                {g}
-              </div>
+            {previewGames.map((g) => (
+              <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} />
+            ))}
+            {gamesQuery.isLoading && Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />
             ))}
           </div>
           <div className="mt-12 flex justify-center">
