@@ -11,8 +11,10 @@ import {
   adminDeleteGame,
   adminMoveGame,
   adminUploadImage,
+  CATEGORY_VALUES,
   type GameRow,
   type Sticker,
+  type Category,
 } from "@/lib/games.functions";
 
 export const Route = createFileRoute("/admin")({
@@ -31,6 +33,18 @@ const STICKER_LABELS: Record<Sticker, string> = {
   for_two: "На двоих",
 };
 const STICKER_LIST: Sticker[] = ["hit", "new", "for_two"];
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  new: "Новинки",
+  hits: "Хиты",
+  coop: "На двоих/четверых",
+  racing: "Гонки",
+  sports: "Спортивные",
+  kids: "Для детей",
+  horror: "Хорроры",
+  exclusive: "Эксклюзивы",
+};
+
 
 function StickerBadge({ s }: { s: Sticker }) {
   const styles: Record<Sticker, string> = {
