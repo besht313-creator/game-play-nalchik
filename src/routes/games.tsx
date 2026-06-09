@@ -29,7 +29,7 @@ const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Нови�
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
   new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
-  for_two: "bg-primary/20 text-primary border-primary/50 shadow-[var(--shadow-neon)]",
+  for_two: "bg-[#FFEA00]/30 text-[#FFEA00] border-[#FFEA00]/60 shadow-[0_0_10px_#FFEA0080] backdrop-blur-sm",
 };
 
 type FilterId = "all" | Category;
@@ -134,7 +134,7 @@ function GamesPage() {
                     {g.stickers?.length > 0 && (
                       <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1">
                         {g.stickers.map((s) => (
-                          <span key={s} className={`text-[10px] font-display font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${STICKER_STYLES[s]}`}>
+                          <span key={s} className={`${s === "for_two" ? "text-sm px-2 py-1" : "text-[10px] px-1.5 py-0.5"} font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
                             {STICKER_LABELS[s]}
                           </span>
                         ))}
