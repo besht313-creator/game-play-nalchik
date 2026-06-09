@@ -1,6 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
@@ -15,7 +22,10 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-type Category = "all" | "new" | "hits" | "coop" | "racing" | "kids" | "horror" | "exclusive";
+
+
+
+type Category = "all" | "new" | "hits" | "coop" | "racing" | "kids" | "horror" | "exclusive" | "sports";
 
 const CATEGORIES: { id: Category; label: string }[] = [
   { id: "all", label: "Все" },
@@ -23,6 +33,7 @@ const CATEGORIES: { id: Category; label: string }[] = [
   { id: "hits", label: "Хиты" },
   { id: "coop", label: "На двоих/четверых" },
   { id: "racing", label: "Гонки" },
+  { id: "sports", label: "Спортивные" },
   { id: "kids", label: "Для детей" },
   { id: "horror", label: "Хорроры" },
   { id: "exclusive", label: "Эксклюзивы" },
@@ -33,10 +44,10 @@ type Game = { title: string; cats: Category[] };
 const GAMES: Game[] = [
   { title: "GTA V", cats: ["hits"] },
   { title: "GTA VI", cats: ["new", "hits", "exclusive"] },
-  { title: "FIFA 26", cats: ["new", "hits", "coop"] },
-  { title: "EA FC 25", cats: ["coop", "hits"] },
+  { title: "FIFA 26", cats: ["new", "hits", "coop", "sports"] },
+  { title: "EA FC 25", cats: ["coop", "hits", "sports"] },
   { title: "Mortal Kombat 1", cats: ["coop", "hits"] },
-  { title: "UFC 5", cats: ["coop"] },
+  { title: "UFC 5", cats: ["coop", "sports"] },
   { title: "Call of Duty MW III", cats: ["hits", "coop"] },
   { title: "Spider-Man 2", cats: ["exclusive", "hits"] },
   { title: "God of War Ragnarok", cats: ["exclusive", "hits"] },
@@ -106,20 +117,20 @@ function GamesPage() {
       </section>
 
       <section className="px-4 sm:px-6 pb-8">
-        <div className="max-w-6xl mx-auto flex flex-wrap gap-2 justify-center">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => setActive(c.id)}
-              className={`px-4 py-2 rounded-full text-sm font-display font-bold uppercase tracking-wider border transition-all duration-150 active:scale-[0.92] active:brightness-110 ${
-                active === c.id
-                  ? "bg-primary text-primary-foreground border-primary shadow-[var(--shadow-neon)]"
-                  : "bg-card text-muted-foreground border-border hover:border-primary hover:text-foreground"
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
+          <span className="text-sm font-medium text-muted-foreground">Категории</span>
+          <Select value={active} onValueChange={(v) => setActive(v as Category)}>
+            <SelectTrigger className="w-[220px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </section>
 
