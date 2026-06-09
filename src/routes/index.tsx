@@ -102,7 +102,7 @@ function Index() {
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
           <ContactDialog>
-            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)] cursor-pointer">
+            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
               Забронировать
             </span>
           </ContactDialog>
