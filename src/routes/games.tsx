@@ -1,6 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
