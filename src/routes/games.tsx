@@ -22,13 +22,8 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
+
 
 type Category = "all" | "new" | "hits" | "coop" | "racing" | "kids" | "horror" | "exclusive" | "sports";
 
