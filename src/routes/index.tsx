@@ -168,16 +168,16 @@ function Index() {
       </section>
 
       {/* Consoles */}
-      <section id="consoles" className="py-24 px-4 sm:px-6">
+      <section id="consoles" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Каталог приставок</SectionTitle>
-          <div className="grid md:grid-cols-2 gap-8 mt-12">
+          <div className="grid md:grid-cols-2 gap-5 sm:gap-8 mt-10 sm:mt-14">
             {consoles.map((c) => (
-              <div key={c.name} className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary transition">
+              <div key={c.name} className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.35)] transition-[transform,box-shadow,border-color] duration-200 ease-out">
                 <div className="aspect-square overflow-hidden bg-secondary">
-                  <img src={c.img} alt={c.name} loading="lazy" width={800} height={800} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                  <img src={c.img} alt={c.name} loading="lazy" width={800} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
                 </div>
-                <div className="p-6">
+                <div className="p-5 sm:p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-display font-bold text-2xl">{c.name}</h3>
                     <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
@@ -185,11 +185,11 @@ function Index() {
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
                   <div className="mt-6 flex items-end justify-between">
                     <div>
-                      <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
+                      <span className="font-display text-4xl font-bold text-gradient tabular-nums">{c.price} ₽</span>
                       <span className="text-muted-foreground ml-2">/ сутки</span>
                     </div>
                     <ContactDialog>
-                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer">
+                      <span className="inline-flex items-center justify-center h-11 rounded-full px-5 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out cursor-pointer">
                         Арендовать
                       </span>
                     </ContactDialog>
