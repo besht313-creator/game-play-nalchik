@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import twoPeopleAsset from "@/assets/two-people.jpeg.asset.json";
+import twoPeopleAsset from "@/assets/two-people.png.asset.json";
 const twoPeopleImg = twoPeopleAsset.url;
 
 export const Route = createFileRoute("/games")({
@@ -141,7 +141,7 @@ function GamesPage() {
                       <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
                         {g.stickers.map((s) =>
                           s === "for_two" ? (
-                            <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
+                            <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain" style={{ filter: "invert(1)", mixBlendMode: "screen" }} />
                           ) : (
                             <span key={s} className={`text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
                               {STICKER_LABELS[s]}

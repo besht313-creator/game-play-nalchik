@@ -6,7 +6,7 @@ import { listGames, type Sticker } from "@/lib/games.functions";
 import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Asset from "@/assets/ps5.jpg.asset.json";
 import ps4Asset from "@/assets/ps4.jpg.asset.json";
-import twoPeopleAsset from "@/assets/two-people.jpeg.asset.json";
+import twoPeopleAsset from "@/assets/two-people.png.asset.json";
 const ps5Img = ps5Asset.url;
 const ps4Img = ps4Asset.url;
 const twoPeopleImg = twoPeopleAsset.url;
@@ -364,7 +364,7 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
         <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
           {stickers.map((s) =>
             s === "for_two" ? (
-              <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
+              <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain" style={{ filter: "invert(1)", mixBlendMode: "screen" }} />
             ) : (
               <span key={s} className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
                 {STICKER_LABELS[s]}
