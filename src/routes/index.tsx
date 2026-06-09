@@ -102,7 +102,7 @@ function Index() {
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
           <ContactDialog>
-            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)] cursor-pointer">
+            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
               Забронировать
             </span>
           </ContactDialog>
@@ -181,13 +181,13 @@ function Index() {
                     <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
                   </div>
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
-                  <div className="mt-6 flex items-end justify-between">
-                    <div>
-                      <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
-                      <span className="text-muted-foreground ml-2">/ сутки</span>
-                    </div>
+                  <div className="mt-6 text-center">
+                    <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
+                    <span className="text-muted-foreground ml-2">/ сутки</span>
+                  </div>
+                  <div className="mt-8 flex justify-center">
                     <ContactDialog>
-                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer">
+                      <span className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
                         Арендовать
                       </span>
                     </ContactDialog>
@@ -316,18 +316,18 @@ function Index() {
             <a href={PHONE_HREF} className="font-display text-xl font-bold hover:text-primary transition">{PHONE}</a>
             <p className="text-muted-foreground text-sm mt-2">Работаем ежедневно</p>
           </div>
-          <div className="flex justify-center md:justify-end items-start gap-3 flex-wrap">
-            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="WhatsApp">
-              <MessageCircle className="w-5 h-5" />
+          <div className="flex justify-center md:justify-end items-start gap-4 flex-wrap">
+            <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="WhatsApp">
+              <MessageCircle className="w-7 h-7" />
             </a>
-            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_15px_#0088cc80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="Telegram">
-              <Send className="w-5 h-5" />
+            <a href="https://t.me/Arenda_PS5" target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_15px_#0088cc80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="Telegram">
+              <Send className="w-7 h-7" />
             </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_15px_#E1306C80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="Instagram">
-              <Instagram className="w-5 h-5" />
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#E1306C] hover:border-[#E1306C] hover:shadow-[0_0_15px_#E1306C80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="Instagram">
+              <Instagram className="w-7 h-7" />
             </a>
-            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_15px_#0077FF80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="VK">
-              <VkIcon className="w-5 h-5" />
+            <a href={VK_URL} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0077FF] hover:border-[#0077FF] hover:shadow-[0_0_15px_#0077FF80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150" aria-label="VK">
+              <VkIcon className="w-7 h-7" />
             </a>
           </div>
         </div>

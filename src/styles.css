@@ -110,3 +110,16 @@
 @utility animate-btn-click {
   animation: btn-click 0.25s ease-out;
 }
+
+@keyframes attention-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 oklch(0.7 0.28 330 / 0.7), 0 0 30px oklch(0.7 0.28 330 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 14px oklch(0.7 0.28 330 / 0), 0 0 55px oklch(0.7 0.28 330 / 0.85);
+  }
+}
+
+@utility animate-attention {
+  animation: attention-pulse 2s ease-in-out infinite;
+}
