@@ -91,28 +91,33 @@ function GamesPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 grid grid-cols-3 items-center">
+          <div className="justify-self-start">
+            <Link
+              to="/"
+              aria-label="На главную"
+              className="inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:text-primary transition"
+            >
+              <span className="text-2xl leading-none">←</span>
+            </Link>
+          </div>
+          <Link to="/" className="justify-self-center flex items-center gap-2">
             <span className="font-display font-bold text-2xl tracking-wider">
               <span style={{ color: "#63D8FF" }}>GAME</span>
               <span style={{ color: "#F14FF0" }}>PLAY</span>
             </span>
           </Link>
+          <div />
         </div>
       </header>
 
-      <section className="pt-32 pb-12 px-4 sm:px-6">
+      <section className="pt-24 pb-8 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 mb-6 text-sm font-medium text-muted-foreground hover:text-foreground transition"
-          >
-            ← На главную
-          </Link>
           <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase">
             <span className="text-gradient">Полная</span> <span className="text-gradient">библиотека игр</span>
           </h1>
           <p className="mt-4 text-muted-foreground">Многие игры уже установлены и готовы к запуску</p>
+
         </div>
       </section>
 
