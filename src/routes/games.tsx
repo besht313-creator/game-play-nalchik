@@ -136,9 +136,9 @@ function GamesPage() {
                     ) : null}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {g.stickers?.length > 0 && (
-                      <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
+                      <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
                         {g.stickers.map((s) => (
-                          <span key={s} className={`text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
+                          <span key={s} className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}>
                             {STICKER_LABELS[s]}
                           </span>
                         ))}
