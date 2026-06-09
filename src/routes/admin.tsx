@@ -253,6 +253,7 @@ function GameForm({
 }) {
   const [title, setTitle] = useState(game?.title ?? "");
   const [stickers, setStickers] = useState<Sticker[]>(game?.stickers ?? []);
+  const [categories, setCategories] = useState<Category[]>(game?.categories ?? []);
   const [imageUrl, setImageUrl] = useState<string | null>(game?.image_url ?? null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -264,6 +265,11 @@ function GameForm({
       cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s],
     );
   };
+
+  const toggleCategory = (c: Category) => {
+    setCategories((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
+  };
+
 
   const handleFile = async (file: File) => {
     if (file.size > 5 * 1024 * 1024) { toast.error("Файл больше 5 МБ"); return; }
