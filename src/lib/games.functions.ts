@@ -2,12 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 export type Sticker = "hit" | "new" | "for_two";
+export type Category = "new" | "hits" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
+
+export const CATEGORY_VALUES: Category[] = ["new", "hits", "coop", "racing", "sports", "kids", "horror", "exclusive"];
 
 export type GameRow = {
   id: string;
   title: string;
   image_url: string | null;
   stickers: Sticker[];
+  categories: Category[];
   position: number;
 };
 
@@ -16,11 +20,12 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("games")
-    .select("id,title,image_url,stickers,position")
+    .select("id,title,image_url,stickers,categories,position")
     .order("position", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as GameRow[];
 });
+
 
 function checkPassword(pw: string) {
   const expected = process.env.ADMIN_PASSWORD;
