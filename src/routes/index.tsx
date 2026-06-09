@@ -249,7 +249,7 @@ function Index() {
       </section>
 
       {/* Reviews */}
-      <section id="reviews" className="py-24 px-4 sm:px-6 bg-card/30">
+      <section id="reviews" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-5xl text-center uppercase">
             Более 150 положительных<br/>
