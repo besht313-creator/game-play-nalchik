@@ -14,9 +14,9 @@ import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 
 
 const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
-  hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
-  new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
-  for_two: "bg-[#4D8CFF]/30 text-[#4D8CFF] border-[#4D8CFF]/60 shadow-[0_0_10px_#4D8CFF80] backdrop-blur-sm",
+  hit: "bg-[#F14FF0] text-white border-white/70 shadow-[0_0_14px_#F14FF0]",
+  new: "bg-[#63D8FF] text-black border-white/70 shadow-[0_0_14px_#63D8FF]",
+  for_two: "bg-[#4D8CFF] text-white border-white/70 shadow-[0_0_14px_#4D8CFF]",
 };
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
