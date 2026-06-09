@@ -56,13 +56,29 @@ export const adminCreateGame = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     checkPassword(data.password);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: maxRow } = await supabaseAdmin
+    const { data: all } = await supabaseAdmin
       .from("games")
-      .select("position")
-      .order("position", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    const nextPos = (maxRow?.position ?? 0) + 10;
+      .select("id,position")
+      .order("position", { ascending: true });
+    const list = all ?? [];
+
+    // Target slot = 7th place (index 6). If fewer than 7 existing games, append at end.
+    const TARGET_INDEX = 6;
+    let nextPos: number;
+    if (list.length <= TARGET_INDEX) {
+      const maxPos = list.length ? list[list.length - 1].position : 0;
+      nextPos = maxPos + 10;
+    } else {
+      nextPos = list[TARGET_INDEX].position;
+      // Shift games at target index and below down by +10 (descending to avoid conflicts).
+      for (let i = list.length - 1; i >= TARGET_INDEX; i--) {
+        await supabaseAdmin
+          .from("games")
+          .update({ position: list[i].position + 10 })
+          .eq("id", list[i].id);
+      }
+    }
+
     const { data: inserted, error } = await supabaseAdmin
       .from("games")
       .insert({
