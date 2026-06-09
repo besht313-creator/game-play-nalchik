@@ -87,14 +87,17 @@ function GamesPage() {
               <span style={{ color: "#F14FF0" }}>PLAY</span>
             </span>
           </Link>
-          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition">
-            ← На главную
-          </Link>
         </div>
       </header>
 
       <section className="pt-32 pb-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 mb-6 text-sm font-medium text-muted-foreground hover:text-foreground transition"
+          >
+            ← На главную
+          </Link>
           <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase">
             Полная <span className="text-gradient">библиотека игр</span>
           </h1>
