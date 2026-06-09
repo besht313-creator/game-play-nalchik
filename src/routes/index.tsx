@@ -14,9 +14,9 @@ import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 
 
 const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
-  hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
-  new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
-  for_two: "bg-[#4D8CFF]/30 text-[#4D8CFF] border-[#4D8CFF]/60 shadow-[0_0_10px_#4D8CFF80] backdrop-blur-sm",
+  hit: "bg-[#F14FF0] text-white border-white/70 shadow-[0_0_14px_#F14FF0]",
+  new: "bg-[#63D8FF] text-black border-white/70 shadow-[0_0_14px_#63D8FF]",
+  for_two: "bg-[#4D8CFF] text-white border-white/70 shadow-[0_0_14px_#4D8CFF]",
 };
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
@@ -359,9 +359,9 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
       ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {stickers?.length > 0 && (
-        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
           {stickers.map((s) => (
-            <span key={s} className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
+            <span key={s} className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}>
               {STICKER_LABELS[s]}
             </span>
           ))}
