@@ -93,22 +93,23 @@ function GamesPage() {
       </section>
 
       <section className="px-4 sm:px-6 pb-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 flex-wrap">
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setActive(f.id)}
-              className={`px-4 py-2 rounded-full border text-xs font-display font-bold uppercase tracking-wider transition ${
-                active === f.id
-                  ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
-                  : "border-border text-muted-foreground hover:border-primary"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
+          <span className="text-sm font-medium text-muted-foreground">Категории</span>
+          <Select value={active} onValueChange={(v) => setActive(v as FilterId)}>
+            <SelectTrigger className="w-[240px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </section>
+
 
       <section className="px-4 sm:px-6 pb-24">
         <div className="max-w-6xl mx-auto">
