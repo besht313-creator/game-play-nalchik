@@ -11,8 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import twoPeopleAsset from "@/assets/two-people.png.asset.json";
-const twoPeopleImg = twoPeopleAsset.url;
 
 export const Route = createFileRoute("/games")({
   head: () => ({
@@ -27,7 +25,7 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "👥" };
+const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2-4 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
   new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
@@ -139,15 +137,11 @@ function GamesPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {g.stickers?.length > 0 && (
                       <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
-                        {g.stickers.map((s) =>
-                          s === "for_two" ? (
-                            <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain" style={{ filter: "invert(1)", mixBlendMode: "screen" }} />
-                          ) : (
-                            <span key={s} className={`text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
-                              {STICKER_LABELS[s]}
-                            </span>
-                          )
-                        )}
+                        {g.stickers.map((s) => (
+                          <span key={s} className={`text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
+                            {STICKER_LABELS[s]}
+                          </span>
+                        ))}
                       </div>
                     )}
                     <div className="absolute bottom-0 inset-x-0 p-3 text-center font-display font-bold uppercase text-sm text-white drop-shadow">
