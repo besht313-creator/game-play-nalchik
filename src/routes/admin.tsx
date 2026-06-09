@@ -11,8 +11,10 @@ import {
   adminDeleteGame,
   adminMoveGame,
   adminUploadImage,
+  CATEGORY_VALUES,
   type GameRow,
   type Sticker,
+  type Category,
 } from "@/lib/games.functions";
 
 export const Route = createFileRoute("/admin")({
@@ -31,6 +33,18 @@ const STICKER_LABELS: Record<Sticker, string> = {
   for_two: "На двоих",
 };
 const STICKER_LIST: Sticker[] = ["hit", "new", "for_two"];
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  new: "Новинки",
+  hits: "Хиты",
+  coop: "На двоих/четверых",
+  racing: "Гонки",
+  sports: "Спортивные",
+  kids: "Для детей",
+  horror: "Хорроры",
+  exclusive: "Эксклюзивы",
+};
+
 
 function StickerBadge({ s }: { s: Sticker }) {
   const styles: Record<Sticker, string> = {
@@ -239,6 +253,7 @@ function GameForm({
 }) {
   const [title, setTitle] = useState(game?.title ?? "");
   const [stickers, setStickers] = useState<Sticker[]>(game?.stickers ?? []);
+  const [categories, setCategories] = useState<Category[]>(game?.categories ?? []);
   const [imageUrl, setImageUrl] = useState<string | null>(game?.image_url ?? null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -250,6 +265,11 @@ function GameForm({
       cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s],
     );
   };
+
+  const toggleCategory = (c: Category) => {
+    setCategories((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
+  };
+
 
   const handleFile = async (file: File) => {
     if (file.size > 5 * 1024 * 1024) { toast.error("Файл больше 5 МБ"); return; }
@@ -277,12 +297,13 @@ function GameForm({
     setSaving(true);
     try {
       if (game) {
-        await updateFn({ data: { password, id: game.id, title: title.trim(), stickers, image_url: imageUrl } });
+        await updateFn({ data: { password, id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { password, title: title.trim(), stickers, image_url: imageUrl } });
+        await createFn({ data: { password, title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Игра добавлена");
       }
+
       onSaved();
     } catch (e) {
       toast.error((e as Error).message);
@@ -350,6 +371,28 @@ function GameForm({
             );
           })}
         </div>
+
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Категории</label>
+        <div className="flex flex-wrap gap-2">
+          {CATEGORY_VALUES.map((c) => {
+            const active = categories.includes(c);
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => toggleCategory(c)}
+                className={`px-3 py-1.5 rounded-md border text-xs font-display font-bold uppercase tracking-wider transition ${
+                  active
+                    ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
+                    : "border-border text-muted-foreground hover:border-primary"
+                }`}
+              >
+                {CATEGORY_LABELS[c]}
+              </button>
+            );
+          })}
+        </div>
+
 
         <div className="mt-6 flex gap-2">
           <button onClick={onClose} className="flex-1 rounded-md py-2.5 border border-border text-sm hover:border-foreground">Отмена</button>

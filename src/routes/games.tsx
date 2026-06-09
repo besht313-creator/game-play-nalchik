@@ -3,13 +3,20 @@ import { useState, useMemo } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
-import { listGames, type Sticker } from "@/lib/games.functions";
+import { listGames, type Sticker, type Category } from "@/lib/games.functions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
     meta: [
       { title: "Полная библиотека игр | GamePlay Нальчик" },
-      { name: "description", content: "Полный каталог игр для PS5 и PS4: новинки, хиты, кооператив." },
+      { name: "description", content: "Полный каталог игр для PS5 и PS4 с сортировкой по категориям: новинки, хиты, кооператив, гонки, для детей, хорроры, эксклюзивы." },
       { property: "og:title", content: "Полная библиотека игр | GamePlay" },
       { property: "og:description", content: "Большой каталог игр для аренды PS5 и PS4 в Нальчике." },
     ],
@@ -25,13 +32,19 @@ const STICKER_STYLES: Record<Sticker, string> = {
   for_two: "bg-primary/20 text-primary border-primary/50 shadow-[var(--shadow-neon)]",
 };
 
-type FilterId = "all" | Sticker;
-const FILTERS: { id: FilterId; label: string }[] = [
+type FilterId = "all" | Category;
+const CATEGORIES: { id: FilterId; label: string }[] = [
   { id: "all", label: "Все" },
   { id: "new", label: "Новинки" },
-  { id: "hit", label: "Хиты" },
-  { id: "for_two", label: "На двоих" },
+  { id: "hits", label: "Хиты" },
+  { id: "coop", label: "На двоих/четверых" },
+  { id: "racing", label: "Гонки" },
+  { id: "sports", label: "Спортивные" },
+  { id: "kids", label: "Для детей" },
+  { id: "horror", label: "Хорроры" },
+  { id: "exclusive", label: "Эксклюзивы" },
 ];
+
 
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
@@ -46,8 +59,9 @@ function GamesPage() {
   const filtered = useMemo(() => {
     const all = q.data ?? [];
     if (active === "all") return all;
-    return all.filter((g) => g.stickers?.includes(active));
+    return all.filter((g) => g.categories?.includes(active));
   }, [q.data, active]);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -79,22 +93,23 @@ function GamesPage() {
       </section>
 
       <section className="px-4 sm:px-6 pb-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 flex-wrap">
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setActive(f.id)}
-              className={`px-4 py-2 rounded-full border text-xs font-display font-bold uppercase tracking-wider transition ${
-                active === f.id
-                  ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
-                  : "border-border text-muted-foreground hover:border-primary"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
+          <span className="text-sm font-medium text-muted-foreground">Категории</span>
+          <Select value={active} onValueChange={(v) => setActive(v as FilterId)}>
+            <SelectTrigger className="w-[240px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </section>
+
 
       <section className="px-4 sm:px-6 pb-24">
         <div className="max-w-6xl mx-auto">
