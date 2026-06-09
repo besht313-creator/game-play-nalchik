@@ -359,7 +359,7 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
       {stickers?.length > 0 && (
         <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1">
           {stickers.map((s) => (
-            <span key={s} className={`text-[9px] sm:text-[10px] font-display font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${STICKER_STYLES[s]}`}>
+            <span key={s} className={`${s === "for_two" ? "text-sm px-2 py-1" : "text-[9px] sm:text-[10px] px-1.5 py-0.5"} font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
               {STICKER_LABELS[s]}
             </span>
           ))}
