@@ -15,7 +15,15 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-type Category = "all" | "new" | "hits" | "coop" | "racing" | "kids" | "horror" | "exclusive";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type Category = "all" | "new" | "hits" | "coop" | "racing" | "kids" | "horror" | "exclusive" | "sports";
 
 const CATEGORIES: { id: Category; label: string }[] = [
   { id: "all", label: "Все" },
@@ -23,6 +31,7 @@ const CATEGORIES: { id: Category; label: string }[] = [
   { id: "hits", label: "Хиты" },
   { id: "coop", label: "На двоих/четверых" },
   { id: "racing", label: "Гонки" },
+  { id: "sports", label: "Спортивные" },
   { id: "kids", label: "Для детей" },
   { id: "horror", label: "Хорроры" },
   { id: "exclusive", label: "Эксклюзивы" },
