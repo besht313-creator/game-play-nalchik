@@ -347,3 +347,28 @@ function SectionTitle({ children, align = "center" }: { children: React.ReactNod
     </h2>
   );
 }
+
+function GameCard({ title, image_url, stickers }: { title: string; image_url: string | null; stickers: Sticker[] }) {
+  const src = gameImageSrc(image_url);
+  return (
+    <div className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
+      {src ? (
+        <img src={src} alt={title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+      ) : null}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      {stickers?.length > 0 && (
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1">
+          {stickers.map((s) => (
+            <span key={s} className={`text-[9px] sm:text-[10px] font-display font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${STICKER_STYLES[s]}`}>
+              {STICKER_LABELS[s]}
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white drop-shadow">
+        {title}
+      </div>
+    </div>
+  );
+}
+
