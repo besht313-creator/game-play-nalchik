@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { listGames, type Sticker } from "@/lib/games.functions";
 import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Asset from "@/assets/ps5.jpg.asset.json";
 import ps4Asset from "@/assets/ps4.jpg.asset.json";
@@ -8,6 +11,17 @@ const ps4Img = ps4Asset.url;
 import { ContactDialog } from "@/components/ContactDialog";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
+
+const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "На двоих" };
+const STICKER_STYLES: Record<Sticker, string> = {
+  hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
+  new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
+  for_two: "bg-primary/20 text-primary border-primary/50 shadow-[var(--shadow-neon)]",
+};
+function gameImageSrc(url: string | null | undefined) {
+  if (!url) return null;
+  return url.startsWith("http") ? url : `/api/public/game-image/${url}`;
+}
 
 const INSTAGRAM_URL = "https://www.instagram.com/gameplay_nalchik?igsh=a3l4ZWFrYXp4MTh2";
 const VK_URL = "https://vk.ru/club237840986";
@@ -47,7 +61,7 @@ const steps = [
   { n: "04", title: "Игра", text: "Подключаете к ТВ и наслаждаетесь классной игровой атмосферой!", icon: Gamepad2 },
 ];
 
-const games = ["GTA V", "FIFA 26", "Mortal Kombat 1", "UFC 5", "Call of Duty", "Spider-Man 2"];
+
 
 const AVITO_URL = "https://www.avito.ru/nalchik/predlozheniya_uslug/arenda_ps5ps4_prokat_pleysteshen_5_3639072809";
 
@@ -67,6 +81,10 @@ const faqs = [
 function Index() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const listGamesFn = useServerFn(listGames);
+  const gamesQuery = useQuery({ queryKey: ["games"], queryFn: () => listGamesFn() });
+  const previewGames = (gamesQuery.data ?? []).slice(0, 6);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
