@@ -83,7 +83,7 @@ export const adminUpdateGame = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     checkPassword(data.password);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const patch: Record<string, unknown> = {};
+    const patch: { title?: string; stickers?: string[]; image_url?: string | null } = {};
     if (data.title !== undefined) patch.title = data.title;
     if (data.stickers !== undefined) patch.stickers = data.stickers;
     if (data.image_url !== undefined) patch.image_url = data.image_url;
