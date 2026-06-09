@@ -6,8 +6,10 @@ import { listGames, type Sticker } from "@/lib/games.functions";
 import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Asset from "@/assets/ps5.jpg.asset.json";
 import ps4Asset from "@/assets/ps4.jpg.asset.json";
+import twoPeopleAsset from "@/assets/two-people.jpeg.asset.json";
 const ps5Img = ps5Asset.url;
 const ps4Img = ps4Asset.url;
+const twoPeopleImg = twoPeopleAsset.url;
 import { ContactDialog } from "@/components/ContactDialog";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
@@ -359,12 +361,16 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
       ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {stickers?.length > 0 && (
-        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1">
-          {stickers.map((s) => (
-            <span key={s} className={`${s === "for_two" ? "text-sm px-2 py-1" : "text-[9px] sm:text-[10px] px-1.5 py-0.5"} font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
-              {STICKER_LABELS[s]}
-            </span>
-          ))}
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center">
+          {stickers.map((s) =>
+            s === "for_two" ? (
+              <img key={s} src={twoPeopleImg} alt="Для двоих" className="w-7 h-7 object-contain drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
+            ) : (
+              <span key={s} className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 font-display font-bold uppercase tracking-wider rounded border ${STICKER_STYLES[s]}`}>
+                {STICKER_LABELS[s]}
+              </span>
+            )
+          )}
         </div>
       )}
       <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white drop-shadow">
