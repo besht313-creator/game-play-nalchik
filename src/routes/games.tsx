@@ -59,8 +59,9 @@ function GamesPage() {
   const filtered = useMemo(() => {
     const all = q.data ?? [];
     if (active === "all") return all;
-    return all.filter((g) => g.stickers?.includes(active));
+    return all.filter((g) => g.categories?.includes(active));
   }, [q.data, active]);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
