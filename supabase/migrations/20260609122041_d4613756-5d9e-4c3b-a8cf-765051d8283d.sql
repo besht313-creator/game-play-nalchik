@@ -1,0 +1,2 @@
+CREATE POLICY "Deny anon access to game-images" ON storage.objects FOR ALL TO anon USING (bucket_id = 'game-images' AND false) WITH CHECK (bucket_id = 'game-images' AND false);
+CREATE POLICY "Deny authenticated access to game-images" ON storage.objects FOR ALL TO authenticated USING (bucket_id = 'game-images' AND false) WITH CHECK (bucket_id = 'game-images' AND false);
