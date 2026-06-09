@@ -145,7 +145,7 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section id="top" className="relative pt-32 pb-20 overflow-hidden">
+      <section id="top" className="relative pt-28 sm:pt-32 pb-16 sm:pb-24 overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <img src={heroImg} alt="" className="w-full h-full object-cover opacity-40" width={1280} height={1280} />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
@@ -156,11 +156,11 @@ function Index() {
             посуточная аренда<br />
             игровых приставок
           </h1>
-          <p className="mt-8 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-6 sm:mt-8 max-w-2xl mx-auto text-lg text-muted-foreground">
             Хотите окунуться в мир новейших игр и развлечений? Возьмите в прокат Sony PlayStation 5!
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#consoles" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)]">
+          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-4">
+            <a href="#consoles" className="inline-flex items-center justify-center h-12 rounded-full px-8 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out shadow-[var(--shadow-neon)]">
               Каталог приставок
             </a>
           </div>
