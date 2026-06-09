@@ -100,7 +100,6 @@ function Index() {
             <a href="#games" className="hover:text-foreground transition">Игры</a>
             <a href="#reviews" className="hover:text-foreground transition">Отзывы</a>
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
-            <Link to="/admin" className="hover:text-foreground transition">Админ-панель</Link>
           </nav>
           <ContactDialog>
             <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)] cursor-pointer">
@@ -124,7 +123,6 @@ function Index() {
             <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
             <a href="#reviews" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Отзывы</a>
             <a href="#faq" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">FAQ</a>
-            <Link to="/admin" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Админ-панель</Link>
             <a href={PHONE_HREF} onClick={() => setMenuOpen(false)} className="text-primary hover:brightness-110 transition">{PHONE}</a>
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-border flex-wrap">
               <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
