@@ -16,7 +16,7 @@ const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Нови�
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
   new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
-  for_two: "bg-primary/20 text-primary border-primary/50 shadow-[var(--shadow-neon)]",
+  for_two: "bg-[#FFEA00]/30 text-[#FFEA00] border-[#FFEA00]/60 shadow-[0_0_10px_#FFEA0080] backdrop-blur-sm",
 };
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
