@@ -145,7 +145,7 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section id="top" className="relative pt-28 sm:pt-32 pb-16 sm:pb-24 overflow-hidden">
+      <section id="top" className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <img src={heroImg} alt="" className="w-full h-full object-cover opacity-40" width={1280} height={1280} />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
@@ -156,11 +156,11 @@ function Index() {
             посуточная аренда<br />
             игровых приставок
           </h1>
-          <p className="mt-6 sm:mt-8 max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p className="mt-8 max-w-2xl mx-auto text-lg text-muted-foreground">
             Хотите окунуться в мир новейших игр и развлечений? Возьмите в прокат Sony PlayStation 5!
           </p>
-          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#consoles" className="inline-flex items-center justify-center h-12 rounded-full px-8 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out shadow-[var(--shadow-neon)]">
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <a href="#consoles" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)]">
               Каталог приставок
             </a>
           </div>
@@ -168,16 +168,16 @@ function Index() {
       </section>
 
       {/* Consoles */}
-      <section id="consoles" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
+      <section id="consoles" className="py-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Каталог приставок</SectionTitle>
-          <div className="grid md:grid-cols-2 gap-5 sm:gap-8 mt-10 sm:mt-14">
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
             {consoles.map((c) => (
-              <div key={c.name} className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.35)] transition-[transform,box-shadow,border-color] duration-200 ease-out">
+              <div key={c.name} className="group relative rounded-2xl bg-card border border-border overflow-hidden hover:border-primary transition">
                 <div className="aspect-square overflow-hidden bg-secondary">
-                  <img src={c.img} alt={c.name} loading="lazy" width={800} height={800} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+                  <img src={c.img} alt={c.name} loading="lazy" width={800} height={800} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
-                <div className="p-5 sm:p-6">
+                <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-display font-bold text-2xl">{c.name}</h3>
                     <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
@@ -185,11 +185,11 @@ function Index() {
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
                   <div className="mt-6 flex items-end justify-between">
                     <div>
-                      <span className="font-display text-4xl font-bold text-gradient tabular-nums">{c.price} ₽</span>
+                      <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
                       <span className="text-muted-foreground ml-2">/ сутки</span>
                     </div>
                     <ContactDialog>
-                      <span className="inline-flex items-center justify-center h-11 rounded-full px-5 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out cursor-pointer">
+                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer">
                         Арендовать
                       </span>
                     </ContactDialog>
@@ -202,17 +202,17 @@ function Index() {
       </section>
 
       {/* How */}
-      <section id="how" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 bg-card/30">
+      <section id="how" className="py-24 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Как это работает</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-10 sm:mt-14">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             {steps.map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.n} className="relative p-6 sm:p-8 rounded-2xl bg-card border border-border hover:border-primary hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.35)] transition-[transform,box-shadow,border-color] duration-200 ease-out">
+                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="font-display text-4xl font-bold text-gradient tabular-nums">{s.n}</div>
-                    <Icon className="w-7 h-7 text-primary/60" />
+                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
+                    <Icon className="w-8 h-8 text-primary" />
                   </div>
                   <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
                   <p className="text-muted-foreground text-sm">{s.text}</p>
@@ -224,15 +224,15 @@ function Index() {
       </section>
 
       {/* Games */}
-      <section id="games" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
+      <section id="games" className="py-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-10 sm:mb-14">
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-12">
             <div>
               <SectionTitle align="left">Библиотека игр</SectionTitle>
-              <p className="text-muted-foreground mt-3 font-medium">уже установлено и готово к игре!</p>
+              <p className="text-muted-foreground mt-2">уже установлено и готово к игре!</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {previewGames.map((g) => (
               <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} />
             ))}
@@ -240,8 +240,8 @@ function Index() {
               <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />
             ))}
           </div>
-          <div className="mt-10 sm:mt-14 flex justify-center">
-            <Link to="/games" className="inline-flex items-center justify-center h-12 rounded-full px-8 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out shadow-[var(--shadow-neon)]">
+          <div className="mt-12 flex justify-center">
+            <Link to="/games" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)]">
               Полная библиотека игр
             </Link>
           </div>
@@ -249,7 +249,7 @@ function Index() {
       </section>
 
       {/* Reviews */}
-      <section id="reviews" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 bg-card/30">
+      <section id="reviews" className="py-24 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-display font-bold text-3xl sm:text-5xl text-center uppercase">
             Более 150 положительных<br/>
@@ -280,7 +280,7 @@ function Index() {
             </div>
           </div>
           <div className="mt-10 flex justify-center">
-            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-12 rounded-full px-8 bg-accent text-accent-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-cyan)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out shadow-[var(--shadow-cyan)]">
+            <a href={AVITO_URL} target="_blank" rel="noopener noreferrer" className="rounded-full px-8 py-4 bg-accent text-accent-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-cyan)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-cyan)]">
               Смотреть отзывы на Avito
             </a>
           </div>
@@ -288,26 +288,21 @@ function Index() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
+      <section id="faq" className="py-24 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <SectionTitle>FAQ</SectionTitle>
-          <div className="mt-10 sm:mt-14 space-y-3">
-            {faqs.map((f, i) => {
-              const open = openFaq === i;
-              return (
-                <div key={i} className="rounded-2xl bg-card border border-border overflow-hidden hover:border-primary/60 transition-colors duration-200">
-                  <button onClick={() => setOpenFaq(open ? null : i)} className="w-full p-5 sm:p-6 flex items-center justify-between text-left font-display font-bold text-lg active:brightness-110 transition-[filter] duration-150" aria-expanded={open}>
-                    <span>{f.q}</span>
-                    <span className={`text-primary text-2xl leading-none transition-transform duration-300 ease-out ${open ? "rotate-45" : ""}`}>+</span>
-                  </button>
-                  <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-                    <div className="overflow-hidden">
-                      <div className="px-5 sm:px-6 pb-5 sm:pb-6 text-muted-foreground">{f.a}</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="mt-12 space-y-3">
+            {faqs.map((f, i) => (
+              <div key={i} className="rounded-2xl bg-card border border-border overflow-hidden">
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full p-6 flex items-center justify-between text-left font-display font-bold text-lg active:brightness-110 transition-all duration-150">
+                  <span>{f.q}</span>
+                  <span className={`text-primary transition-transform ${openFaq === i ? "rotate-45" : ""}`}>+</span>
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-6 text-muted-foreground">{f.a}</div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -358,13 +353,13 @@ function SectionTitle({ children, align = "center" }: { children: React.ReactNod
 function GameCard({ title, image_url, stickers }: { title: string; image_url: string | null; stickers: Sticker[] }) {
   const src = gameImageSrc(image_url);
   return (
-    <div className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary hover:scale-[1.02] hover:shadow-[var(--shadow-neon)] active:scale-[0.98] transition-[transform,box-shadow,border-color] duration-200 ease-out">
+    <div className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
       {src ? (
-        <img src={src} alt={title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+        <img src={src} alt={title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {stickers?.length > 0 && (
-        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1.5 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
           {stickers.map((s) => (
             <span key={s} className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}>
               {STICKER_LABELS[s]}
