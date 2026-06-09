@@ -12,7 +12,7 @@ import { ContactDialog } from "@/components/ContactDialog";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
 
-const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2-4 🎮" };
+const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0]/20 text-[#F14FF0] border-[#F14FF0]/50 shadow-[0_0_10px_#F14FF080]",
   new: "bg-[#63D8FF]/20 text-[#63D8FF] border-[#63D8FF]/50 shadow-[0_0_10px_#63D8FF80]",
