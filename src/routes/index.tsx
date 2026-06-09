@@ -202,17 +202,17 @@ function Index() {
       </section>
 
       {/* How */}
-      <section id="how" className="py-24 px-4 sm:px-6 bg-card/30">
+      <section id="how" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <SectionTitle>Как это работает</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-10 sm:mt-14">
             {steps.map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
+                <div key={s.n} className="relative p-6 sm:p-8 rounded-2xl bg-card border border-border hover:border-primary hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.35)] transition-[transform,box-shadow,border-color] duration-200 ease-out">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
-                    <Icon className="w-8 h-8 text-primary" />
+                    <div className="font-display text-4xl font-bold text-gradient tabular-nums">{s.n}</div>
+                    <Icon className="w-7 h-7 text-primary/60" />
                   </div>
                   <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
                   <p className="text-muted-foreground text-sm">{s.text}</p>
