@@ -87,6 +87,7 @@ function AdminPage() {
 
 function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
   const [pw, setPw] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const verify = useServerFn(adminVerify);
   const mutation = useMutation({
     mutationFn: (password: string) => verify({ data: { password } }),
@@ -108,14 +109,24 @@ function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
           <span style={{ color: "#F14FF0" }}>PANEL</span>
         </h1>
         <p className="text-center text-muted-foreground text-sm mt-2">Введите пароль для входа</p>
-        <input
-          type="password"
-          autoFocus
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-          placeholder="Пароль"
-          className="mt-6 w-full bg-input border border-border rounded-md px-4 py-3 text-foreground focus:outline-none focus:border-primary"
-        />
+        <div className="relative mt-6">
+          <input
+            type={showPw ? "text" : "password"}
+            autoFocus
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            placeholder="Пароль"
+            className="w-full bg-input border border-border rounded-md pl-4 pr-20 py-3 text-foreground focus:outline-none focus:border-primary"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPw((v) => !v)}
+            aria-label={showPw ? "Скрыть пароль" : "Показать пароль"}
+            className="absolute inset-y-0 right-2 my-1 px-3 rounded text-xs font-medium text-muted-foreground hover:text-foreground transition"
+          >
+            {showPw ? "Скрыть" : "Показать"}
+          </button>
+        </div>
         <button
           type="submit"
           disabled={mutation.isPending || !pw}
