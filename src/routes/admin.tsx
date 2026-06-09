@@ -271,10 +271,12 @@ function GameForm({
 
   const previewSrc = useMemo(() => gameImageSrc(imageUrl), [imageUrl]);
 
+  const STICKER_ORDER: Sticker[] = ["new", "hit", "for_two"];
   const toggleSticker = (s: Sticker) => {
-    setStickers((cur) =>
-      cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s],
-    );
+    setStickers((cur) => {
+      const next = cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s];
+      return [...next].sort((a, b) => STICKER_ORDER.indexOf(a) - STICKER_ORDER.indexOf(b));
+    });
   };
 
   const toggleCategory = (c: Category) => {

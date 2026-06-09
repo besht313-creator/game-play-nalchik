@@ -27,9 +27,9 @@ export const Route = createFileRoute("/games")({
 
 const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
-  hit: "bg-[#F14FF0] text-white border-white/70 shadow-[0_0_14px_#F14FF0]",
-  new: "bg-[#63D8FF] text-black border-white/70 shadow-[0_0_14px_#63D8FF]",
-  for_two: "bg-[#4D8CFF] text-white border-white/70 shadow-[0_0_14px_#4D8CFF]",
+  hit: "bg-[#F14FF0] text-white border-white/50 shadow-[0_0_8px_#F14FF0aa]",
+  new: "bg-[#63D8FF] text-black border-white/50 shadow-[0_0_8px_#63D8FFaa]",
+  for_two: "bg-[#4D8CFF] text-white border-white/50 shadow-[0_0_8px_#4D8CFFaa]",
 };
 
 type FilterId = "all" | Category;
