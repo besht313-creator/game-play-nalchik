@@ -288,21 +288,26 @@ function Index() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24 px-4 sm:px-6">
+      <section id="faq" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <SectionTitle>FAQ</SectionTitle>
-          <div className="mt-12 space-y-3">
-            {faqs.map((f, i) => (
-              <div key={i} className="rounded-2xl bg-card border border-border overflow-hidden">
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full p-6 flex items-center justify-between text-left font-display font-bold text-lg active:brightness-110 transition-all duration-150">
-                  <span>{f.q}</span>
-                  <span className={`text-primary transition-transform ${openFaq === i ? "rotate-45" : ""}`}>+</span>
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-6 text-muted-foreground">{f.a}</div>
-                )}
-              </div>
-            ))}
+          <div className="mt-10 sm:mt-14 space-y-3">
+            {faqs.map((f, i) => {
+              const open = openFaq === i;
+              return (
+                <div key={i} className="rounded-2xl bg-card border border-border overflow-hidden hover:border-primary/60 transition-colors duration-200">
+                  <button onClick={() => setOpenFaq(open ? null : i)} className="w-full p-5 sm:p-6 flex items-center justify-between text-left font-display font-bold text-lg active:brightness-110 transition-[filter] duration-150" aria-expanded={open}>
+                    <span>{f.q}</span>
+                    <span className={`text-primary text-2xl leading-none transition-transform duration-300 ease-out ${open ? "rotate-45" : ""}`}>+</span>
+                  </button>
+                  <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                    <div className="overflow-hidden">
+                      <div className="px-5 sm:px-6 pb-5 sm:pb-6 text-muted-foreground">{f.a}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
