@@ -130,13 +130,13 @@ function GamesPage() {
               {filtered.map((g) => {
                 const src = gameImageSrc(g.image_url);
                 return (
-                  <div key={g.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
+                  <div key={g.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary hover:scale-[1.02] hover:shadow-[var(--shadow-neon)] active:scale-[0.98] transition-[transform,box-shadow,border-color] duration-200 ease-out">
                     {src ? (
-                      <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                      <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
                     ) : null}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {g.stickers?.length > 0 && (
-                      <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                      <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1.5 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
                         {g.stickers.map((s) => (
                           <span key={s} className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}>
                             {STICKER_LABELS[s]}
