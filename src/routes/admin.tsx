@@ -297,12 +297,13 @@ function GameForm({
     setSaving(true);
     try {
       if (game) {
-        await updateFn({ data: { password, id: game.id, title: title.trim(), stickers, image_url: imageUrl } });
+        await updateFn({ data: { password, id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { password, title: title.trim(), stickers, image_url: imageUrl } });
+        await createFn({ data: { password, title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Игра добавлена");
       }
+
       onSaved();
     } catch (e) {
       toast.error((e as Error).message);
