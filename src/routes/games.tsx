@@ -99,7 +99,7 @@ function GamesPage() {
             ← На главную
           </Link>
           <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase">
-            Полная <span className="text-gradient">библиотека игр</span>
+            <span className="text-gradient">Полная</span> <span className="text-gradient">библиотека игр</span>
           </h1>
           <p className="mt-4 text-muted-foreground">Все игры уже установлены и готовы к запуску</p>
         </div>
