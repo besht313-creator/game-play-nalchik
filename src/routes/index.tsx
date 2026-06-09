@@ -181,13 +181,13 @@ function Index() {
                     <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
                   </div>
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
-                  <div className="mt-6 flex items-end justify-between">
-                    <div>
-                      <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
-                      <span className="text-muted-foreground ml-2">/ сутки</span>
-                    </div>
+                  <div className="mt-6 text-center">
+                    <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
+                    <span className="text-muted-foreground ml-2">/ сутки</span>
+                  </div>
+                  <div className="mt-8 flex justify-center">
                     <ContactDialog>
-                      <span className="rounded-full px-5 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer">
+                      <span className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
                         Арендовать
                       </span>
                     </ContactDialog>
