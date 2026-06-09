@@ -44,10 +44,10 @@ type Game = { title: string; cats: Category[] };
 const GAMES: Game[] = [
   { title: "GTA V", cats: ["hits"] },
   { title: "GTA VI", cats: ["new", "hits", "exclusive"] },
-  { title: "FIFA 26", cats: ["new", "hits", "coop"] },
-  { title: "EA FC 25", cats: ["coop", "hits"] },
+  { title: "FIFA 26", cats: ["new", "hits", "coop", "sports"] },
+  { title: "EA FC 25", cats: ["coop", "hits", "sports"] },
   { title: "Mortal Kombat 1", cats: ["coop", "hits"] },
-  { title: "UFC 5", cats: ["coop"] },
+  { title: "UFC 5", cats: ["coop", "sports"] },
   { title: "Call of Duty MW III", cats: ["hits", "coop"] },
   { title: "Spider-Man 2", cats: ["exclusive", "hits"] },
   { title: "God of War Ragnarok", cats: ["exclusive", "hits"] },
