@@ -79,7 +79,11 @@ function GamesPage() {
               <span style={{ color: "#F14FF0" }}>PLAY</span>
             </span>
           </Link>
-          <div />
+          <div className="justify-self-end">
+            <Link to="/admin" className="text-sm font-medium text-muted-foreground hover:text-foreground transition">
+              Админ-панель
+            </Link>
+          </div>
         </div>
       </header>
 
