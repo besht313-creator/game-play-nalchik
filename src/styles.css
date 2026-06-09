@@ -69,7 +69,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
-  section[id] { scroll-margin-top: 80px; }
+  section[id] { scroll-margin-top: calc(64px - 6rem); }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
