@@ -30,7 +30,7 @@ export const Route = createFileRoute("/admin")({
 const STICKER_LABELS: Record<Sticker, string> = {
   hit: "Хит",
   new: "Новинка",
-  for_two: "👥",
+  for_two: "2 🎮",
 };
 const STICKER_LIST: Sticker[] = ["hit", "new", "for_two"];
 
