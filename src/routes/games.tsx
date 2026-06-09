@@ -117,20 +117,20 @@ function GamesPage() {
       </section>
 
       <section className="px-4 sm:px-6 pb-8">
-        <div className="max-w-6xl mx-auto flex flex-wrap gap-2 justify-center">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => setActive(c.id)}
-              className={`px-4 py-2 rounded-full text-sm font-display font-bold uppercase tracking-wider border transition-all duration-150 active:scale-[0.92] active:brightness-110 ${
-                active === c.id
-                  ? "bg-primary text-primary-foreground border-primary shadow-[var(--shadow-neon)]"
-                  : "bg-card text-muted-foreground border-border hover:border-primary hover:text-foreground"
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
+          <span className="text-sm font-medium text-muted-foreground">Категории</span>
+          <Select value={active} onValueChange={(v) => setActive(v as Category)}>
+            <SelectTrigger className="w-[220px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </section>
 
