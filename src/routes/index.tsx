@@ -224,15 +224,15 @@ function Index() {
       </section>
 
       {/* Games */}
-      <section id="games" className="py-24 px-4 sm:px-6">
+      <section id="games" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-12">
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-10 sm:mb-14">
             <div>
               <SectionTitle align="left">Библиотека игр</SectionTitle>
-              <p className="text-muted-foreground mt-2">уже установлено и готово к игре!</p>
+              <p className="text-muted-foreground mt-3 font-medium">уже установлено и готово к игре!</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {previewGames.map((g) => (
               <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} />
             ))}
@@ -240,8 +240,8 @@ function Index() {
               <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />
             ))}
           </div>
-          <div className="mt-12 flex justify-center">
-            <Link to="/games" className="rounded-full px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.92] active:brightness-125 transition-all duration-150 shadow-[var(--shadow-neon)]">
+          <div className="mt-10 sm:mt-14 flex justify-center">
+            <Link to="/games" className="inline-flex items-center justify-center h-12 rounded-full px-8 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.96] active:brightness-125 transition-[transform,box-shadow,filter,background-color] duration-200 ease-out shadow-[var(--shadow-neon)]">
               Полная библиотека игр
             </Link>
           </div>
