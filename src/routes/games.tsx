@@ -3,13 +3,20 @@ import { useState, useMemo } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
-import { listGames, type Sticker } from "@/lib/games.functions";
+import { listGames, type Sticker, type Category } from "@/lib/games.functions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
     meta: [
       { title: "Полная библиотека игр | GamePlay Нальчик" },
-      { name: "description", content: "Полный каталог игр для PS5 и PS4: новинки, хиты, кооператив." },
+      { name: "description", content: "Полный каталог игр для PS5 и PS4 с сортировкой по категориям: новинки, хиты, кооператив, гонки, для детей, хорроры, эксклюзивы." },
       { property: "og:title", content: "Полная библиотека игр | GamePlay" },
       { property: "og:description", content: "Большой каталог игр для аренды PS5 и PS4 в Нальчике." },
     ],
@@ -25,13 +32,19 @@ const STICKER_STYLES: Record<Sticker, string> = {
   for_two: "bg-primary/20 text-primary border-primary/50 shadow-[var(--shadow-neon)]",
 };
 
-type FilterId = "all" | Sticker;
-const FILTERS: { id: FilterId; label: string }[] = [
+type FilterId = "all" | Category;
+const CATEGORIES: { id: FilterId; label: string }[] = [
   { id: "all", label: "Все" },
   { id: "new", label: "Новинки" },
-  { id: "hit", label: "Хиты" },
-  { id: "for_two", label: "На двоих" },
+  { id: "hits", label: "Хиты" },
+  { id: "coop", label: "На двоих/четверых" },
+  { id: "racing", label: "Гонки" },
+  { id: "sports", label: "Спортивные" },
+  { id: "kids", label: "Для детей" },
+  { id: "horror", label: "Хорроры" },
+  { id: "exclusive", label: "Эксклюзивы" },
 ];
+
 
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
