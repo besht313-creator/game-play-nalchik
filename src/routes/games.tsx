@@ -130,9 +130,9 @@ function GamesPage() {
               {filtered.map((g) => {
                 const src = gameImageSrc(g.image_url);
                 return (
-                  <div key={g.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
+                  <div key={g.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary hover:scale-[1.02] hover:shadow-[var(--shadow-neon)] active:scale-[0.98] transition-[transform,box-shadow,border-color] duration-200 ease-out">
                     {src ? (
-                      <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                      <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
                     ) : null}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {g.stickers?.length > 0 && (
