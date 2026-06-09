@@ -372,6 +372,28 @@ function GameForm({
           })}
         </div>
 
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Категории</label>
+        <div className="flex flex-wrap gap-2">
+          {CATEGORY_VALUES.map((c) => {
+            const active = categories.includes(c);
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => toggleCategory(c)}
+                className={`px-3 py-1.5 rounded-md border text-xs font-display font-bold uppercase tracking-wider transition ${
+                  active
+                    ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
+                    : "border-border text-muted-foreground hover:border-primary"
+                }`}
+              >
+                {CATEGORY_LABELS[c]}
+              </button>
+            );
+          })}
+        </div>
+
+
         <div className="mt-6 flex gap-2">
           <button onClick={onClose} className="flex-1 rounded-md py-2.5 border border-border text-sm hover:border-foreground">Отмена</button>
           <button
