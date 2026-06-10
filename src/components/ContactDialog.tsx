@@ -30,8 +30,8 @@ export function ContactDialog({
           <DialogTitle className="font-display text-2xl uppercase text-center">
             Свяжитесь с нами
           </DialogTitle>
-          <DialogDescription className="text-center text-muted-foreground">
-            Выберите удобный способ связи
+          <DialogDescription className="text-center text-muted-foreground font-display font-bold uppercase tracking-widest text-[10px] opacity-70">
+            GAMEPLAY / НАЛЬЧИК
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 mt-4">
