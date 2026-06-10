@@ -176,18 +176,18 @@ function Index() {
                   <img src={c.img} alt={c.name} loading="lazy" width={800} height={800} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-display font-bold text-2xl">{c.name}</h3>
-                    <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="font-display font-bold text-2xl truncate">{c.name}</h3>
+                    <span className="shrink-0 text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
                   </div>
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
-                  <div className="mt-6 text-center">
-                    <span className="font-display text-4xl font-bold text-gradient">{c.price} ₽</span>
-                    <span className="text-muted-foreground ml-2">/ сутки</span>
-                  </div>
-                  <div className="mt-8 flex justify-center">
+                  <div className="mt-6 flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <span className="font-display text-3xl sm:text-4xl font-bold text-gradient">{c.price} ₽</span>
+                      <span className="text-muted-foreground ml-2 text-sm sm:text-base">/ сутки</span>
+                    </div>
                     <ContactDialog>
-                      <span className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
+                      <span className="shrink-0 inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
                         Арендовать
                       </span>
                     </ContactDialog>
