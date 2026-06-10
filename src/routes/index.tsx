@@ -117,7 +117,7 @@ function Index() {
         <div
           className={`md:hidden overflow-hidden bg-background border-t border-border transition-[max-height,opacity] duration-500 ease-in-out ${menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}
         >
-          <div className="px-6 py-8 flex flex-col gap-6 text-2xl font-display font-bold uppercase tracking-wider">
+          <div className="px-6 py-8 flex flex-col items-center gap-6 text-2xl font-display font-bold uppercase tracking-wider">
             <a href="#consoles" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Приставки</a>
             <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
