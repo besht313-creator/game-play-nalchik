@@ -119,8 +119,8 @@ function Index() {
         >
           <div className="px-6 py-8 flex flex-col items-center gap-6 text-2xl font-display font-bold uppercase tracking-wider">
             <a href="#consoles" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Приставки</a>
-            <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
+            <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#reviews" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Отзывы</a>
             <a href="#faq" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">FAQ</a>
             <a href={PHONE_HREF} onClick={() => setMenuOpen(false)} className="text-primary hover:brightness-110 transition">{PHONE}</a>
