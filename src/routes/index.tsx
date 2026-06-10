@@ -36,9 +36,9 @@ const VkIcon = ({ className }: { className?: string }) => (
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "GamePlay | Аренда PS5 & PS4 в Нальчике" },
+      { title: "GamePlay | Аренда игровых консолей в Нальчике" },
       { name: "description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
-      { property: "og:title", content: "GamePlay | Аренда PS5 & PS4 в Нальчике" },
+      { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
       { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике." },
     ],
     links: [{ rel: "canonical", href: "/" }],
