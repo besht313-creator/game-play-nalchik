@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Phone, MessageCircle, Send } from "lucide-react";
+import { MessageCircle, Send } from "lucide-react";
 
 const PHONE = "+7 (903) 495-33-48";
 const PHONE_HREF = "tel:+79034953348";
