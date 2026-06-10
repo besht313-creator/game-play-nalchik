@@ -96,8 +96,8 @@ function Index() {
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#consoles" className="hover:text-foreground transition">Приставки</a>
-            <a href="#how" className="hover:text-foreground transition">Как это работает</a>
             <a href="#games" className="hover:text-foreground transition">Игры</a>
+            <a href="#how" className="hover:text-foreground transition">Как это работает</a>
             <a href="#reviews" className="hover:text-foreground transition">Отзывы</a>
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
