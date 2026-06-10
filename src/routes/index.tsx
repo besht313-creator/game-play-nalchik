@@ -365,7 +365,7 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
           ))}
         </div>
       )}
-      <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white drop-shadow">
+      <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.9)]">
         {title}
       </div>
     </div>
