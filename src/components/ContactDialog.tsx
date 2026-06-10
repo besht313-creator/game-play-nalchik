@@ -37,7 +37,7 @@ export function ContactDialog({
         <div className="flex flex-col gap-3 mt-4">
           <a
             href={PHONE_HREF}
-            className="flex items-center justify-center rounded-xl px-5 py-4 transition font-display font-bold uppercase tracking-wider text-white"
+            className="flex items-center rounded-xl px-5 py-4 pl-[2.75rem] transition font-display font-bold uppercase tracking-wider text-white text-xl"
           >
             {PHONE}
           </a>
