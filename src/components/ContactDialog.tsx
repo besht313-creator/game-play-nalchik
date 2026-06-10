@@ -37,13 +37,9 @@ export function ContactDialog({
         <div className="flex flex-col gap-3 mt-4">
           <a
             href={PHONE_HREF}
-            className="flex items-center gap-3 rounded-xl px-5 py-4 bg-secondary hover:bg-secondary/80 transition font-display font-bold uppercase tracking-wider"
+            className="flex items-center justify-center rounded-xl px-5 py-4 transition font-display font-bold uppercase tracking-wider text-white"
           >
-            <Phone className="h-5 w-5 text-primary shrink-0" />
-            <span>Позвонить</span>
-            <span className="ml-auto text-sm font-sans font-normal text-muted-foreground">
-              {PHONE}
-            </span>
+            {PHONE}
           </a>
           <a
             href={WHATSAPP_URL}
