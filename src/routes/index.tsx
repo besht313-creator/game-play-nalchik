@@ -187,7 +187,7 @@ function Index() {
                       <span className="text-muted-foreground ml-2 text-sm sm:text-base">/ сутки</span>
                     </div>
                     <ContactDialog>
-                      <span className="shrink-0 inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 sm:px-8 py-3 bg-primary text-white font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
+                      <span className="shrink-0 inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
                         Арендовать
                       </span>
                     </ContactDialog>
