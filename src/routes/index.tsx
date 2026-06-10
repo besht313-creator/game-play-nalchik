@@ -199,30 +199,8 @@ function Index() {
         </div>
       </section>
 
-      {/* How */}
-      <section id="how" className="py-24 px-4 sm:px-6 bg-card/30">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle>Как это работает</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {steps.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
-                    <Icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
-                  <p className="text-muted-foreground text-sm">{s.text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Games */}
-      <section id="games" className="py-24 px-4 sm:px-6">
+      <section id="games" className="py-24 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-12">
             <div>
@@ -245,6 +223,29 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {/* How */}
+      <section id="how" className="py-24 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <SectionTitle>Как это работает</SectionTitle>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
+                    <Icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
+                  <p className="text-muted-foreground text-sm">{s.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
 
       {/* Reviews */}
       <section id="reviews" className="py-24 px-4 sm:px-6 bg-card/30">
