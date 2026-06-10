@@ -37,7 +37,7 @@ export function FloatingContactButton() {
               rel={a.href.startsWith("tel:") ? undefined : "noopener noreferrer"}
               aria-label={a.label}
               tabIndex={open ? 0 : -1}
-              className="flex items-center justify-center w-12 h-12 rounded-full bg-card border border-border hover:scale-110 active:scale-90 active:brightness-125"
+              className="flex items-center justify-center w-14 h-14 rounded-full bg-card border border-border hover:scale-110 active:scale-90 active:brightness-125"
               style={{
                 color: a.color,
                 opacity: open ? 1 : 0,
@@ -54,7 +54,7 @@ export function FloatingContactButton() {
                 (e.currentTarget as HTMLElement).style.boxShadow = "";
               }}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-6 h-6" />
             </a>
           );
         })}
@@ -62,15 +62,15 @@ export function FloatingContactButton() {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Закрыть" : "Связаться"}
-        className={`relative w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-200 ${open ? "shadow-[var(--shadow-neon)]" : "animate-attention"}`}
+        className={`relative w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-200 ${open ? "shadow-[var(--shadow-neon)]" : "animate-attention"}`}
         style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
       >
         <Phone
-          className="w-7 h-7 absolute transition-all duration-300"
+          className="w-9 h-9 absolute transition-all duration-300"
           style={{ opacity: open ? 0 : 1, transform: open ? "scale(0.5) rotate(-180deg)" : "scale(1) rotate(0deg)" }}
         />
         <X
-          className="w-7 h-7 absolute transition-all duration-300"
+          className="w-9 h-9 absolute transition-all duration-300"
           style={{ opacity: open ? 1 : 0, transform: open ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(180deg)" }}
         />
       </button>
