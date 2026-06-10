@@ -69,8 +69,8 @@ function GamesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 grid grid-cols-3 items-center">
           <div className="justify-self-start">
             <Link to="/" hash="games" aria-label="К разделу игр"
-              className="inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:text-primary transition">
-              <span className="text-2xl leading-none">←</span>
+              className="inline-flex items-center justify-center h-14 w-14 rounded-lg text-foreground hover:text-primary transition">
+              <span className="text-4xl leading-none">←</span>
             </Link>
           </div>
           <Link to="/" className="justify-self-center flex items-center gap-2">
