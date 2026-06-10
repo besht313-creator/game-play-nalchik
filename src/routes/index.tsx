@@ -96,8 +96,8 @@ function Index() {
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#consoles" className="hover:text-foreground transition">Приставки</a>
-            <a href="#how" className="hover:text-foreground transition">Как это работает</a>
             <a href="#games" className="hover:text-foreground transition">Игры</a>
+            <a href="#how" className="hover:text-foreground transition">Как это работает</a>
             <a href="#reviews" className="hover:text-foreground transition">Отзывы</a>
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
@@ -119,8 +119,8 @@ function Index() {
         >
           <div className="px-6 py-8 flex flex-col items-center gap-6 text-2xl font-display font-bold uppercase tracking-wider">
             <a href="#consoles" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Приставки</a>
-            <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#games" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Игры</a>
+            <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#reviews" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Отзывы</a>
             <a href="#faq" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">FAQ</a>
             <a href={PHONE_HREF} onClick={() => setMenuOpen(false)} className="text-primary hover:brightness-110 transition">{PHONE}</a>
@@ -199,30 +199,8 @@ function Index() {
         </div>
       </section>
 
-      {/* How */}
-      <section id="how" className="py-24 px-4 sm:px-6 bg-card/30">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle>Как это работает</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {steps.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
-                    <Icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
-                  <p className="text-muted-foreground text-sm">{s.text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Games */}
-      <section id="games" className="py-24 px-4 sm:px-6">
+      <section id="games" className="py-24 px-4 sm:px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-end justify-between flex-wrap gap-4 mb-12">
             <div>
@@ -245,6 +223,29 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {/* How */}
+      <section id="how" className="py-24 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <SectionTitle>Как это работает</SectionTitle>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border hover:neon-border transition">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="font-display text-5xl font-bold text-gradient">{s.n}</div>
+                    <Icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">{s.title}</h3>
+                  <p className="text-muted-foreground text-sm">{s.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
 
       {/* Reviews */}
       <section id="reviews" className="py-24 px-4 sm:px-6 bg-card/30">
