@@ -37,7 +37,7 @@ export function ContactDialog({
         <div className="flex flex-col gap-3 mt-4">
           <a
             href={PHONE_HREF}
-            className="flex items-center rounded-xl px-5 py-4 pl-[2.75rem] transition font-display font-bold uppercase tracking-wider text-white text-xl"
+            className="flex items-center justify-center rounded-xl px-5 py-4 transition font-display font-bold uppercase tracking-wider text-white text-xl"
           >
             {PHONE}
           </a>
@@ -45,7 +45,7 @@ export function ContactDialog({
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl px-5 py-4 bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/30 transition font-display font-bold uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/30 transition font-display font-bold uppercase tracking-wider"
           >
             <MessageCircle className="h-5 w-5 text-[#25D366] shrink-0" />
             <span>WhatsApp</span>
@@ -54,7 +54,7 @@ export function ContactDialog({
             href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl px-5 py-4 bg-[#0088cc]/20 hover:bg-[#0088cc]/30 border border-[#0088cc]/30 transition font-display font-bold uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#0088cc]/20 hover:bg-[#0088cc]/30 border border-[#0088cc]/30 transition font-display font-bold uppercase tracking-wider"
           >
             <Send className="h-5 w-5 text-[#0088cc] shrink-0" />
             <span>Telegram</span>
