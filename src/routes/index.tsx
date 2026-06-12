@@ -125,6 +125,7 @@ function Index() {
             <a href="#how" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Как это работает</a>
             <a href="#reviews" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">Отзывы</a>
             <a href="#faq" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">FAQ</a>
+            <a href="#footer" onClick={() => setMenuOpen(false)} className="hover:text-primary transition">О нас</a>
             <a href={PHONE_HREF} onClick={() => setMenuOpen(false)} className="text-primary hover:brightness-110 transition">{PHONE}</a>
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-border flex-wrap">
               <a href="https://wa.me/message/573SWX2JZIG6C1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_20px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150">
@@ -309,7 +310,7 @@ function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-12 px-4 sm:px-6">
+      <footer id="footer" className="border-t border-border py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left items-start">
 
           <div>
