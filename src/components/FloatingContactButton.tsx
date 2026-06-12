@@ -62,15 +62,15 @@ export function FloatingContactButton() {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Закрыть" : "Связаться"}
-        className={`relative w-20 h-20 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-200 ${open ? "shadow-[var(--shadow-neon)]" : "animate-attention"}`}
+        className={`relative w-[60px] h-[60px] rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:brightness-110 active:scale-90 active:brightness-125 transition-all duration-200 ${open ? "shadow-[var(--shadow-neon)]" : "animate-attention"}`}
         style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
       >
         <Phone
-          className="w-9 h-9 absolute transition-all duration-300"
+          className="w-7 h-7 absolute transition-all duration-300"
           style={{ opacity: open ? 0 : 1, transform: open ? "scale(0.5) rotate(-180deg)" : "scale(1) rotate(0deg)" }}
         />
         <X
-          className="w-9 h-9 absolute transition-all duration-300"
+          className="w-7 h-7 absolute transition-all duration-300"
           style={{ opacity: open ? 1 : 0, transform: open ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(180deg)" }}
         />
       </button>
