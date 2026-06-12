@@ -311,7 +311,7 @@ function Index() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
             <div className="font-display font-bold text-2xl"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#F14FF0" }}>PLAY</span></div>
-            <p className="text-muted-foreground text-sm mt-2">Аренда консолей в Нальчике</p>
+            <p className="text-muted-foreground text-sm mt-2">Аренда консолей в Нальчике, ул.Осетинская 8</p>
           </div>
           <div>
             <a href={PHONE_HREF} className="font-display text-xl font-bold hover:text-primary transition">{PHONE}</a>
@@ -335,8 +335,8 @@ function Index() {
         {/* Яндекс Карта */}
         <div className="max-w-6xl mx-auto mt-10">
           <div className="text-center md:text-left mb-4">
-            <h3 className="font-display font-bold text-xl uppercase tracking-wider text-gradient">Мы на карте</h3>
-            <p className="text-muted-foreground text-sm mt-1">г. Нальчик, ул. Осетинская, 8</p>
+            <h3 className="font-display font-bold text-xl uppercase tracking-wider text-gradient">{"\n"}</h3>
+            <p className="text-muted-foreground text-sm mt-1">{"\n"}</p>
           </div>
           <div className="relative rounded-2xl overflow-hidden border border-primary/40 shadow-[var(--shadow-neon)]">
             <iframe
