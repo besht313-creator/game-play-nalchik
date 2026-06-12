@@ -178,7 +178,7 @@ function Index() {
                 <div className="p-6">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <h3 className="min-w-0 font-display font-bold text-2xl truncate">{c.name}</h3>
-                    <span className="shrink-0 text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-semibold uppercase">{c.tag}</span>
+                    <span className="shrink-0 text-xs px-3 py-1 rounded-full bg-primary text-primary-foreground font-semibold uppercase">{c.tag}</span>
                   </div>
                   <p className="text-muted-foreground italic">«{c.desc}»</p>
                   <div className="mt-6 flex items-center justify-between gap-4">
