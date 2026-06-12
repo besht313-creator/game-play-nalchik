@@ -308,7 +308,22 @@ function Index() {
 
       {/* Footer */}
       <footer className="border-t border-border py-12 px-4 sm:px-6">
+        {/* Яндекс Карта */}
+        <div className="max-w-6xl mx-auto mb-10 rounded-2xl overflow-hidden border border-border">
+          <iframe
+            title="GAMEPLAY на Яндекс Карте"
+            src="https://yandex.ru/map-widget/v1/?ll=43.615500%2C43.490100&z=17&pt=43.615500,43.490100,pm2rdl&mode=search&text=%D0%9D%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA%2C%20%D1%83%D0%BB.%20%D0%9E%D1%81%D0%B5%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C%208"
+            width="100%"
+            height="360"
+            frameBorder="0"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="block w-full"
+          />
+        </div>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
+
           <div>
             <div className="font-display font-bold text-2xl"><span style={{ color: "#63D8FF" }}>GAME</span><span style={{ color: "#F14FF0" }}>PLAY</span></div>
             <p className="text-muted-foreground text-sm mt-2">Аренда консолей в Нальчике, ул.Осетинская 8</p>
