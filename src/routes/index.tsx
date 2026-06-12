@@ -347,34 +347,8 @@ function Index() {
             </a>
           </div>
         </div>
-        {/* Яндекс Карта */}
-        <div className="max-w-6xl mx-auto mt-10">
-          <div className="text-center md:text-left mb-4">
-            <h3 className="font-display font-bold text-xl uppercase tracking-wider text-gradient">{"\n"}</h3>
-            <p className="text-muted-foreground text-sm mt-1">{"\n"}</p>
-          </div>
-          <div className="relative rounded-2xl overflow-hidden border border-primary/40 shadow-[var(--shadow-neon)]">
-            <iframe
-              title="GAMEPLAY на Яндекс Карте"
-              src="https://yandex.ru/map-widget/v1/?ll=43.615500%2C43.490100&mode=search&sctx=ZAAAAAgBEAAaKAoSCT5OW%2FCQikVAEcCgBnTm5UVAEhIJK7CtuRMI4D8RyA5PWNl%2F0D8iBgABAgMEBSgKOABAuwhIAWILcmVsZXZfZmlsdGVyagJydXABnQHNzMw9oAEAqAEAvQEonGiwwgELOTczMjg0Mzc2NTfqAQDyAQD4AQCCAhrQo9C7LiDQntGB0LXRgtC40L3RgdC60LDRjyA4igIAkgIAmgIMZGVza3RvcC1tYXBz&sll=43.615500%2C43.490100&sspn=0.01%2C0.005&text=%D0%9D%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA%2C%20%D1%83%D0%BB.%20%D0%9E%D1%81%D0%B5%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C%208&z=17"
-              width="100%"
-              height="360"
-              frameBorder="0"
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="block w-full"
-              style={{ filter: "invert(0.92) hue-rotate(180deg) saturate(1.1) brightness(0.95) contrast(1.05)" }}
-            />
-            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-primary/30" />
-            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-[oklch(0.7_0.28_330_/_0.08)] via-transparent to-[oklch(0.78_0.18_210_/_0.08)] mix-blend-screen" />
-          </div>
-          <div className="mt-3 text-center md:text-left">
-            <a href="https://yandex.ru/maps/?text=Нальчик, ул. Осетинская, 8" target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:text-primary transition underline-offset-4 hover:underline">
-              Открыть в Яндекс Картах →
-            </a>
-          </div>
-        </div>
+
+
 
         <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest">
           © 2026 GAMEPLAY NALCHIK. Все права защищены.
