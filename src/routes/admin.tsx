@@ -375,7 +375,7 @@ function GameForm({
                 onClick={() => toggleSticker(s)}
                 className={`px-3 py-1.5 rounded-md border text-xs font-display font-bold uppercase tracking-wider transition ${
                   active
-                    ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
+                    ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-neon)]"
                     : "border-border text-muted-foreground hover:border-primary"
                 }`}
               >
@@ -396,7 +396,7 @@ function GameForm({
                 onClick={() => toggleCategory(c)}
                 className={`px-3 py-1.5 rounded-md border text-xs font-display font-bold uppercase tracking-wider transition ${
                   active
-                    ? "border-primary bg-primary/15 text-primary shadow-[var(--shadow-neon)]"
+                    ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-neon)]"
                     : "border-border text-muted-foreground hover:border-primary"
                 }`}
               >
