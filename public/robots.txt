@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gameplay-nalchik.xyz/sitemap.xml
