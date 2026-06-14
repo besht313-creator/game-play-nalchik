@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
 import { Route as ApiPublicGameImageSplatRouteImport } from './routes/api/public/game-image/$'
 
 const GamesRoute = GamesRouteImport.update({
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapXmlRoute = SitemapXmlRouteImport.update({
+  id: '/sitemap/xml',
+  path: '/sitemap/xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicGameImageSplatRoute = ApiPublicGameImageSplatRouteImport.update({
   id: '/api/public/game-image/$',
   path: '/api/public/game-image/$',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/game-image/$': typeof ApiPublicGameImageSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/game-image/$': typeof ApiPublicGameImageSplatRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/game-image/$': typeof ApiPublicGameImageSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/games' | '/api/public/game-image/$'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/games'
+    | '/sitemap/xml'
+    | '/api/public/game-image/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/games' | '/api/public/game-image/$'
-  id: '__root__' | '/' | '/admin' | '/games' | '/api/public/game-image/$'
+  to: '/' | '/admin' | '/games' | '/sitemap/xml' | '/api/public/game-image/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/games'
+    | '/sitemap/xml'
+    | '/api/public/game-image/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   GamesRoute: typeof GamesRoute
+  SitemapXmlRoute: typeof SitemapXmlRoute
   ApiPublicGameImageSplatRoute: typeof ApiPublicGameImageSplatRoute
 }
 
@@ -92,6 +113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap/xml': {
+      id: '/sitemap/xml'
+      path: '/sitemap/xml'
+      fullPath: '/sitemap/xml'
+      preLoaderRoute: typeof SitemapXmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/game-image/$': {
       id: '/api/public/game-image/$'
       path: '/api/public/game-image/$'
@@ -106,18 +134,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   GamesRoute: GamesRoute,
+  SitemapXmlRoute: SitemapXmlRoute,
   ApiPublicGameImageSplatRoute: ApiPublicGameImageSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
