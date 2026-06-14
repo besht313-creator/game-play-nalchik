@@ -19,8 +19,9 @@ export const Route = createFileRoute("/games")({
       { name: "description", content: "Полный каталог игр для PS5 и PS4 с сортировкой по категориям: новинки, хиты, кооператив, гонки, для детей, хорроры, эксклюзивы." },
       { property: "og:title", content: "Полная библиотека игр | GamePlay" },
       { property: "og:description", content: "Большой каталог игр для аренды PS5 и PS4 в Нальчике." },
+      { property: "og:url", content: "https://gameplay-nalchik.xyz/games" },
     ],
-    links: [{ rel: "canonical", href: "/games" }],
+    links: [{ rel: "canonical", href: "https://gameplay-nalchik.xyz/games" }],
   }),
   component: GamesPage,
 });
