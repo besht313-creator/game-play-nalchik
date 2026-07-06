@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "gameplay-nalchik-mcp",
+      "version": "0.1.0",
+      "title": "GamePlay Nalchik MCP"
+    },
+    "tools": [
+      {
+        "name": "list_games",
+        "title": "List games",
+        "description": "Return the full catalog of PlayStation games available for rent at GamePlay Nalchik, ordered by display position.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
