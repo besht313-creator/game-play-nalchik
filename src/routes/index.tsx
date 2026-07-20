@@ -35,10 +35,10 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "GamePlay | Аренда игровых консолей в Нальчике" },
-      { name: "description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
+      { name: "description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены." },
       { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
       { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике." },
-      { property: "og:url", content: "https://gameplay-nalchik.xyz/" },
+      { property: "og:url", content: "https://gameplay-nalchik.ru/" },
     ],
     links: [{ rel: "canonical", href: "https://gameplay-nalchik.xyz/" }],
   }),
