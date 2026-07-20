@@ -3,9 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import type { Session } from "@supabase/supabase-js";
 import {
   listGames,
-  adminVerify,
   adminCreateGame,
   adminUpdateGame,
   adminDeleteGame,
@@ -66,34 +67,29 @@ function gameImageSrc(image_url: string | null | undefined) {
 }
 
 function AdminPage() {
-  const [password, setPassword] = useState<string>("");
-  const [authed, setAuthed] = useState(false);
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("admin_password");
-    if (stored) {
-      setPassword(stored);
-      setAuthed(true);
-    }
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => sub.subscription.unsubscribe();
   }, []);
 
-  if (!authed) return <LoginScreen onAuth={(pw) => { setPassword(pw); setAuthed(true); }} />;
-  return <AdminPanel password={password} onLogout={() => {
-    sessionStorage.removeItem("admin_password");
-    setAuthed(false);
-    setPassword("");
-  }} />;
+  if (session === undefined) {
+    return <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Загрузка...</div>;
+  }
+  if (!session) return <LoginScreen />;
+  return <AdminPanel onLogout={() => supabase.auth.signOut()} />;
 }
 
-function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
+function LoginScreen() {
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [showPw, setShowPw] = useState(false);
-  const verify = useServerFn(adminVerify);
   const mutation = useMutation({
-    mutationFn: (password: string) => verify({ data: { password } }),
-    onSuccess: (_d, password) => {
-      sessionStorage.setItem("admin_password", password);
-      onAuth(password);
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
     },
     onError: (e: Error) => toast.error(e.message || "Ошибка входа"),
   });
@@ -101,21 +97,32 @@ function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4">
       <form
-        onSubmit={(e) => { e.preventDefault(); if (pw) mutation.mutate(pw); }}
+        onSubmit={(e) => { e.preventDefault(); if (email && pw) mutation.mutate({ email, password: pw }); }}
         className="w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-neon)]"
       >
         <h1 className="font-display font-bold text-3xl uppercase text-center">
           <span style={{ color: "#63D8FF" }}>ADMIN</span>
           <span style={{ color: "#F14FF0" }}>PANEL</span>
         </h1>
-        <p className="text-center text-muted-foreground text-sm mt-2">Введите пароль для входа</p>
-        <div className="relative mt-6">
+        <p className="text-center text-muted-foreground text-sm mt-2">Войдите, чтобы продолжить</p>
+        <div className="mt-6">
+          <input
+            type="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            autoComplete="username"
+            className="w-full bg-input border border-border rounded-md px-4 py-3 text-foreground focus:outline-none focus:border-primary"
+          />
+        </div>
+        <div className="relative mt-3">
           <input
             type={showPw ? "text" : "password"}
-            autoFocus
             value={pw}
             onChange={(e) => setPw(e.target.value)}
             placeholder="Пароль"
+            autoComplete="current-password"
             className="w-full bg-input border border-border rounded-md pl-4 pr-20 py-3 text-foreground focus:outline-none focus:border-primary"
           />
           <button
@@ -129,7 +136,7 @@ function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
         </div>
         <button
           type="submit"
-          disabled={mutation.isPending || !pw}
+          disabled={mutation.isPending || !email || !pw}
           className="mt-4 w-full rounded-md py-3 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] transition disabled:opacity-50"
         >
           {mutation.isPending ? "Проверка..." : "Войти"}
@@ -140,7 +147,7 @@ function LoginScreen({ onAuth }: { onAuth: (pw: string) => void }) {
   );
 }
 
-function AdminPanel({ password, onLogout }: { password: string; onLogout: () => void }) {
+function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const qc = useQueryClient();
   const list = useServerFn(listGames);
   const create = useServerFn(adminCreateGame);
@@ -155,12 +162,12 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
 
   const moveMut = useMutation({
     mutationFn: (v: { id: string; direction: "up" | "down" }) =>
-      move({ data: { password, ...v } }),
+      move({ data: v }),
     onSuccess: refresh,
     onError: (e: Error) => toast.error(e.message),
   });
   const delMut = useMutation({
-    mutationFn: (id: string) => del({ data: { password, id } }),
+    mutationFn: (id: string) => del({ data: { id } }),
     onSuccess: () => { refresh(); toast.success("Удалено"); },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -238,7 +245,6 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
 
       {(adding || editing) && (
         <GameForm
-          password={password}
           game={editing}
           onClose={() => { setAdding(false); setEditing(null); }}
           onSaved={() => { refresh(); setAdding(false); setEditing(null); }}
@@ -252,9 +258,8 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
 }
 
 function GameForm({
-  password, game, onClose, onSaved, createFn, updateFn, uploadFn,
+  game, onClose, onSaved, createFn, updateFn, uploadFn,
 }: {
-  password: string;
   game: GameRow | null;
   onClose: () => void;
   onSaved: () => void;
@@ -294,7 +299,7 @@ function GameForm({
       for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
       const dataBase64 = btoa(binary);
       const res = await uploadFn({
-        data: { password, filename: file.name, contentType: file.type || "image/jpeg", dataBase64 },
+        data: { filename: file.name, contentType: file.type || "image/jpeg", dataBase64 },
       });
       setImageUrl(res.path);
       toast.success("Фото загружено");
@@ -310,10 +315,10 @@ function GameForm({
     setSaving(true);
     try {
       if (game) {
-        await updateFn({ data: { password, id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl } });
+        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { password, title: title.trim(), stickers, categories, image_url: imageUrl } });
+        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl } });
         toast.success("Игра добавлена");
       }
 
