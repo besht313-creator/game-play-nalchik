@@ -6,8 +6,8 @@ export const Route = createFileRoute("/api/public/game-image/$")({
       GET: async ({ params }) => {
         const path = (params as { _splat?: string })._splat;
         if (!path) return new Response("Not found", { status: 404 });
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data, error } = await supabaseAdmin.storage.from("game-images").download(path);
+        const { supabase } = await import("@/integrations/supabase/client");
+        const { data, error } = await supabase.storage.from("game-images").download(path);
         if (error || !data) return new Response("Not found", { status: 404 });
         const buf = await data.arrayBuffer();
         return new Response(buf, {
