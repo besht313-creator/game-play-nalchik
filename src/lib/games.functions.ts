@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type Sticker = "hit" | "new" | "for_two";
 export type Category = "new" | "hits" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
@@ -15,10 +16,11 @@ export type GameRow = {
   position: number;
 };
 
-// Public: list games sorted by position
+// Public: list games sorted by position. Uses the anon-key client — RLS
+// allows public SELECT on `games`, so no service-role key is needed here.
 export const listGames = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin
+  const { supabase } = await import("@/integrations/supabase/client");
+  const { data, error } = await supabase
     .from("games")
     .select("id,title,image_url,stickers,categories,position")
     .order("position", { ascending: true });
@@ -26,37 +28,28 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
   return (data ?? []) as GameRow[];
 });
 
-
-function checkPassword(pw: string) {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) throw new Error("ADMIN_PASSWORD не настроен");
-  if (pw !== expected) throw new Error("Неверный пароль");
-}
-
-export const adminVerify = createServerFn({ method: "POST" })
-  .inputValidator((d: { password: string }) => z.object({ password: z.string().min(1) }).parse(d))
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    return { ok: true };
-  });
-
 const StickerEnum = z.enum(["hit", "new", "for_two"]);
 const CategoryEnum = z.enum(["new", "hits", "coop", "racing", "sports", "kids", "horror", "exclusive"]);
 
+// All admin mutations below are gated by `requireSupabaseAuth`, which
+// validates the caller's Supabase Auth bearer token and hands back an
+// RLS-scoped client as `context.supabase`. RLS policies on `games` and the
+// `game-images` storage bucket restrict writes to the `authenticated` role,
+// so there is no need for the service-role key or an app-level password.
+
 export const adminCreateGame = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z.object({
-      password: z.string().min(1),
       title: z.string().min(1).max(200),
       stickers: z.array(StickerEnum).max(3).default([]),
       categories: z.array(CategoryEnum).max(8).default([]),
       image_url: z.string().nullable().optional(),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: all } = await supabaseAdmin
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: all } = await supabase
       .from("games")
       .select("id,position")
       .order("position", { ascending: true });
@@ -72,14 +65,14 @@ export const adminCreateGame = createServerFn({ method: "POST" })
       nextPos = list[TARGET_INDEX].position;
       // Shift games at target index and below down by +10 (descending to avoid conflicts).
       for (let i = list.length - 1; i >= TARGET_INDEX; i--) {
-        await supabaseAdmin
+        await supabase
           .from("games")
           .update({ position: list[i].position + 10 })
           .eq("id", list[i].id);
       }
     }
 
-    const { data: inserted, error } = await supabaseAdmin
+    const { data: inserted, error } = await supabase
       .from("games")
       .insert({
         title: data.title,
@@ -95,9 +88,9 @@ export const adminCreateGame = createServerFn({ method: "POST" })
   });
 
 export const adminUpdateGame = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z.object({
-      password: z.string().min(1),
       id: z.string().uuid(),
       title: z.string().min(1).max(200).optional(),
       stickers: z.array(StickerEnum).max(3).optional(),
@@ -105,61 +98,59 @@ export const adminUpdateGame = createServerFn({ method: "POST" })
       image_url: z.string().nullable().optional(),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
     const patch: { title?: string; stickers?: string[]; categories?: string[]; image_url?: string | null } = {};
     if (data.title !== undefined) patch.title = data.title;
     if (data.stickers !== undefined) patch.stickers = data.stickers;
     if (data.categories !== undefined) patch.categories = data.categories;
     if (data.image_url !== undefined) patch.image_url = data.image_url;
-    const { error } = await supabaseAdmin.from("games").update(patch).eq("id", data.id);
+    const { error } = await supabase.from("games").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
 
 
 export const adminDeleteGame = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({ password: z.string().min(1), id: z.string().uuid() }).parse(d),
+    z.object({ id: z.string().uuid() }).parse(d),
   )
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
     // Best-effort cleanup of image
-    const { data: row } = await supabaseAdmin
+    const { data: row } = await supabase
       .from("games")
       .select("image_url")
       .eq("id", data.id)
       .maybeSingle();
     if (row?.image_url && !row.image_url.startsWith("http")) {
-      await supabaseAdmin.storage.from("game-images").remove([row.image_url]);
+      await supabase.storage.from("game-images").remove([row.image_url]);
     }
-    const { error } = await supabaseAdmin.from("games").delete().eq("id", data.id);
+    const { error } = await supabase.from("games").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
 
 // Swap position with neighbor in given direction
 export const adminMoveGame = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z.object({
-      password: z.string().min(1),
       id: z.string().uuid(),
       direction: z.enum(["up", "down"]),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: current, error: e1 } = await supabaseAdmin
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: current, error: e1 } = await supabase
       .from("games")
       .select("id,position")
       .eq("id", data.id)
       .single();
     if (e1 || !current) throw new Error(e1?.message ?? "Игра не найдена");
 
-    const q = supabaseAdmin
+    const q = supabase
       .from("games")
       .select("id,position")
       .limit(1);
@@ -171,29 +162,28 @@ export const adminMoveGame = createServerFn({ method: "POST" })
     if (!n) return { ok: true };
 
     // Swap positions
-    await supabaseAdmin.from("games").update({ position: -1 }).eq("id", current.id);
-    await supabaseAdmin.from("games").update({ position: current.position }).eq("id", n.id);
-    await supabaseAdmin.from("games").update({ position: n.position }).eq("id", current.id);
+    await supabase.from("games").update({ position: -1 }).eq("id", current.id);
+    await supabase.from("games").update({ position: current.position }).eq("id", n.id);
+    await supabase.from("games").update({ position: n.position }).eq("id", current.id);
     return { ok: true };
   });
 
 // Upload image as base64; returns storage path stored in image_url
 export const adminUploadImage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z.object({
-      password: z.string().min(1),
       filename: z.string().min(1),
       contentType: z.string().min(1),
       dataBase64: z.string().min(1),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
-    checkPassword(data.password);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
     const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     const path = `${crypto.randomUUID()}.${ext || "jpg"}`;
     const bytes = Uint8Array.from(atob(data.dataBase64), (c) => c.charCodeAt(0));
-    const { error } = await supabaseAdmin.storage
+    const { error } = await supabase.storage
       .from("game-images")
       .upload(path, bytes, { contentType: data.contentType, upsert: false });
     if (error) throw new Error(error.message);
