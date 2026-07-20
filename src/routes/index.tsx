@@ -40,9 +40,9 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
       { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
       { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике." },
-      { property: "og:url", content: "https://gameplay-nalchik.ru/" },
+      { property: "og:url", content: "https://gameplay-nalchik.xyz/" },
     ],
-    links: [{ rel: "canonical", href: "https://gameplay-nalchik.ru/" }],
+    links: [{ rel: "canonical", href: "https://gameplay-nalchik.xyz/" }],
   }),
   component: Index,
 });
@@ -355,8 +355,11 @@ function Index() {
 
 
 
-        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest">
-          © 2026 GAMEPLAY NALCHIK. Все права защищены.
+        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground uppercase tracking-widest flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+          <span>© 2026 GAMEPLAY NALCHIK. Все права защищены.</span>
+          <Link to="/privacy-policy" className="hover:text-primary transition normal-case tracking-normal">
+            Политика конфиденциальности
+          </Link>
         </div>
       </footer>
       {!menuOpen && <FloatingContactButton />}
