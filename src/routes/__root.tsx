@@ -84,12 +84,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
       { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
       { name: "twitter:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d678420e-1c44-456a-95cc-5efd332c04e3/id-preview-c8e2f9c7--fc97a379-2c5d-4b73-8a1b-2fc397b4ee9d.lovable.app-1780946705437.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d678420e-1c44-456a-95cc-5efd332c04e3/id-preview-c8e2f9c7--fc97a379-2c5d-4b73-8a1b-2fc397b4ee9d.lovable.app-1780946705437.png" },
+      { property: "og:image", content: "https://gameplay-nalchik.ru/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: "https://gameplay-nalchik.ru/og-image.jpg" },
     ],
     links: [
       {
