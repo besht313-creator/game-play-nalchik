@@ -40,7 +40,7 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике." },
       { property: "og:url", content: "https://gameplay-nalchik.ru/" },
     ],
-    links: [{ rel: "canonical", href: "https://gameplay-nalchik.xyz/" }],
+    links: [{ rel: "canonical", href: "https://gameplay-nalchik.ru/" }],
   }),
   component: Index,
 });
