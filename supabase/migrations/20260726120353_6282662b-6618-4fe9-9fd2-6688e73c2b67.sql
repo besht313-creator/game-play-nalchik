@@ -1,0 +1,1 @@
+ALTER TABLE public.games ADD COLUMN title_hidden boolean NOT NULL DEFAULT false;
