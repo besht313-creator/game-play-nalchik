@@ -30,3 +30,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local env files (Supabase URL/publishable key are non-secret but should
+# still come from the hosting platform's Environment Variables, not git).
+.env
+.env.*
+!.env.example
