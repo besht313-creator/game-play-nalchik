@@ -10,11 +10,12 @@ import { ContactDialog } from "@/components/ContactDialog";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
 
-const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
+const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮", for_four: "4 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0] text-white border-white/50 shadow-[0_0_8px_#F14FF0aa]",
   new: "bg-[#63D8FF] text-black border-white/50 shadow-[0_0_8px_#63D8FFaa]",
   for_two: "bg-[#4D8CFF] text-white border-white/50 shadow-[0_0_8px_#4D8CFFaa]",
+  for_four: "bg-[#A78BFA] text-white border-white/50 shadow-[0_0_8px_#A78BFAaa]",
 };
 function gameImageSrc(url: string | null | undefined) {
   if (!url) return null;
@@ -84,7 +85,7 @@ function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const listGamesFn = useServerFn(listGames);
   const gamesQuery = useQuery({ queryKey: ["games"], queryFn: () => listGamesFn() });
-  const previewGames = (gamesQuery.data ?? []).slice(0, 6);
+  const previewGames = (gamesQuery.data ?? []).slice(0, 8);
 
 
   return (
@@ -210,11 +211,11 @@ function Index() {
               <p className="text-muted-foreground mt-2">уже установлено и готово к игре!</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
             {previewGames.map((g) => (
-              <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} />
+              <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} title_hidden={g.title_hidden} />
             ))}
-            {gamesQuery.isLoading && Array.from({ length: 6 }).map((_, i) => (
+            {gamesQuery.isLoading && Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />
             ))}
           </div>
@@ -373,7 +374,7 @@ function SectionTitle({ children, align = "center" }: { children: React.ReactNod
   );
 }
 
-function GameCard({ title, image_url, stickers }: { title: string; image_url: string | null; stickers: Sticker[] }) {
+function GameCard({ title, image_url, stickers, title_hidden }: { title: string; image_url: string | null; stickers: Sticker[]; title_hidden?: boolean }) {
   const src = gameImageSrc(image_url);
   return (
     <div className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
@@ -390,9 +391,11 @@ function GameCard({ title, image_url, stickers }: { title: string; image_url: st
           ))}
         </div>
       )}
-      <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.9)]">
-        {title}
-      </div>
+      {!title_hidden && (
+        <div className="absolute bottom-0 inset-x-0 p-2 sm:p-3 text-center font-display font-bold uppercase text-xs sm:text-sm text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.9)]">
+          {title}
+        </div>
+      )}
     </div>
   );
 }

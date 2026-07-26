@@ -26,11 +26,12 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮" };
+const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮", for_four: "4 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
   hit: "bg-[#F14FF0] text-white border-white/50 shadow-[0_0_8px_#F14FF0aa]",
   new: "bg-[#63D8FF] text-black border-white/50 shadow-[0_0_8px_#63D8FFaa]",
   for_two: "bg-[#4D8CFF] text-white border-white/50 shadow-[0_0_8px_#4D8CFFaa]",
+  for_four: "bg-[#A78BFA] text-white border-white/50 shadow-[0_0_8px_#A78BFAaa]",
 };
 
 type FilterId = "all" | Category;
@@ -38,6 +39,8 @@ const CATEGORIES: { id: FilterId; label: string }[] = [
   { id: "all", label: "Все" },
   { id: "new", label: "Новинки" },
   { id: "hits", label: "Хиты" },
+  { id: "fighting", label: "Файтинги" },
+  { id: "shooter", label: "Стрелялки" },
   { id: "coop", label: "На двоих/четверых" },
   { id: "racing", label: "Гонки" },
   { id: "sports", label: "Спортивные" },
@@ -54,14 +57,17 @@ function gameImageSrc(url: string | null | undefined) {
 
 function GamesPage() {
   const [active, setActive] = useState<FilterId>("all");
+  const [search, setSearch] = useState("");
   const listFn = useServerFn(listGames);
   const q = useQuery({ queryKey: ["games"], queryFn: () => listFn() });
 
   const filtered = useMemo(() => {
-    const all = q.data ?? [];
-    if (active === "all") return all;
-    return all.filter((g) => g.categories?.includes(active));
-  }, [q.data, active]);
+    let all = q.data ?? [];
+    if (active !== "all") all = all.filter((g) => g.categories?.includes(active));
+    const query = search.trim().toLowerCase();
+    if (query) all = all.filter((g) => g.title.toLowerCase().includes(query));
+    return all;
+  }, [q.data, active, search]);
 
 
   return (
@@ -98,20 +104,38 @@ function GamesPage() {
       </section>
 
       <section className="px-4 sm:px-6 pb-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-center gap-3">
-          <span className="text-sm font-medium text-muted-foreground">Категории</span>
-          <Select value={active} onValueChange={(v) => setActive(v as FilterId)}>
-            <SelectTrigger className="w-[240px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
-              {CATEGORIES.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-3">
+          <div className="relative w-full sm:w-[280px]">
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Найти игру..."
+              className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-primary transition-colors"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-muted-foreground">Категории</span>
+            <Select value={active} onValueChange={(v) => setActive(v as FilterId)}>
+              <SelectTrigger className="w-[240px] font-display font-bold uppercase tracking-wider text-sm border-border bg-card hover:border-primary transition-colors">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="font-display font-bold uppercase tracking-wider text-sm">
+                {CATEGORIES.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </section>
 
@@ -145,9 +169,11 @@ function GamesPage() {
                         ))}
                       </div>
                     )}
-                    <div className="absolute bottom-0 inset-x-0 p-3 text-center font-display font-bold uppercase text-sm text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.9)]">
-                      {g.title}
-                    </div>
+                    {!g.title_hidden && (
+                      <div className="absolute bottom-0 inset-x-0 p-3 text-center font-display font-bold uppercase text-sm text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.9)]">
+                        {g.title}
+                      </div>
+                    )}
                   </div>
                 );
               })}

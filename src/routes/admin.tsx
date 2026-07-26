@@ -32,12 +32,15 @@ const STICKER_LABELS: Record<Sticker, string> = {
   hit: "Хит",
   new: "Новинка",
   for_two: "2 🎮",
+  for_four: "4 🎮",
 };
-const STICKER_LIST: Sticker[] = ["hit", "new", "for_two"];
+const STICKER_LIST: Sticker[] = ["hit", "new", "for_two", "for_four"];
 
 const CATEGORY_LABELS: Record<Category, string> = {
   new: "Новинки",
   hits: "Хиты",
+  fighting: "Файтинги",
+  shooter: "Стрелялки",
   coop: "На двоих/четверых",
   racing: "Гонки",
   sports: "Спортивные",
@@ -52,6 +55,7 @@ function StickerBadge({ s }: { s: Sticker }) {
     hit: "bg-[#F14FF0]/15 text-[#F14FF0] border-[#F14FF0]/40 shadow-[0_0_12px_#F14FF080]",
     new: "bg-[#63D8FF]/15 text-[#63D8FF] border-[#63D8FF]/40 shadow-[0_0_12px_#63D8FF80]",
     for_two: "bg-primary/15 text-primary border-primary/40 shadow-[var(--shadow-neon)]",
+    for_four: "bg-[#A78BFA]/15 text-[#A78BFA] border-[#A78BFA]/40 shadow-[0_0_12px_#A78BFA80]",
   };
   return (
     <span className={`text-[10px] font-display font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${styles[s]}`}>
@@ -224,7 +228,14 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                   </div>
                 </div>
                 <div className="p-3 flex flex-col gap-2 flex-1">
-                  <h3 className="font-display font-bold text-sm leading-tight">{g.title}</h3>
+                  <h3 className="font-display font-bold text-sm leading-tight flex items-center gap-2">
+                    {g.title}
+                    {g.title_hidden && (
+                      <span className="shrink-0 text-[9px] font-normal normal-case tracking-normal text-muted-foreground border border-border rounded px-1.5 py-0.5" title="Название скрыто на сайте, но доступно в поиске">
+                        скрыто
+                      </span>
+                    )}
+                  </h3>
                   <div className="mt-auto flex items-center gap-1 flex-wrap">
                     <button onClick={() => moveMut.mutate({ id: g.id, direction: "up" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="Вверх">↑</button>
                     <button onClick={() => moveMut.mutate({ id: g.id, direction: "down" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="Вниз">↓</button>
@@ -271,12 +282,13 @@ function GameForm({
   const [stickers, setStickers] = useState<Sticker[]>(game?.stickers ?? []);
   const [categories, setCategories] = useState<Category[]>(game?.categories ?? []);
   const [imageUrl, setImageUrl] = useState<string | null>(game?.image_url ?? null);
+  const [titleHidden, setTitleHidden] = useState(game?.title_hidden ?? false);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const previewSrc = useMemo(() => gameImageSrc(imageUrl), [imageUrl]);
 
-  const STICKER_ORDER: Sticker[] = ["new", "hit", "for_two"];
+  const STICKER_ORDER: Sticker[] = ["new", "hit", "for_two", "for_four"];
   const toggleSticker = (s: Sticker) => {
     setStickers((cur) => {
       const next = cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s];
@@ -315,10 +327,10 @@ function GameForm({
     setSaving(true);
     try {
       if (game) {
-        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl } });
+        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden } });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl } });
+        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden } });
         toast.success("Игра добавлена");
       }
 
@@ -347,6 +359,17 @@ function GameForm({
           className="w-full bg-input border border-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
           placeholder="GTA VI"
         />
+        <label className="mt-2 flex items-start gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={titleHidden}
+            onChange={(e) => setTitleHidden(e.target.checked)}
+            className="mt-0.5 h-4 w-4 rounded border-border accent-primary"
+          />
+          <span className="text-xs text-muted-foreground leading-snug">
+            Скрыть название на сайте — карточка останется в каталоге и будет находиться через поиск, но подпись под обложкой не покажется.
+          </span>
+        </label>
 
         <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Фото игры</label>
         <div className="flex items-center gap-3">
