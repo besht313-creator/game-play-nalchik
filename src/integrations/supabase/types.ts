@@ -23,6 +23,7 @@ export type Database = {
           position: number
           stickers: string[]
           title: string
+          title_hidden: boolean
           updated_at: string
         }
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           position?: number
           stickers?: string[]
           title: string
+          title_hidden?: boolean
           updated_at?: string
         }
         Update: {
@@ -43,6 +45,7 @@ export type Database = {
           position?: number
           stickers?: string[]
           title?: string
+          title_hidden?: boolean
           updated_at?: string
         }
         Relationships: []
