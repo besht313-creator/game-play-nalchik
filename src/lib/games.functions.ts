@@ -2,10 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export type Sticker = "hit" | "new" | "for_two";
-export type Category = "new" | "hits" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
+export type Sticker = "hit" | "new" | "for_two" | "for_four";
+export type Category = "new" | "hits" | "fighting" | "shooter" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
 
-export const CATEGORY_VALUES: Category[] = ["new", "hits", "coop", "racing", "sports", "kids", "horror", "exclusive"];
+export const CATEGORY_VALUES: Category[] = ["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"];
 
 export type GameRow = {
   id: string;
@@ -14,6 +14,7 @@ export type GameRow = {
   stickers: Sticker[];
   categories: Category[];
   position: number;
+  title_hidden: boolean;
 };
 
 // Public: list games sorted by position. Uses the anon-key client — RLS
@@ -22,14 +23,14 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
   const { supabase } = await import("@/integrations/supabase/client");
   const { data, error } = await supabase
     .from("games")
-    .select("id,title,image_url,stickers,categories,position")
+    .select("id,title,image_url,stickers,categories,position,title_hidden")
     .order("position", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as GameRow[];
 });
 
-const StickerEnum = z.enum(["hit", "new", "for_two"]);
-const CategoryEnum = z.enum(["new", "hits", "coop", "racing", "sports", "kids", "horror", "exclusive"]);
+const StickerEnum = z.enum(["hit", "new", "for_two", "for_four"]);
+const CategoryEnum = z.enum(["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"]);
 
 // All admin mutations below are gated by `requireSupabaseAuth`, which
 // validates the caller's Supabase Auth bearer token and hands back an
@@ -45,6 +46,7 @@ export const adminCreateGame = createServerFn({ method: "POST" })
       stickers: z.array(StickerEnum).max(3).default([]),
       categories: z.array(CategoryEnum).max(8).default([]),
       image_url: z.string().nullable().optional(),
+      title_hidden: z.boolean().optional().default(false),
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
@@ -79,6 +81,7 @@ export const adminCreateGame = createServerFn({ method: "POST" })
         stickers: data.stickers,
         categories: data.categories,
         image_url: data.image_url ?? null,
+        title_hidden: data.title_hidden ?? false,
         position: nextPos,
       })
       .select()
@@ -96,15 +99,17 @@ export const adminUpdateGame = createServerFn({ method: "POST" })
       stickers: z.array(StickerEnum).max(3).optional(),
       categories: z.array(CategoryEnum).max(8).optional(),
       image_url: z.string().nullable().optional(),
+      title_hidden: z.boolean().optional(),
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
-    const patch: { title?: string; stickers?: string[]; categories?: string[]; image_url?: string | null } = {};
+    const patch: { title?: string; stickers?: string[]; categories?: string[]; image_url?: string | null; title_hidden?: boolean } = {};
     if (data.title !== undefined) patch.title = data.title;
     if (data.stickers !== undefined) patch.stickers = data.stickers;
     if (data.categories !== undefined) patch.categories = data.categories;
     if (data.image_url !== undefined) patch.image_url = data.image_url;
+    if (data.title_hidden !== undefined) patch.title_hidden = data.title_hidden;
     const { error } = await supabase.from("games").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
