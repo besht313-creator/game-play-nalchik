@@ -79,15 +79,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "GamePlay | Аренда игровых консолей в Нальчике" },
-      { name: "description", content: "Rent PlayStation consoles and games on-demand in Nalchik." },
-      { name: "author", content: "Lovable" },
+      {
+        name: "description",
+        content:
+          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
+      },
+      { name: "author", content: "GamePlay Нальчик" },
       { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
-      { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены." },
+      {
+        property: "og:description",
+        content:
+          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "ru_RU" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
-      { name: "twitter:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены." },
+      {
+        name: "twitter:description",
+        content:
+          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
+      },
       { property: "og:image", content: "https://gameplay-nalchik.ru/og-image.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -114,7 +126,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <HeadContent />
       </head>
