@@ -359,6 +359,9 @@ function Index() {
           <Link to="/privacy-policy" className="hover:text-primary transition normal-case tracking-normal">
             Политика конфиденциальности
           </Link>
+          <Link to="/terms" className="hover:text-primary transition normal-case tracking-normal">
+            Пользовательское соглашение
+          </Link>
         </div>
       </footer>
       {!menuOpen && <FloatingContactButton />}
