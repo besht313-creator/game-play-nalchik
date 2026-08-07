@@ -8,7 +8,7 @@ import ps5Img from "@/assets/ps5-console.jpg";
 import ps4Img from "@/assets/ps4-console.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
-import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2 } from "lucide-react";
+import { MessageCircle, Send, Instagram, Monitor, Phone, PackageCheck, Gamepad2, MapPin } from "lucide-react";
 
 const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮", for_four: "4 🎮" };
 const STICKER_STYLES: Record<Sticker, string> = {
@@ -103,11 +103,17 @@ function Index() {
             <a href="#reviews" className="hover:text-foreground transition">Отзывы</a>
             <a href="#faq" className="hover:text-foreground transition">FAQ</a>
           </nav>
-          <ContactDialog>
-            <span className="hidden md:inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
-              Забронировать
+          <div className="hidden md:flex items-center gap-4">
+            <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+              <MapPin className="w-4 h-4 text-primary" />
+              г. Нальчик
             </span>
-          </ContactDialog>
+            <ContactDialog>
+              <span className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
+                Забронировать
+              </span>
+            </ContactDialog>
+          </div>
           <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-foreground p-2 rounded-lg hover:bg-primary/10 active:scale-[0.88] active:brightness-125 transition-all duration-150" aria-label="Menu" aria-expanded={menuOpen}>
             <div className="relative w-6 h-6">
               <span className={`absolute left-0 top-1/2 block h-0.5 w-6 bg-current rounded transition-all duration-300 ease-out ${menuOpen ? "rotate-45 translate-y-0" : "-translate-y-2"}`} />
@@ -322,7 +328,7 @@ function Index() {
             <div className="mb-4 rounded-2xl overflow-hidden border border-border bg-background">
               <iframe
                 title="GAMEPLAY на Яндекс Карте"
-                src="https://yandex.ru/map-widget/v1/?ll=43.615500%2C43.490100&z=17&pt=43.615500,43.490100,pm2rdl&mode=search&text=%D0%9D%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA%2C%20%D1%83%D0%BB.%20%D0%9E%D1%81%D0%B5%D1%82%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C%208"
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A0f1b8e52624e78c080354b37ffa95a0f7f91b5ad6c2a821fae597127ff1d2d24&source=constructor"
                 width="100%"
                 height="220"
                 frameBorder="0"
@@ -358,9 +364,6 @@ function Index() {
           <span>© 2026 GAMEPLAY NALCHIK. Все права защищены.</span>
           <Link to="/privacy-policy" className="hover:text-primary transition normal-case tracking-normal">
             Политика конфиденциальности
-          </Link>
-          <Link to="/terms" className="hover:text-primary transition normal-case tracking-normal">
-            Пользовательское соглашение
           </Link>
         </div>
       </footer>

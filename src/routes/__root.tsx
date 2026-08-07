@@ -78,38 +78,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#0a0a12" },
       { title: "GamePlay | Аренда игровых консолей в Нальчике" },
-      {
-        name: "description",
-        content:
-          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
-      },
-      { name: "author", content: "GamePlay Нальчик" },
+      { name: "description", content: "Rent PlayStation consoles and games on-demand in Nalchik." },
+      { name: "author", content: "Lovable" },
       { property: "og:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
-      {
-        property: "og:description",
-        content:
-          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
-      },
+      { property: "og:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
       { property: "og:type", content: "website" },
-      { property: "og:locale", content: "ru_RU" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "GamePlay | Аренда игровых консолей в Нальчике" },
-      {
-        name: "twitter:description",
-        content:
-          "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, низкие цены.",
-      },
-      { property: "og:image", content: "https://gameplay-nalchik.ru/og-image.jpg" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { name: "twitter:image", content: "https://gameplay-nalchik.ru/og-image.jpg" },
+      { name: "twitter:description", content: "Посуточная аренда игровых приставок PlayStation 5 и PlayStation 4 в Нальчике. Большая библиотека игр, доставка, низкие цены." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d678420e-1c44-456a-95cc-5efd332c04e3/id-preview-c8e2f9c7--fc97a379-2c5d-4b73-8a1b-2fc397b4ee9d.lovable.app-1780946705437.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d678420e-1c44-456a-95cc-5efd332c04e3/id-preview-c8e2f9c7--fc97a379-2c5d-4b73-8a1b-2fc397b4ee9d.lovable.app-1780946705437.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { rel: "icon", href: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -126,7 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
