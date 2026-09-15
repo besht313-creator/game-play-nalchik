@@ -173,6 +173,70 @@ export const adminMoveGame = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+// Move a game to an explicit place in the list (1-based, as shown in the admin).
+// Unlike adminMoveGame (single-step swap) this normally costs one UPDATE: the
+// new position is the midpoint between the two games it lands between. Only
+// when those neighbours sit on adjacent integers is the whole list renumbered.
+export const adminReorderGame = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({
+      id: z.string().uuid(),
+      toPosition: z.number().int().min(1),
+    }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: all, error } = await supabase
+      .from("games")
+      .select("id,position")
+      .order("position", { ascending: true });
+    if (error) throw new Error(error.message);
+
+    const list = (all ?? []) as { id: string; position: number }[];
+    const from = list.findIndex((g) => g.id === data.id);
+    if (from === -1) throw new Error("Игра не найдена");
+
+    const target = Math.min(Math.max(data.toPosition, 1), list.length) - 1;
+    if (target === from) return { ok: true };
+
+    const STEP = 1000;
+    const rest = list.filter((g) => g.id !== data.id);
+    const before = target > 0 ? rest[target - 1] : null;
+    const after = target < rest.length ? rest[target] : null;
+
+    let newPosition: number | null = null;
+    if (!before && after) newPosition = after.position - STEP;
+    else if (before && !after) newPosition = before.position + STEP;
+    else if (before && after && after.position - before.position >= 2) {
+      newPosition = before.position + Math.floor((after.position - before.position) / 2);
+    }
+
+    if (newPosition !== null) {
+      const { error: e } = await supabase
+        .from("games")
+        .update({ position: newPosition })
+        .eq("id", data.id);
+      if (e) throw new Error(e.message);
+      return { ok: true };
+    }
+
+    // Соседи стоят вплотную — свободного числа между ними нет. Раздвигаем весь
+    // список с шагом STEP, попутно ставя игру на нужное место.
+    const reordered = [...rest];
+    reordered.splice(target, 0, list[from]);
+    for (let i = 0; i < reordered.length; i++) {
+      const position = (i + 1) * STEP;
+      if (reordered[i].position === position) continue;
+      const { error: e } = await supabase
+        .from("games")
+        .update({ position })
+        .eq("id", reordered[i].id);
+      if (e) throw new Error(e.message);
+    }
+    return { ok: true };
+  });
+
 // Upload image as base64; returns storage path stored in image_url
 export const adminUploadImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
