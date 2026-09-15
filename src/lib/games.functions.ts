@@ -4,8 +4,13 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type Sticker = "hit" | "new" | "for_two" | "for_four";
 export type Category = "new" | "hits" | "fighting" | "shooter" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
+/** Язык озвучки и интерфейса — только эти два варианта. */
+export type Lang = "ru" | "en";
+/** Сколько человек может играть одновременно. */
+export type Players = 1 | 2 | 4;
 
 export const CATEGORY_VALUES: Category[] = ["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"];
+export const PLAYERS_VALUES: Players[] = [1, 2, 4];
 
 export type GameRow = {
   id: string;
@@ -15,6 +20,12 @@ export type GameRow = {
   categories: Category[];
   position: number;
   title_hidden: boolean;
+  // Поля для окна с подробностями. Пустые — блок в окне просто не показывается.
+  genre: string | null;
+  players: Players | null;
+  description: string | null;
+  voice_lang: Lang | null;
+  ui_lang: Lang | null;
 };
 
 // Public: list games sorted by position. Uses the anon-key client — RLS
@@ -23,7 +34,7 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
   const { supabase } = await import("@/integrations/supabase/client");
   const { data, error } = await supabase
     .from("games")
-    .select("id,title,image_url,stickers,categories,position,title_hidden")
+    .select("id,title,image_url,stickers,categories,position,title_hidden,genre,players,description,voice_lang,ui_lang")
     .order("position", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as GameRow[];
@@ -31,6 +42,17 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
 
 const StickerEnum = z.enum(["hit", "new", "for_two", "for_four"]);
 const CategoryEnum = z.enum(["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"]);
+const LangEnum = z.enum(["ru", "en"]);
+const PlayersEnum = z.union([z.literal(1), z.literal(2), z.literal(4)]);
+
+/** Поля окна подробностей — общие для создания и редактирования игры. */
+const detailsShape = {
+  genre: z.string().max(80).nullable().optional(),
+  players: PlayersEnum.nullable().optional(),
+  description: z.string().max(600).nullable().optional(),
+  voice_lang: LangEnum.nullable().optional(),
+  ui_lang: LangEnum.nullable().optional(),
+};
 
 // All admin mutations below are gated by `requireSupabaseAuth`, which
 // validates the caller's Supabase Auth bearer token and hands back an
@@ -47,6 +69,7 @@ export const adminCreateGame = createServerFn({ method: "POST" })
       categories: z.array(CategoryEnum).max(8).default([]),
       image_url: z.string().nullable().optional(),
       title_hidden: z.boolean().optional().default(false),
+      ...detailsShape,
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
@@ -82,6 +105,11 @@ export const adminCreateGame = createServerFn({ method: "POST" })
         categories: data.categories,
         image_url: data.image_url ?? null,
         title_hidden: data.title_hidden ?? false,
+        genre: data.genre ?? null,
+        players: data.players ?? null,
+        description: data.description ?? null,
+        voice_lang: data.voice_lang ?? null,
+        ui_lang: data.ui_lang ?? null,
         position: nextPos,
       })
       .select()
@@ -100,16 +128,33 @@ export const adminUpdateGame = createServerFn({ method: "POST" })
       categories: z.array(CategoryEnum).max(8).optional(),
       image_url: z.string().nullable().optional(),
       title_hidden: z.boolean().optional(),
+      ...detailsShape,
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
-    const patch: { title?: string; stickers?: string[]; categories?: string[]; image_url?: string | null; title_hidden?: boolean } = {};
+    const patch: {
+      title?: string;
+      stickers?: string[];
+      categories?: string[];
+      image_url?: string | null;
+      title_hidden?: boolean;
+      genre?: string | null;
+      players?: number | null;
+      description?: string | null;
+      voice_lang?: string | null;
+      ui_lang?: string | null;
+    } = {};
     if (data.title !== undefined) patch.title = data.title;
     if (data.stickers !== undefined) patch.stickers = data.stickers;
     if (data.categories !== undefined) patch.categories = data.categories;
     if (data.image_url !== undefined) patch.image_url = data.image_url;
     if (data.title_hidden !== undefined) patch.title_hidden = data.title_hidden;
+    if (data.genre !== undefined) patch.genre = data.genre;
+    if (data.players !== undefined) patch.players = data.players;
+    if (data.description !== undefined) patch.description = data.description;
+    if (data.voice_lang !== undefined) patch.voice_lang = data.voice_lang;
+    if (data.ui_lang !== undefined) patch.ui_lang = data.ui_lang;
     const { error } = await supabase.from("games").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
