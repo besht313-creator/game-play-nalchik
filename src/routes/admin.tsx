@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -14,9 +14,12 @@ import {
   adminReorderGame,
   adminUploadImage,
   CATEGORY_VALUES,
+  PLAYERS_VALUES,
   type GameRow,
   type Sticker,
   type Category,
+  type Lang,
+  type Players,
 } from "@/lib/games.functions";
 import { optimizeImage, blobToBase64, formatBytes } from "@/lib/image-compress";
 
@@ -338,6 +341,45 @@ function PositionControl({
   );
 }
 
+/** Кнопка-переключатель в стиле стикеров и категорий. */
+function OptionButton({
+  active, onClick, children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3 py-1.5 rounded-md border text-xs font-display font-bold uppercase tracking-wider transition ${
+        active
+          ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-neon)]"
+          : "border-border text-muted-foreground hover:border-primary"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function LangPicker({ value, onChange }: { value: Lang | null; onChange: (v: Lang | null) => void }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <OptionButton active={value === "ru"} onClick={() => onChange(value === "ru" ? null : "ru")}>
+        Русский
+      </OptionButton>
+      <OptionButton active={value === "en"} onClick={() => onChange(value === "en" ? null : "en")}>
+        Английский
+      </OptionButton>
+      <OptionButton active={value === null} onClick={() => onChange(null)}>
+        Не указано
+      </OptionButton>
+    </div>
+  );
+}
+
 function GameForm({
   game, onClose, onSaved, createFn, updateFn, uploadFn,
 }: {
@@ -353,6 +395,11 @@ function GameForm({
   const [categories, setCategories] = useState<Category[]>(game?.categories ?? []);
   const [imageUrl, setImageUrl] = useState<string | null>(game?.image_url ?? null);
   const [titleHidden, setTitleHidden] = useState(game?.title_hidden ?? false);
+  const [genre, setGenre] = useState(game?.genre ?? "");
+  const [players, setPlayers] = useState<Players | null>(game?.players ?? null);
+  const [description, setDescription] = useState(game?.description ?? "");
+  const [voiceLang, setVoiceLang] = useState<Lang | null>(game?.voice_lang ?? null);
+  const [uiLang, setUiLang] = useState<Lang | null>(game?.ui_lang ?? null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -397,12 +444,20 @@ function GameForm({
   const handleSave = async () => {
     if (!title.trim()) { toast.error("Введите название"); return; }
     setSaving(true);
+    // Пустая строка в поле = «не заполнено», в базе это null.
+    const details = {
+      genre: genre.trim() || null,
+      players,
+      description: description.trim() || null,
+      voice_lang: voiceLang,
+      ui_lang: uiLang,
+    };
     try {
       if (game) {
-        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden } });
+        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden, ...details } });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden } });
+        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden, ...details } });
         toast.success("Игра добавлена");
       }
 
@@ -509,6 +564,51 @@ function GameForm({
           })}
         </div>
 
+
+        <div className="mt-6 pt-5 border-t border-border">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">
+            Окно игры <span className="normal-case tracking-normal opacity-70">— незаполненные поля в окне не показываются</span>
+          </p>
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">Жанр</label>
+          <input
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            maxLength={80}
+            placeholder="Файтинг, гонки, кооперативное приключение..."
+            className="w-full bg-input border border-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+          />
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Сколько игроков</label>
+          <div className="flex flex-wrap gap-2">
+            {PLAYERS_VALUES.map((p) => (
+              <OptionButton key={p} active={players === p} onClick={() => setPlayers(players === p ? null : p)}>
+                {p}
+              </OptionButton>
+            ))}
+            <OptionButton active={players === null} onClick={() => setPlayers(null)}>
+              Не указано
+            </OptionButton>
+          </div>
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">
+            Описание <span className="normal-case tracking-normal opacity-70">— 1–2 фразы, {description.length}/600</span>
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            maxLength={600}
+            rows={3}
+            placeholder="Коротко и по делу: почему в это стоит сыграть сегодня вечером."
+            className="w-full bg-input border border-border rounded-md px-3 py-2 focus:outline-none focus:border-primary resize-y"
+          />
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Озвучка</label>
+          <LangPicker value={voiceLang} onChange={setVoiceLang} />
+
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Интерфейс</label>
+          <LangPicker value={uiLang} onChange={setUiLang} />
+        </div>
 
         <div className="mt-6 flex gap-2">
           <button onClick={onClose} className="flex-1 rounded-md py-2.5 border border-border text-sm hover:border-foreground">Отмена</button>

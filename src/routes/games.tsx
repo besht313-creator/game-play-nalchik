@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import { listGames, type Sticker, type Category } from "@/lib/games.functions";
+import { GameDetailsDialog, useGameDetails } from "@/components/GameDetailsDialog";
 import {
   Select,
   SelectContent,
@@ -60,6 +61,7 @@ function GamesPage() {
   const [search, setSearch] = useState("");
   const listFn = useServerFn(listGames);
   const q = useQuery({ queryKey: ["games"], queryFn: () => listFn() });
+  const details = useGameDetails();
 
   const filtered = useMemo(() => {
     let all = q.data ?? [];
@@ -155,7 +157,13 @@ function GamesPage() {
               {filtered.map((g) => {
                 const src = gameImageSrc(g.image_url);
                 return (
-                  <div key={g.id} className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
+                  <button
+                    key={g.id}
+                    type="button"
+                    onClick={(e) => details.open(g, e.currentTarget)}
+                    aria-label={`Подробнее об игре ${g.title}`}
+                    className="group relative aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] cursor-pointer"
+                  >
                     {src ? (
                       <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                     ) : null}
@@ -174,7 +182,7 @@ function GamesPage() {
                         {g.title}
                       </div>
                     )}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -187,6 +195,7 @@ function GamesPage() {
         © {new Date().getFullYear()} GamePlay Нальчик
       </footer>
       <FloatingContactButton />
+      <GameDetailsDialog details={details.details} onClosed={details.clear} />
     </div>
   );
 }

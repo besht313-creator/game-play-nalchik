@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { listGames, type Sticker } from "@/lib/games.functions";
+import { listGames, type Sticker, type GameRow } from "@/lib/games.functions";
+import { GameDetailsDialog, useGameDetails } from "@/components/GameDetailsDialog";
 import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5-console.jpg";
 import ps4Img from "@/assets/ps4-console.jpg";
@@ -86,6 +87,7 @@ function Index() {
   const listGamesFn = useServerFn(listGames);
   const gamesQuery = useQuery({ queryKey: ["games"], queryFn: () => listGamesFn() });
   const previewGames = (gamesQuery.data ?? []).slice(0, 8);
+  const details = useGameDetails();
 
 
   return (
@@ -223,7 +225,7 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
             {previewGames.map((g) => (
-              <GameCard key={g.id} title={g.title} image_url={g.image_url} stickers={g.stickers} title_hidden={g.title_hidden} />
+              <GameCard key={g.id} game={g} onOpen={details.open} />
             ))}
             {gamesQuery.isLoading && Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />
@@ -372,6 +374,7 @@ function Index() {
         </div>
       </footer>
       {!menuOpen && <FloatingContactButton />}
+      <GameDetailsDialog details={details.details} onClosed={details.clear} />
     </div>
   );
 }
@@ -384,10 +387,16 @@ function SectionTitle({ children, align = "center" }: { children: React.ReactNod
   );
 }
 
-function GameCard({ title, image_url, stickers, title_hidden }: { title: string; image_url: string | null; stickers: Sticker[]; title_hidden?: boolean }) {
+function GameCard({ game, onOpen }: { game: GameRow; onOpen: (game: GameRow, el: HTMLElement) => void }) {
+  const { title, image_url, stickers, title_hidden } = game;
   const src = gameImageSrc(image_url);
   return (
-    <div className="group relative aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
+    <button
+      type="button"
+      onClick={(e) => onOpen(game, e.currentTarget)}
+      aria-label={`Подробнее об игре ${title}`}
+      className="group relative aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] cursor-pointer"
+    >
       {src ? (
         <img src={src} alt={title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       ) : null}
@@ -406,7 +415,7 @@ function GameCard({ title, image_url, stickers, title_hidden }: { title: string;
           {title}
         </div>
       )}
-    </div>
+    </button>
   );
 }
 
