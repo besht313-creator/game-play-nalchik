@@ -18,35 +18,50 @@ export type Database = {
         Row: {
           categories: string[]
           created_at: string
+          description: string | null
+          genre: string | null
           id: string
           image_url: string | null
+          players: number | null
           position: number
           stickers: string[]
           title: string
           title_hidden: boolean
+          ui_lang: string | null
           updated_at: string
+          voice_lang: string | null
         }
         Insert: {
           categories?: string[]
           created_at?: string
+          description?: string | null
+          genre?: string | null
           id?: string
           image_url?: string | null
+          players?: number | null
           position?: number
           stickers?: string[]
           title: string
           title_hidden?: boolean
+          ui_lang?: string | null
           updated_at?: string
+          voice_lang?: string | null
         }
         Update: {
           categories?: string[]
           created_at?: string
+          description?: string | null
+          genre?: string | null
           id?: string
           image_url?: string | null
+          players?: number | null
           position?: number
           stickers?: string[]
           title?: string
           title_hidden?: boolean
+          ui_lang?: string | null
           updated_at?: string
+          voice_lang?: string | null
         }
         Relationships: []
       }
