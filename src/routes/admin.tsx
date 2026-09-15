@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -11,12 +11,17 @@ import {
   adminUpdateGame,
   adminDeleteGame,
   adminMoveGame,
+  adminReorderGame,
   adminUploadImage,
   CATEGORY_VALUES,
   type GameRow,
   type Sticker,
   type Category,
 } from "@/lib/games.functions";
+import { optimizeImage, blobToBase64, formatBytes } from "@/lib/image-compress";
+
+// Оригинал может быть тяжёлым: перед отправкой он всё равно ужимается в браузере.
+const MAX_UPLOAD_MB = 25;
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -158,6 +163,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const update = useServerFn(adminUpdateGame);
   const del = useServerFn(adminDeleteGame);
   const move = useServerFn(adminMoveGame);
+  const reorder = useServerFn(adminReorderGame);
   const upload = useServerFn(adminUploadImage);
 
   const games = useQuery({ queryKey: ["games"], queryFn: () => list() });
@@ -167,6 +173,11 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const moveMut = useMutation({
     mutationFn: (v: { id: string; direction: "up" | "down" }) =>
       move({ data: v }),
+    onSuccess: refresh,
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const reorderMut = useMutation({
+    mutationFn: (v: { id: string; toPosition: number }) => reorder({ data: v }),
     onSuccess: refresh,
     onError: (e: Error) => toast.error(e.message),
   });
@@ -237,8 +248,14 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                     )}
                   </h3>
                   <div className="mt-auto flex items-center gap-1 flex-wrap">
-                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "up" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="Вверх">↑</button>
-                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "down" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="Вниз">↓</button>
+                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "up" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="На одну позицию вверх">↑</button>
+                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "down" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="На одну позицию вниз">↓</button>
+                    <PositionControl
+                      index={idx}
+                      total={games.data.length}
+                      disabled={reorderMut.isPending}
+                      onMove={(toPosition) => reorderMut.mutate({ id: g.id, toPosition })}
+                    />
                     <button onClick={() => setEditing(g)} className="ml-auto px-3 h-8 rounded border border-border hover:border-primary text-xs">Изменить</button>
                     <button
                       onClick={() => { if (confirm(`Удалить «${g.title}»?`)) delMut.mutate(g.id); }}
@@ -265,6 +282,59 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
         />
       )}
     </div>
+  );
+}
+
+/**
+ * Перестановка карточки: вписываем номер места и жмём → (или Enter).
+ * Раньше для этого приходилось десятки раз кликать по стрелке.
+ */
+function PositionControl({
+  index, total, disabled, onMove,
+}: {
+  index: number;
+  total: number;
+  disabled?: boolean;
+  onMove: (position: number) => void;
+}) {
+  const [value, setValue] = useState(String(index + 1));
+
+  // После перемещения список перестраивается — держим поле в согласии с реальным местом.
+  useEffect(() => { setValue(String(index + 1)); }, [index]);
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    const parsed = Math.round(Number(value));
+    if (!Number.isFinite(parsed) || parsed === index + 1) {
+      setValue(String(index + 1));
+      return;
+    }
+    onMove(Math.min(Math.max(parsed, 1), total));
+  };
+
+  return (
+    <form onSubmit={submit} className="flex items-center gap-1">
+      <input
+        type="number"
+        min={1}
+        max={total}
+        value={value}
+        disabled={disabled}
+        onChange={(e) => setValue(e.target.value)}
+        onFocus={(e) => e.currentTarget.select()}
+        aria-label={`Место в каталоге, сейчас ${index + 1} из ${total}`}
+        title={`Сейчас ${index + 1}-е место из ${total}. Впишите нужное и нажмите Enter`}
+        className="w-12 h-8 rounded border border-border bg-input text-center text-xs text-foreground focus:outline-none focus:border-primary disabled:opacity-50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      />
+      <button
+        type="submit"
+        disabled={disabled}
+        title="Переместить на указанное место"
+        className="w-8 h-8 rounded border border-border hover:border-primary text-sm disabled:opacity-50"
+      >
+        →
+      </button>
+    </form>
   );
 }
 
@@ -302,19 +372,21 @@ function GameForm({
 
 
   const handleFile = async (file: File) => {
-    if (file.size > 5 * 1024 * 1024) { toast.error("Файл больше 5 МБ"); return; }
+    if (file.size > MAX_UPLOAD_MB * 1024 * 1024) { toast.error(`Файл больше ${MAX_UPLOAD_MB} МБ`); return; }
     setUploading(true);
     try {
-      const buf = await file.arrayBuffer();
-      let binary = "";
-      const bytes = new Uint8Array(buf);
-      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-      const dataBase64 = btoa(binary);
+      // Сжимаем прямо в браузере: ≤1800px по длинной стороне + WebP 80.
+      const image = await optimizeImage(file);
+      const dataBase64 = await blobToBase64(image.blob);
       const res = await uploadFn({
-        data: { filename: file.name, contentType: file.type || "image/jpeg", dataBase64 },
+        data: { filename: image.filename, contentType: image.contentType || "image/jpeg", dataBase64 },
       });
       setImageUrl(res.path);
-      toast.success("Фото загружено");
+      toast.success(
+        image.optimized
+          ? `Фото загружено · ${formatBytes(image.originalSize)} → ${formatBytes(image.blob.size)}`
+          : "Фото загружено",
+      );
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -386,6 +458,9 @@ function GameForm({
               <input type="file" accept="image/*" className="hidden"
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
             </label>
+            <p className="text-[11px] text-muted-foreground leading-snug">
+              Сжимается автоматически: до 1800px по длинной стороне, формат WebP.
+            </p>
             {imageUrl && (
               <button onClick={() => setImageUrl(null)} className="text-xs text-destructive hover:underline text-left">Удалить фото</button>
             )}
