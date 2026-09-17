@@ -91,7 +91,10 @@ function LoginScreen() {
           e.preventDefault();
           if (email && pw) mutation.mutate({ email, password: pw });
         }}
-        className="w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-neon)]"
+        // ym-disable-keys запрещает Вебвизору Яндекс.Метрики записывать нажатия
+        // клавиш внутри формы. Без этого логин и пароль администратора попадали
+        // бы в записи визитов, если в счётчике включено «Записывать все поля».
+        className="ym-disable-keys w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-neon)]"
       >
         <h1 className="font-display font-bold text-3xl uppercase text-center">
           <span style={{ color: "#63D8FF" }}>ADMIN</span>
@@ -106,7 +109,7 @@ function LoginScreen() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             autoComplete="username"
-            className="w-full bg-input border border-border rounded-md px-4 py-3 text-foreground focus:outline-none focus:border-primary"
+            className="ym-disable-keys w-full bg-input border border-border rounded-md px-4 py-3 text-foreground focus:outline-none focus:border-primary"
           />
         </div>
         <div className="relative mt-3">
@@ -116,7 +119,7 @@ function LoginScreen() {
             onChange={(e) => setPw(e.target.value)}
             placeholder="Пароль"
             autoComplete="current-password"
-            className="w-full bg-input border border-border rounded-md pl-4 pr-20 py-3 text-foreground focus:outline-none focus:border-primary"
+            className="ym-disable-keys w-full bg-input border border-border rounded-md pl-4 pr-20 py-3 text-foreground focus:outline-none focus:border-primary"
           />
           <button
             type="button"
