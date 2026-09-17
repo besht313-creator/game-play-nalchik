@@ -3,7 +3,8 @@ import { useState, useMemo } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
-import { listGames, type Sticker, type Category } from "@/lib/games.functions";
+import { listGames, CATEGORY_VALUES, type Category } from "@/lib/games.functions";
+import { CATEGORY_LABELS, STICKER_LABELS, STICKER_STYLES, gameImageSrc } from "@/lib/game-display";
 import { GameDetailsDialog, useGameDetails } from "@/components/GameDetailsDialog";
 import {
   Select,
@@ -17,9 +18,16 @@ export const Route = createFileRoute("/games")({
   head: () => ({
     meta: [
       { title: "Полная библиотека игр | GamePlay Нальчик" },
-      { name: "description", content: "Полный каталог игр для PS5 и PS4 с сортировкой по категориям: новинки, хиты, кооператив, гонки, для детей, хорроры, эксклюзивы." },
+      {
+        name: "description",
+        content:
+          "Полный каталог игр для PS5 и PS4 с сортировкой по категориям: новинки, хиты, кооператив, гонки, для детей, хорроры, эксклюзивы.",
+      },
       { property: "og:title", content: "Полная библиотека игр | GamePlay" },
-      { property: "og:description", content: "Большой каталог игр для аренды PS5 и PS4 в Нальчике." },
+      {
+        property: "og:description",
+        content: "Большой каталог игр для аренды PS5 и PS4 в Нальчике.",
+      },
       { property: "og:url", content: "https://gameplay-nalchik.ru/games" },
     ],
     links: [{ rel: "canonical", href: "https://gameplay-nalchik.ru/games" }],
@@ -27,34 +35,13 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-const STICKER_LABELS: Record<Sticker, string> = { hit: "Хит", new: "Новинка", for_two: "2 🎮", for_four: "4 🎮" };
-const STICKER_STYLES: Record<Sticker, string> = {
-  hit: "bg-[#F14FF0] text-white border-white/50 shadow-[0_0_8px_#F14FF0aa]",
-  new: "bg-[#63D8FF] text-black border-white/50 shadow-[0_0_8px_#63D8FFaa]",
-  for_two: "bg-[#4D8CFF] text-white border-white/50 shadow-[0_0_8px_#4D8CFFaa]",
-  for_four: "bg-[#A78BFA] text-white border-white/50 shadow-[0_0_8px_#A78BFAaa]",
-};
-
 type FilterId = "all" | Category;
+// Порядок и подписи берём из одного места: добавили категорию в
+// games.functions.ts — она сразу появится в фильтре.
 const CATEGORIES: { id: FilterId; label: string }[] = [
   { id: "all", label: "Все" },
-  { id: "new", label: "Новинки" },
-  { id: "hits", label: "Хиты" },
-  { id: "fighting", label: "Файтинги" },
-  { id: "shooter", label: "Стрелялки" },
-  { id: "coop", label: "На двоих/четверых" },
-  { id: "racing", label: "Гонки" },
-  { id: "sports", label: "Спортивные" },
-  { id: "kids", label: "Для детей" },
-  { id: "horror", label: "Хорроры" },
-  { id: "exclusive", label: "Эксклюзивы" },
+  ...CATEGORY_VALUES.map((id) => ({ id, label: CATEGORY_LABELS[id] })),
 ];
-
-
-function gameImageSrc(url: string | null | undefined) {
-  if (!url) return null;
-  return url.startsWith("http") ? url : `/api/public/game-image/${url}`;
-}
 
 function GamesPage() {
   const [active, setActive] = useState<FilterId>("all");
@@ -71,14 +58,17 @@ function GamesPage() {
     return all;
   }, [q.data, active, search]);
 
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 grid grid-cols-3 items-center">
           <div className="justify-self-start">
-            <Link to="/" hash="games" aria-label="К разделу игр"
-              className="inline-flex items-center justify-center h-14 w-14 rounded-lg text-foreground hover:text-primary transition">
+            <Link
+              to="/"
+              hash="games"
+              aria-label="К разделу игр"
+              className="inline-flex items-center justify-center h-14 w-14 rounded-lg text-foreground hover:text-primary transition"
+            >
               <span className="text-4xl leading-none">←</span>
             </Link>
           </div>
@@ -88,20 +78,19 @@ function GamesPage() {
               <span style={{ color: "#F14FF0" }}>PLAY</span>
             </span>
           </Link>
-          <div className="justify-self-end">
-            <Link to="/admin" className="text-sm font-medium text-muted-foreground hover:text-foreground transition">
-              Админ-панель
-            </Link>
-          </div>
+          <div className="justify-self-end" />
         </div>
       </header>
 
       <section className="pt-24 pb-8 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase">
-            <span className="text-gradient">Полная</span> <span className="text-gradient">библиотека игр</span>
+            <span className="text-gradient">Полная</span>{" "}
+            <span className="text-gradient">библиотека игр</span>
           </h1>
-          <p className="mt-4 text-muted-foreground">Многие игры уже установлены и готовы к запуску</p>
+          <p className="mt-4 text-muted-foreground">
+            Многие игры уже установлены и готовы к запуску
+          </p>
         </div>
       </section>
 
@@ -110,7 +99,12 @@ function GamesPage() {
           <div className="relative w-full sm:w-[280px]">
             <svg
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
@@ -141,7 +135,6 @@ function GamesPage() {
         </div>
       </section>
 
-
       <section className="px-4 sm:px-6 pb-24">
         <div className="max-w-6xl mx-auto">
           {q.isLoading ? (
@@ -151,7 +144,9 @@ function GamesPage() {
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <p className="text-center text-muted-foreground py-16">В этой категории пока нет игр.</p>
+            <p className="text-center text-muted-foreground py-16">
+              В этой категории пока нет игр.
+            </p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {filtered.map((g) => {
@@ -165,13 +160,21 @@ function GamesPage() {
                     className="group relative aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 border border-border hover:border-primary transition-all duration-150 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] cursor-pointer"
                   >
                     {src ? (
-                      <img src={src} alt={g.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                      <img
+                        src={src}
+                        alt={g.title}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      />
                     ) : null}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {g.stickers?.length > 0 && (
                       <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
                         {g.stickers.map((s) => (
-                          <span key={s} className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}>
+                          <span
+                            key={s}
+                            className={`text-[11px] sm:text-xs px-2 py-0.5 font-display font-bold uppercase tracking-wider rounded-md border ${STICKER_STYLES[s]}`}
+                          >
                             {STICKER_LABELS[s]}
                           </span>
                         ))}
@@ -187,7 +190,11 @@ function GamesPage() {
               })}
             </div>
           )}
-          <p className="text-center text-muted-foreground text-sm mt-8">Показано: {filtered.length}</p>
+          {!q.isLoading && (
+            <p className="text-center text-muted-foreground text-sm mt-8">
+              Показано: {filtered.length}
+            </p>
+          )}
         </div>
       </section>
 

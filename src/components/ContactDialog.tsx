@@ -13,11 +13,7 @@ const PHONE_HREF = "tel:+79034953348";
 const WHATSAPP_URL = "https://wa.me/message/573SWX2JZIG6C1";
 const TELEGRAM_URL = "https://t.me/Arenda_PS5";
 
-export function ContactDialog({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ContactDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (

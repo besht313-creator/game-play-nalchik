@@ -22,41 +22,19 @@ import {
   type Players,
 } from "@/lib/games.functions";
 import { optimizeImage, blobToBase64, formatBytes } from "@/lib/image-compress";
+import { CATEGORY_LABELS, STICKER_LABELS, gameImageSrc } from "@/lib/game-display";
 
 // Оригинал может быть тяжёлым: перед отправкой он всё равно ужимается в браузере.
 const MAX_UPLOAD_MB = 25;
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [
-      { title: "Админ-панель | GamePlay" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
+    meta: [{ title: "Админ-панель | GamePlay" }, { name: "robots", content: "noindex, nofollow" }],
   }),
   component: AdminPage,
 });
 
-const STICKER_LABELS: Record<Sticker, string> = {
-  hit: "Хит",
-  new: "Новинка",
-  for_two: "2 🎮",
-  for_four: "4 🎮",
-};
 const STICKER_LIST: Sticker[] = ["hit", "new", "for_two", "for_four"];
-
-const CATEGORY_LABELS: Record<Category, string> = {
-  new: "Новинки",
-  hits: "Хиты",
-  fighting: "Файтинги",
-  shooter: "Стрелялки",
-  coop: "На двоих/четверых",
-  racing: "Гонки",
-  sports: "Спортивные",
-  kids: "Для детей",
-  horror: "Хорроры",
-  exclusive: "Эксклюзивы",
-};
-
 
 function StickerBadge({ s }: { s: Sticker }) {
   const styles: Record<Sticker, string> = {
@@ -66,16 +44,12 @@ function StickerBadge({ s }: { s: Sticker }) {
     for_four: "bg-[#A78BFA]/15 text-[#A78BFA] border-[#A78BFA]/40 shadow-[0_0_12px_#A78BFA80]",
   };
   return (
-    <span className={`text-[10px] font-display font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${styles[s]}`}>
+    <span
+      className={`text-[10px] font-display font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${styles[s]}`}
+    >
       {STICKER_LABELS[s]}
     </span>
   );
-}
-
-function gameImageSrc(image_url: string | null | undefined) {
-  if (!image_url) return null;
-  if (image_url.startsWith("http")) return image_url;
-  return `/api/public/game-image/${image_url}`;
 }
 
 function AdminPage() {
@@ -88,7 +62,11 @@ function AdminPage() {
   }, []);
 
   if (session === undefined) {
-    return <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Загрузка...</div>;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
+        Загрузка...
+      </div>
+    );
   }
   if (!session) return <LoginScreen />;
   return <AdminPanel onLogout={() => supabase.auth.signOut()} />;
@@ -109,7 +87,10 @@ function LoginScreen() {
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4">
       <form
-        onSubmit={(e) => { e.preventDefault(); if (email && pw) mutation.mutate({ email, password: pw }); }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (email && pw) mutation.mutate({ email, password: pw });
+        }}
         className="w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-neon)]"
       >
         <h1 className="font-display font-bold text-3xl uppercase text-center">
@@ -153,7 +134,12 @@ function LoginScreen() {
         >
           {mutation.isPending ? "Проверка..." : "Войти"}
         </button>
-        <Link to="/" className="mt-6 block text-center text-xs text-muted-foreground hover:text-primary">← На главную</Link>
+        <Link
+          to="/"
+          className="mt-6 block text-center text-xs text-muted-foreground hover:text-primary"
+        >
+          ← На главную
+        </Link>
       </form>
     </div>
   );
@@ -174,8 +160,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const refresh = () => qc.invalidateQueries({ queryKey: ["games"] });
 
   const moveMut = useMutation({
-    mutationFn: (v: { id: string; direction: "up" | "down" }) =>
-      move({ data: v }),
+    mutationFn: (v: { id: string; direction: "up" | "down" }) => move({ data: v }),
     onSuccess: refresh,
     onError: (e: Error) => toast.error(e.message),
   });
@@ -186,7 +171,10 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
   });
   const delMut = useMutation({
     mutationFn: (id: string) => del({ data: { id } }),
-    onSuccess: () => { refresh(); toast.success("Удалено"); },
+    onSuccess: () => {
+      refresh();
+      toast.success("Удалено");
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
@@ -200,7 +188,9 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
           <Link to="/" className="font-display font-bold text-xl tracking-wider">
             <span style={{ color: "#63D8FF" }}>GAME</span>
             <span style={{ color: "#F14FF0" }}>PLAY</span>
-            <span className="text-muted-foreground text-sm ml-2 normal-case font-normal">/ admin</span>
+            <span className="text-muted-foreground text-sm ml-2 normal-case font-normal">
+              / admin
+            </span>
           </Link>
           <div className="flex items-center gap-2">
             <button
@@ -221,21 +211,35 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         {games.isLoading && <p className="text-muted-foreground text-center py-12">Загрузка...</p>}
-        {games.error && <p className="text-destructive text-center py-12">Ошибка: {(games.error as Error).message}</p>}
+        {games.error && (
+          <p className="text-destructive text-center py-12">
+            Ошибка: {(games.error as Error).message}
+          </p>
+        )}
         {games.data && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {games.data.map((g, idx) => (
-              <article key={g.id} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+              <article
+                key={g.id}
+                className="rounded-xl border border-border bg-card overflow-hidden flex flex-col"
+              >
                 <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 relative">
                   {gameImageSrc(g.image_url) ? (
-                    <img src={gameImageSrc(g.image_url)!} alt={g.title} className="w-full h-full object-cover" loading="lazy" />
+                    <img
+                      src={gameImageSrc(g.image_url)!}
+                      alt={g.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs uppercase">
                       нет фото
                     </div>
                   )}
                   <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-                    {(g.stickers || []).map((s) => <StickerBadge key={s} s={s} />)}
+                    {(g.stickers || []).map((s) => (
+                      <StickerBadge key={s} s={s} />
+                    ))}
                   </div>
                   <div className="absolute top-2 right-2 text-[10px] bg-background/70 backdrop-blur px-2 py-0.5 rounded">
                     #{idx + 1}
@@ -245,23 +249,45 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                   <h3 className="font-display font-bold text-sm leading-tight flex items-center gap-2">
                     {g.title}
                     {g.title_hidden && (
-                      <span className="shrink-0 text-[9px] font-normal normal-case tracking-normal text-muted-foreground border border-border rounded px-1.5 py-0.5" title="Название скрыто на сайте, но доступно в поиске">
+                      <span
+                        className="shrink-0 text-[9px] font-normal normal-case tracking-normal text-muted-foreground border border-border rounded px-1.5 py-0.5"
+                        title="Название скрыто на сайте, но доступно в поиске"
+                      >
                         скрыто
                       </span>
                     )}
                   </h3>
                   <div className="mt-auto flex items-center gap-1 flex-wrap">
-                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "up" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="На одну позицию вверх">↑</button>
-                    <button onClick={() => moveMut.mutate({ id: g.id, direction: "down" })} className="w-8 h-8 rounded border border-border hover:border-primary text-sm" title="На одну позицию вниз">↓</button>
+                    <button
+                      onClick={() => moveMut.mutate({ id: g.id, direction: "up" })}
+                      className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
+                      title="На одну позицию вверх"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => moveMut.mutate({ id: g.id, direction: "down" })}
+                      className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
+                      title="На одну позицию вниз"
+                    >
+                      ↓
+                    </button>
                     <PositionControl
                       index={idx}
                       total={games.data.length}
                       disabled={reorderMut.isPending}
                       onMove={(toPosition) => reorderMut.mutate({ id: g.id, toPosition })}
                     />
-                    <button onClick={() => setEditing(g)} className="ml-auto px-3 h-8 rounded border border-border hover:border-primary text-xs">Изменить</button>
                     <button
-                      onClick={() => { if (confirm(`Удалить «${g.title}»?`)) delMut.mutate(g.id); }}
+                      onClick={() => setEditing(g)}
+                      className="ml-auto px-3 h-8 rounded border border-border hover:border-primary text-xs"
+                    >
+                      Изменить
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm(`Удалить «${g.title}»?`)) delMut.mutate(g.id);
+                      }}
                       className="px-3 h-8 rounded border border-destructive/40 text-destructive text-xs hover:bg-destructive/10"
                     >
                       Удалить
@@ -277,8 +303,15 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
       {(adding || editing) && (
         <GameForm
           game={editing}
-          onClose={() => { setAdding(false); setEditing(null); }}
-          onSaved={() => { refresh(); setAdding(false); setEditing(null); }}
+          onClose={() => {
+            setAdding(false);
+            setEditing(null);
+          }}
+          onSaved={() => {
+            refresh();
+            setAdding(false);
+            setEditing(null);
+          }}
           createFn={create}
           updateFn={update}
           uploadFn={upload}
@@ -293,7 +326,10 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
  * Раньше для этого приходилось десятки раз кликать по стрелке.
  */
 function PositionControl({
-  index, total, disabled, onMove,
+  index,
+  total,
+  disabled,
+  onMove,
 }: {
   index: number;
   total: number;
@@ -303,7 +339,9 @@ function PositionControl({
   const [value, setValue] = useState(String(index + 1));
 
   // После перемещения список перестраивается — держим поле в согласии с реальным местом.
-  useEffect(() => { setValue(String(index + 1)); }, [index]);
+  useEffect(() => {
+    setValue(String(index + 1));
+  }, [index]);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -343,7 +381,9 @@ function PositionControl({
 
 /** Кнопка-переключатель в стиле стикеров и категорий. */
 function OptionButton({
-  active, onClick, children,
+  active,
+  onClick,
+  children,
 }: {
   active: boolean;
   onClick: () => void;
@@ -364,7 +404,13 @@ function OptionButton({
   );
 }
 
-function LangPicker({ value, onChange }: { value: Lang | null; onChange: (v: Lang | null) => void }) {
+function LangPicker({
+  value,
+  onChange,
+}: {
+  value: Lang | null;
+  onChange: (v: Lang | null) => void;
+}) {
   return (
     <div className="flex flex-wrap gap-2">
       <OptionButton active={value === "ru"} onClick={() => onChange(value === "ru" ? null : "ru")}>
@@ -381,7 +427,12 @@ function LangPicker({ value, onChange }: { value: Lang | null; onChange: (v: Lan
 }
 
 function GameForm({
-  game, onClose, onSaved, createFn, updateFn, uploadFn,
+  game,
+  onClose,
+  onSaved,
+  createFn,
+  updateFn,
+  uploadFn,
 }: {
   game: GameRow | null;
   onClose: () => void;
@@ -408,7 +459,11 @@ function GameForm({
   const STICKER_ORDER: Sticker[] = ["new", "hit", "for_two", "for_four"];
   const toggleSticker = (s: Sticker) => {
     setStickers((cur) => {
-      const next = cur.includes(s) ? cur.filter((x) => x !== s) : cur.length >= 3 ? cur : [...cur, s];
+      const next = cur.includes(s)
+        ? cur.filter((x) => x !== s)
+        : cur.length >= 3
+          ? cur
+          : [...cur, s];
       return [...next].sort((a, b) => STICKER_ORDER.indexOf(a) - STICKER_ORDER.indexOf(b));
     });
   };
@@ -417,16 +472,22 @@ function GameForm({
     setCategories((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
   };
 
-
   const handleFile = async (file: File) => {
-    if (file.size > MAX_UPLOAD_MB * 1024 * 1024) { toast.error(`Файл больше ${MAX_UPLOAD_MB} МБ`); return; }
+    if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+      toast.error(`Файл больше ${MAX_UPLOAD_MB} МБ`);
+      return;
+    }
     setUploading(true);
     try {
       // Сжимаем прямо в браузере: ≤1800px по длинной стороне + WebP 80.
       const image = await optimizeImage(file);
       const dataBase64 = await blobToBase64(image.blob);
       const res = await uploadFn({
-        data: { filename: image.filename, contentType: image.contentType || "image/jpeg", dataBase64 },
+        data: {
+          filename: image.filename,
+          contentType: image.contentType || "image/jpeg",
+          dataBase64,
+        },
       });
       setImageUrl(res.path);
       toast.success(
@@ -442,7 +503,10 @@ function GameForm({
   };
 
   const handleSave = async () => {
-    if (!title.trim()) { toast.error("Введите название"); return; }
+    if (!title.trim()) {
+      toast.error("Введите название");
+      return;
+    }
     setSaving(true);
     // Пустая строка в поле = «не заполнено», в базе это null.
     const details = {
@@ -454,10 +518,29 @@ function GameForm({
     };
     try {
       if (game) {
-        await updateFn({ data: { id: game.id, title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden, ...details } });
+        await updateFn({
+          data: {
+            id: game.id,
+            title: title.trim(),
+            stickers,
+            categories,
+            image_url: imageUrl,
+            title_hidden: titleHidden,
+            ...details,
+          },
+        });
         toast.success("Сохранено");
       } else {
-        await createFn({ data: { title: title.trim(), stickers, categories, image_url: imageUrl, title_hidden: titleHidden, ...details } });
+        await createFn({
+          data: {
+            title: title.trim(),
+            stickers,
+            categories,
+            image_url: imageUrl,
+            title_hidden: titleHidden,
+            ...details,
+          },
+        });
         toast.success("Игра добавлена");
       }
 
@@ -470,16 +553,29 @@ function GameForm({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-lg bg-card border border-border rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-lg bg-card border border-border rounded-t-2xl sm:rounded-2xl p-6 max-h-[90vh] overflow-y-auto"
+      >
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display font-bold text-xl uppercase">
             <span className="text-gradient">{game ? "Редактировать" : "Новая игра"}</span>
           </h2>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-2xl leading-none">×</button>
+          <button
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground text-2xl leading-none"
+          >
+            ×
+          </button>
         </div>
 
-        <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">Название</label>
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">
+          Название
+        </label>
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -494,35 +590,55 @@ function GameForm({
             className="mt-0.5 h-4 w-4 rounded border-border accent-primary"
           />
           <span className="text-xs text-muted-foreground leading-snug">
-            Скрыть название на сайте — карточка останется в каталоге и будет находиться через поиск, но подпись под обложкой не покажется.
+            Скрыть название на сайте — карточка останется в каталоге и будет находиться через поиск,
+            но подпись под обложкой не покажется.
           </span>
         </label>
 
-        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Фото игры</label>
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+          Фото игры
+        </label>
         <div className="flex items-center gap-3">
           <div className="w-24 h-24 rounded-lg border border-border bg-secondary overflow-hidden flex-shrink-0">
             {previewSrc ? (
               <img src={previewSrc} alt="" className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[10px] uppercase">пусто</div>
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[10px] uppercase">
+                пусто
+              </div>
             )}
           </div>
           <div className="flex flex-col gap-2 flex-1">
             <label className="rounded-md px-3 py-2 border border-border text-sm text-center cursor-pointer hover:border-primary transition">
-              {uploading ? "Загрузка..." : (imageUrl ? "Заменить фото" : "Загрузить фото")}
-              <input type="file" accept="image/*" className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
+              {uploading ? "Загрузка..." : imageUrl ? "Заменить фото" : "Загрузить фото"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) handleFile(f);
+                  e.target.value = "";
+                }}
+              />
             </label>
             <p className="text-[11px] text-muted-foreground leading-snug">
               Сжимается автоматически: до 1800px по длинной стороне, формат WebP.
             </p>
             {imageUrl && (
-              <button onClick={() => setImageUrl(null)} className="text-xs text-destructive hover:underline text-left">Удалить фото</button>
+              <button
+                onClick={() => setImageUrl(null)}
+                className="text-xs text-destructive hover:underline text-left"
+              >
+                Удалить фото
+              </button>
             )}
           </div>
         </div>
 
-        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Стикеры (до 3)</label>
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+          Стикеры (до 3)
+        </label>
         <div className="flex flex-wrap gap-2">
           {STICKER_LIST.map((s) => {
             const active = stickers.includes(s);
@@ -543,7 +659,9 @@ function GameForm({
           })}
         </div>
 
-        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Категории</label>
+        <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+          Категории
+        </label>
         <div className="flex flex-wrap gap-2">
           {CATEGORY_VALUES.map((c) => {
             const active = categories.includes(c);
@@ -564,13 +682,17 @@ function GameForm({
           })}
         </div>
 
-
         <div className="mt-6 pt-5 border-t border-border">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">
-            Окно игры <span className="normal-case tracking-normal opacity-70">— незаполненные поля в окне не показываются</span>
+            Окно игры{" "}
+            <span className="normal-case tracking-normal opacity-70">
+              — незаполненные поля в окне не показываются
+            </span>
           </p>
 
-          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">Жанр</label>
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">
+            Жанр
+          </label>
           <input
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
@@ -579,10 +701,16 @@ function GameForm({
             className="w-full bg-input border border-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
           />
 
-          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Сколько игроков</label>
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+            Сколько игроков
+          </label>
           <div className="flex flex-wrap gap-2">
             {PLAYERS_VALUES.map((p) => (
-              <OptionButton key={p} active={players === p} onClick={() => setPlayers(players === p ? null : p)}>
+              <OptionButton
+                key={p}
+                active={players === p}
+                onClick={() => setPlayers(players === p ? null : p)}
+              >
                 {p}
               </OptionButton>
             ))}
@@ -592,7 +720,10 @@ function GameForm({
           </div>
 
           <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-1">
-            Описание <span className="normal-case tracking-normal opacity-70">— 1–2 фразы, {description.length}/600</span>
+            Описание{" "}
+            <span className="normal-case tracking-normal opacity-70">
+              — 1–2 фразы, {description.length}/600
+            </span>
           </label>
           <textarea
             value={description}
@@ -603,15 +734,24 @@ function GameForm({
             className="w-full bg-input border border-border rounded-md px-3 py-2 focus:outline-none focus:border-primary resize-y"
           />
 
-          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Озвучка</label>
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+            Озвучка
+          </label>
           <LangPicker value={voiceLang} onChange={setVoiceLang} />
 
-          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">Интерфейс</label>
+          <label className="block text-xs uppercase tracking-wider text-muted-foreground mt-4 mb-2">
+            Интерфейс
+          </label>
           <LangPicker value={uiLang} onChange={setUiLang} />
         </div>
 
         <div className="mt-6 flex gap-2">
-          <button onClick={onClose} className="flex-1 rounded-md py-2.5 border border-border text-sm hover:border-foreground">Отмена</button>
+          <button
+            onClick={onClose}
+            className="flex-1 rounded-md py-2.5 border border-border text-sm hover:border-foreground"
+          >
+            Отмена
+          </button>
           <button
             onClick={handleSave}
             disabled={saving || uploading}

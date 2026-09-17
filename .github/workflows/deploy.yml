@@ -1,18 +1,20 @@
-# Проверка сборки.
+# Проверка кода перед деплоем.
 #
 # Раньше этот workflow пытался публиковать сайт на GitHub Pages и падал на шаге
 # upload-pages-artifact: тот ищет папку dist, а проект собирается в .output
 # (в vite.config.ts стоит nitro: { preset: "node-server" }). Сайт разворачивает
 # Timeweb напрямую из репозитория, GitHub Pages для этого не используется —
-# поэтому шаги публикации убраны, остался только билд.
+# поэтому шаги публикации убраны.
 #
-# Теперь значок у коммита означает ровно одно: зелёный — код собирается,
-# красный — сборка сломана и на это надо смотреть.
+# Проверяем три вещи, каждую отдельным шагом, чтобы по красному значку сразу
+# было видно, что именно сломалось: формат/линт, типы и сборка.
 name: Build check
 
 on:
   push:
     branches: [main]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,5 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run typecheck
       - run: npm run build
