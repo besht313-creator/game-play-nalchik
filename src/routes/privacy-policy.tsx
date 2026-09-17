@@ -17,7 +17,7 @@ export const Route = createFileRoute("/privacy-policy")({
 const PHONE = "+7 (903) 495-33-48";
 const PHONE_HREF = "tel:+79034953348";
 const SITE_URL = "gameplay-nalchik.ru";
-const LAST_UPDATED = "20 июля 2026 г.";
+const LAST_UPDATED = "17 сентября 2026 г.";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -80,8 +80,9 @@ function PrivacyPolicyPage() {
           <p>
             <strong className="text-foreground">Технические и статистические данные.</strong> При
             посещении Сайта, если вы дали согласие на использование cookie-файлов аналитики,
-            автоматически обрабатываются: IP-адрес, тип устройства и браузера, источник перехода,
-            страницы и время посещения. Эти данные собираются в обезличенном виде через сервисы
+            автоматически обрабатываются: IP-адрес, тип устройства и браузера, разрешение экрана,
+            источник перехода, страницы и время посещения, а также действия на странице (клики,
+            прокрутка, переходы). Эти данные собираются в обезличенном виде через сервисы
             Яндекс.Метрика и/или Google Analytics.
           </p>
         </Section>
@@ -94,8 +95,10 @@ function PrivacyPolicyPage() {
           </p>
           <ul className="list-disc pl-5 space-y-1">
             <li>
-              <strong className="text-foreground">Яндекс.Метрика</strong> — статистика посещений,
-              поведение на сайте (карта кликов, глубина просмотра). Оператор — ООО «Яндекс».
+              <strong className="text-foreground">Яндекс.Метрика</strong> — статистика посещений и
+              поведение на сайте: карта кликов, глубина просмотра, а также запись действий на
+              странице («Вебвизор») — движения мыши, прокрутка, нажатия и переходы между разделами.
+              Содержимое полей ввода при записи не сохраняется. Оператор — ООО «Яндекс».
             </li>
             <li>
               <strong className="text-foreground">Google Analytics</strong> — статистика посещений и

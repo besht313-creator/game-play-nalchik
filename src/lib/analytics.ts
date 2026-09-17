@@ -41,6 +41,9 @@ export function loadAnalytics() {
   analyticsLoaded = true;
 
   if (YANDEX_METRIKA_ID) {
+    // webvisor: true — запись действий на странице. Она названа в политике
+    // конфиденциальности (раздел 3), и весь этот код выполняется только после
+    // согласия на аналитические cookie.
     const ymScript = document.createElement("script");
     ymScript.innerHTML = `
       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -48,7 +51,7 @@ export function loadAnalytics() {
       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-      ym(${YANDEX_METRIKA_ID}, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:false });
+      ym(${YANDEX_METRIKA_ID}, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
     `;
     document.head.appendChild(ymScript);
 
