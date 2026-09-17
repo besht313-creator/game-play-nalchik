@@ -4,8 +4,14 @@
 // (cookie consent gating, script injection) is already wired up, so
 // analytics will start working automatically as soon as an ID is set.
 // Leave a value empty ("") to keep that provider disabled.
-export const YANDEX_METRIKA_ID = ""; // e.g. "12345678" — from metrika.yandex.ru
+export const YANDEX_METRIKA_ID = "111146201"; // metrika.yandex.ru
 export const GA_MEASUREMENT_ID = ""; // e.g. "G-XXXXXXXXXX" — from Google Analytics
+
+declare global {
+  interface Window {
+    ym?: (id: number, action: string, ...args: unknown[]) => void;
+  }
+}
 
 const CONSENT_KEY = "cookie_consent";
 export type CookieConsentValue = "accepted" | "declined";
@@ -23,6 +29,8 @@ export function setCookieConsent(value: CookieConsentValue) {
 }
 
 let analyticsLoaded = false;
+// Адрес, засчитанный последним: страховка от двойного просмотра одной страницы.
+let lastTrackedUrl: string | null = null;
 
 // Injects Yandex.Metrika and/or Google Analytics, but only if the visitor
 // has accepted cookies AND a tracking ID is configured above. Safe to call
@@ -47,6 +55,8 @@ export function loadAnalytics() {
     const noscript = document.createElement("noscript");
     noscript.innerHTML = `<div><img src="https://mc.yandex.ru/watch/${YANDEX_METRIKA_ID}" style="position:absolute;left:-9999px" alt="" /></div>`;
     document.body.appendChild(noscript);
+    // Первый просмотр отправляет сам init — запоминаем, чтобы не задвоить.
+    lastTrackedUrl = window.location.pathname + window.location.search;
   }
 
   if (GA_MEASUREMENT_ID) {
@@ -64,4 +74,23 @@ export function loadAnalytics() {
     `;
     document.head.appendChild(gtagInit);
   }
+}
+
+/**
+ * Просмотр страницы при переходе внутри сайта.
+ *
+ * Сайт — одностраничное приложение: со страницы на страницу переход идёт без
+ * перезагрузки, и счётчик сам его не заметит — без этого вызова вся статистика
+ * сводилась бы к одной точке входа.
+ *
+ * Google Analytics 4 такие переходы отслеживает сам (enhanced measurement),
+ * поэтому здесь только Метрика — иначе просмотры в GA считались бы дважды.
+ */
+export function trackPageView(url: string) {
+  if (typeof window === "undefined") return;
+  if (getCookieConsent() !== "accepted") return;
+  if (!YANDEX_METRIKA_ID) return;
+  if (url === lastTrackedUrl) return;
+  lastTrackedUrl = url;
+  window.ym?.(Number(YANDEX_METRIKA_ID), "hit", window.location.origin + url);
 }

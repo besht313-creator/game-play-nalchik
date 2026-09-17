@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieConsent } from "../components/CookieConsent";
+import { trackPageView } from "../lib/analytics";
 
 // Значения по умолчанию для всех страниц: конкретные маршруты при
 // необходимости переопределяют title/description своим head().
@@ -145,6 +146,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // Переходы внутри сайта идут без перезагрузки, поэтому просмотр страницы
+  // счётчику сообщаем сами. Отписка возвращается из subscribe.
+  useEffect(
+    () =>
+      router.subscribe("onResolved", ({ toLocation }) => {
+        trackPageView(toLocation.pathname + toLocation.searchStr);
+      }),
+    [router],
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
