@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X, Volume2, Languages } from "lucide-react";
 import { ContactDialog } from "@/components/ContactDialog";
 import type { GameRow, Lang, Players } from "@/lib/games.functions";
+import { gameImageSrc } from "@/lib/game-display";
 
 const DURATION = 340;
 const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -10,21 +11,20 @@ const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
 const VOICE_LABELS: Record<Lang, string> = { ru: "Русская", en: "Английская" };
 const UI_LABELS: Record<Lang, string> = { ru: "Русский", en: "Английский" };
 
-// На сервере useLayoutEffect ругается в логах, а замер всё равно нужен только в браузере.
-const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
 function reducedMotion() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-function gameImageSrc(url: string | null | undefined) {
-  if (!url) return null;
-  return url.startsWith("http") ? url : `/api/public/game-image/${url}`;
+  return (
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 }
 
 /** Силуэты «один / двое / четверо» — сплошные глифы, берут цвет текста. */
 export function PlayersIcon({ count, className }: { count: Players; className?: string }) {
-  const common = { viewBox: "0 0 24 24", fill: "currentColor", className, "aria-hidden": true } as const;
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    className,
+    "aria-hidden": true,
+  } as const;
 
   if (count === 1) {
     return (
@@ -73,6 +73,29 @@ export function useGameDetails() {
   return { details, open, clear };
 }
 
+/**
+ * Начальный кадр раскрытия: окно уже построено целиком, но показан только
+ * кусок размером с карточку — и сдвинут так, чтобы лечь ровно на неё.
+ *
+ * Раньше здесь был scale(), из-за которого окно именно «увеличивалось»:
+ * вместе с рамкой растягивался и текст. Обрезка (clip-path) ничего не
+ * искажает — карточка разворачивается, открывая содержимое как есть.
+ */
+function collapsedFrame(card: DOMRect, panel: DOMRect) {
+  const width = Math.min(card.width, panel.width);
+  const height = Math.min(card.height, panel.height);
+  // По горизонтали раскрываемся из центра, по вертикали — от верхнего края,
+  // где у окна стоит обложка: так стык с карточкой наименее заметен.
+  const left = (panel.width - width) / 2;
+  const top = 0;
+  return {
+    transform: `translate(${card.left - (panel.left + left)}px, ${card.top - (panel.top + top)}px)`,
+    clipPath: `inset(${top}px ${panel.width - left - width}px ${panel.height - top - height}px ${left}px round 12px)`,
+  };
+}
+
+const EXPANDED_FRAME = { transform: "translate(0px, 0px)", clipPath: "inset(0px round 16px)" };
+
 export function GameDetailsDialog({
   details,
   onClosed,
@@ -82,46 +105,65 @@ export function GameDetailsDialog({
   onClosed: () => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
+  // Анимацию запускает callback-ref панели, а не эффект этого компонента:
+  // Radix монтирует содержимое в портал позже, и на момент эффекта родителя
+  // panelRef ещё пуст — раньше из-за этого анимация молча не проигрывалась,
+  // и окно просто возникало на экране целиком.
+  const detailsRef = useRef(details);
+  detailsRef.current = details;
+  // Ref срабатывает не один раз за открытие. Без этой отметки повторный вызов
+  // мерил уже сдвинутую анимацией панель и перезапускал раскрытие с нулевым
+  // сдвигом — окно раскрывалось на месте, а не из карточки.
+  const animatedFor = useRef<GameDetails | null>(null);
 
-  // Открытие: панель разворачивается из прямоугольника карточки (приём FLIP).
-  useIsomorphicLayoutEffect(() => {
-    if (!details) return;
+  const attachPanel = useCallback((node: HTMLDivElement | null) => {
+    panelRef.current = node;
+    const current = detailsRef.current;
+    if (!node || !current || animatedFor.current === current) return;
+    animatedFor.current = current;
     closingRef.current = false;
-    const panel = panelRef.current;
-    overlayRef.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DURATION, easing: EASING, fill: "both" });
-    if (!panel) return;
+
+    overlayRef.current?.animate([{ opacity: 0 }, { opacity: 1 }], {
+      duration: DURATION,
+      easing: EASING,
+      fill: "both",
+    });
 
     if (reducedMotion()) {
-      panel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, fill: "both" });
+      node.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, fill: "both" });
       return;
     }
 
-    const to = panel.getBoundingClientRect();
+    // Меряем панель без наложенных анимаций — иначе в размер попадёт сдвиг.
+    node.getAnimations().forEach((a) => a.cancel());
+    const to = node.getBoundingClientRect();
     if (!to.width || !to.height) return;
-    const from = details.rect;
-    panel.animate(
+    node.animate([collapsedFrame(current.rect, to), EXPANDED_FRAME], {
+      duration: DURATION,
+      easing: EASING,
+      fill: "both",
+    });
+    // Содержимое проявляется следом за рамкой — так раскрытие читается как
+    // разворот карточки, а не как появление готового окна.
+    contentRef.current?.animate(
       [
-        {
-          transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${
-            from.top + from.height / 2 - (to.top + to.height / 2)
-          }px) scale(${from.width / to.width}, ${from.height / to.height})`,
-          opacity: 0.4,
-          borderRadius: "12px",
-        },
-        { transform: "none", opacity: 1, borderRadius: "16px" },
+        { opacity: 0, transform: "translateY(10px)" },
+        { opacity: 1, transform: "translateY(0)" },
       ],
-      { duration: DURATION, easing: EASING, fill: "both" },
+      { duration: DURATION - 80, delay: 80, easing: EASING, fill: "both" },
     );
-  }, [details]);
+  }, []);
 
-  // Закрытие: та же анимация в обратную сторону, и только потом размонтируем.
+  // Закрытие: то же движение в обратную сторону, и только потом размонтируем.
   const close = useCallback(() => {
     if (closingRef.current) return;
     closingRef.current = true;
 
     const panel = panelRef.current;
+    const content = contentRef.current;
     overlayRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration: DURATION * 0.85,
       easing: EASING,
@@ -135,31 +177,37 @@ export function GameDetailsDialog({
 
     const finish = () => onClosed();
     if (reducedMotion()) {
-      panel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: "both" }).finished.then(finish, finish);
+      panel
+        .animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: "both" })
+        .finished.then(finish, finish);
       return;
     }
 
+    // Сначала снимаем анимацию открытия (она заканчивается на «окно целиком»),
+    // потом меряем — иначе в размер попадёт незавершённый сдвиг.
+    panel.getAnimations().forEach((a) => a.cancel());
     const to = panel.getBoundingClientRect();
-    const from = details.rect;
+    content?.animate(
+      [
+        { opacity: 1, transform: "translateY(0)" },
+        { opacity: 0, transform: "translateY(8px)" },
+      ],
+      { duration: DURATION * 0.5, easing: EASING, fill: "both" },
+    );
     panel
-      .animate(
-        [
-          { transform: "none", opacity: 1, borderRadius: "16px" },
-          {
-            transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${
-              from.top + from.height / 2 - (to.top + to.height / 2)
-            }px) scale(${from.width / to.width}, ${from.height / to.height})`,
-            opacity: 0.2,
-            borderRadius: "12px",
-          },
-        ],
-        { duration: DURATION * 0.85, easing: EASING, fill: "both" },
-      )
+      .animate([EXPANDED_FRAME, collapsedFrame(details.rect, to)], {
+        duration: DURATION * 0.85,
+        easing: EASING,
+        fill: "both",
+      })
       .finished.then(finish, finish);
   }, [details, onClosed]);
 
   const game = details?.game ?? null;
   const cover = gameImageSrc(game?.image_url);
+  const hasDetails = Boolean(
+    game && (game.genre || game.players || game.description || game.voice_lang || game.ui_lang),
+  );
 
   return (
     <DialogPrimitive.Root
@@ -169,84 +217,112 @@ export function GameDetailsDialog({
       }}
     >
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay ref={overlayRef} className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm" />
+        {/* Клик по затемнению закрывает окно: слой Content растянут на весь
+            экран, поэтому «клик снаружи» сам по себе не срабатывает. */}
+        <DialogPrimitive.Overlay
+          ref={overlayRef}
+          onClick={close}
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+        />
         <DialogPrimitive.Content
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none focus:outline-none"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 focus:outline-none"
           onOpenAutoFocus={(e) => e.preventDefault()}
+          // Radix сам ставит этому слою pointer-events: auto, поэтому он
+          // растянут на весь экран и перехватывает клики — «клик снаружи» у
+          // Radix не срабатывает. Закрываем сами, если кликнули мимо окна.
+          onClick={(e) => {
+            if (e.target === e.currentTarget) close();
+          }}
           aria-describedby={undefined}
         >
           <div
-            ref={panelRef}
-            className="pointer-events-auto w-full max-w-md max-h-[88vh] overflow-y-auto overflow-x-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-neon)] will-change-transform"
+            ref={attachPanel}
+            className="pointer-events-auto relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-neon)] will-change-[transform,clip-path]"
           >
-            {game && (
-              <>
-                <div className="relative aspect-video bg-secondary">
-                  {cover ? (
-                    <img src={cover} alt={game.title} className="absolute inset-0 w-full h-full object-cover" />
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
-                  <button
-                    type="button"
-                    onClick={close}
-                    aria-label="Закрыть"
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-background active:scale-90 transition"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
+            {/* Обложка остаётся фоном окна: карточка разворачивается, а не подменяется. */}
+            <div className="absolute inset-0" aria-hidden>
+              {cover ? (
+                // Лёгкое размытие: обложка остаётся узнаваемой, но текст поверх
+                // читается на любой картинке, хоть светлой, хоть пёстрой.
+                <img
+                  src={cover}
+                  alt=""
+                  className="h-full w-full scale-110 object-cover blur-[3px]"
+                />
+              ) : (
+                <div className="h-full w-full bg-gradient-to-br from-primary/30 to-accent/30" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-b from-card/80 via-card/94 to-card" />
+            </div>
 
-                <div className="relative -mt-8 p-5">
-                  <DialogPrimitive.Title className="font-display font-bold text-2xl uppercase leading-tight">
+            {game && (
+              <div className="relative max-h-[88vh] overflow-y-auto overflow-x-hidden">
+                <button
+                  type="button"
+                  onClick={close}
+                  aria-label="Закрыть"
+                  // z-10 обязателен: блок с текстом анимируется transform'ом и
+                  // из-за этого перекрывал бы кнопку.
+                  className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur transition hover:bg-background active:scale-90"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                <div ref={contentRef} className="p-5 pt-6 sm:p-6">
+                  <DialogPrimitive.Title className="pr-12 font-display text-2xl leading-tight font-bold uppercase">
                     {game.title}
                   </DialogPrimitive.Title>
 
-                  {(game.genre || game.players) && (
-                    <div className="mt-2 flex items-center justify-between gap-3">
-                      <span className="text-sm text-muted-foreground">{game.genre}</span>
+                  {(game.players || game.genre) && (
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
                       {game.players && (
-                        <span className="shrink-0 flex items-center gap-1.5 text-sm font-medium">
-                          <PlayersIcon count={game.players} className="w-5 h-5 text-primary" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-medium">
+                          <PlayersIcon count={game.players} className="h-4 w-4 text-primary" />
                           {game.players} {game.players === 1 ? "игрок" : "игрока"}
+                        </span>
+                      )}
+                      {game.genre && <span className="text-muted-foreground">{game.genre}</span>}
+                    </div>
+                  )}
+
+                  {(game.voice_lang || game.ui_lang) && (
+                    <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                      {game.voice_lang && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Volume2 className="h-4 w-4 shrink-0 text-primary" />
+                          <span className="text-muted-foreground">Озвучка:</span>
+                          <span className="font-medium">{VOICE_LABELS[game.voice_lang]}</span>
+                        </span>
+                      )}
+                      {game.ui_lang && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Languages className="h-4 w-4 shrink-0 text-primary" />
+                          <span className="text-muted-foreground">Интерфейс:</span>
+                          <span className="font-medium">{UI_LABELS[game.ui_lang]}</span>
                         </span>
                       )}
                     </div>
                   )}
 
                   {game.description && (
-                    <p className="mt-4 text-muted-foreground leading-relaxed">{game.description}</p>
+                    <p className="mt-4 leading-relaxed text-muted-foreground">{game.description}</p>
                   )}
 
-                  {(game.voice_lang || game.ui_lang) && (
-                    <div className="mt-5 pt-4 border-t border-border grid gap-2 text-sm">
-                      {game.voice_lang && (
-                        <div className="flex items-center gap-2">
-                          <Volume2 className="w-4 h-4 text-primary shrink-0" />
-                          <span className="text-muted-foreground">Озвучка:</span>
-                          <span className="font-medium">{VOICE_LABELS[game.voice_lang]}</span>
-                        </div>
-                      )}
-                      {game.ui_lang && (
-                        <div className="flex items-center gap-2">
-                          <Languages className="w-4 h-4 text-primary shrink-0" />
-                          <span className="text-muted-foreground">Интерфейс:</span>
-                          <span className="font-medium">{UI_LABELS[game.ui_lang]}</span>
-                        </div>
-                      )}
-                    </div>
+                  {!hasDetails && (
+                    <p className="mt-4 leading-relaxed text-muted-foreground">
+                      Подробности об игре уточним при бронировании.
+                    </p>
                   )}
 
                   <div className="mt-6 [&>button]:w-full">
                     <ContactDialog>
-                      <span className="w-full inline-flex items-center justify-center rounded-full px-6 py-3 bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.97] transition-all duration-150">
+                      <span className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 font-display font-bold tracking-wider uppercase text-primary-foreground transition-all duration-150 hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
                         Забронировать
                       </span>
                     </ContactDialog>
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </DialogPrimitive.Content>
