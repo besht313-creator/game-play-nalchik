@@ -5,4 +5,10 @@ dist
 pnpm-lock.yaml
 package-lock.json
 bun.lock
+# Файлы, которые генерирует тулинг: их переформатирование только создаёт
+# конфликт при следующей регенерации.
 routeTree.gen.ts
+src/integrations/supabase/
+.lovable/
+# Файлы подтверждения прав в Яндекс.Вебмастере — отдаются как есть.
+public/yandex_*.html

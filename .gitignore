@@ -36,3 +36,7 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Проект использует bun.lock; package-lock.json появляется только от
+# локального `npm install` и в репозиторий не нужен.
+package-lock.json

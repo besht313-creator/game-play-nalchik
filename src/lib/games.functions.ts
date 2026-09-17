@@ -3,13 +3,34 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type Sticker = "hit" | "new" | "for_two" | "for_four";
-export type Category = "new" | "hits" | "fighting" | "shooter" | "coop" | "racing" | "sports" | "kids" | "horror" | "exclusive";
+export type Category =
+  | "new"
+  | "hits"
+  | "fighting"
+  | "shooter"
+  | "coop"
+  | "racing"
+  | "sports"
+  | "kids"
+  | "horror"
+  | "exclusive";
 /** Язык озвучки и интерфейса — только эти два варианта. */
 export type Lang = "ru" | "en";
 /** Сколько человек может играть одновременно. */
 export type Players = 1 | 2 | 4;
 
-export const CATEGORY_VALUES: Category[] = ["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"];
+export const CATEGORY_VALUES: Category[] = [
+  "new",
+  "hits",
+  "fighting",
+  "shooter",
+  "coop",
+  "racing",
+  "sports",
+  "kids",
+  "horror",
+  "exclusive",
+];
 export const PLAYERS_VALUES: Players[] = [1, 2, 4];
 
 export type GameRow = {
@@ -34,14 +55,27 @@ export const listGames = createServerFn({ method: "GET" }).handler(async () => {
   const { supabase } = await import("@/integrations/supabase/client");
   const { data, error } = await supabase
     .from("games")
-    .select("id,title,image_url,stickers,categories,position,title_hidden,genre,players,description,voice_lang,ui_lang")
+    .select(
+      "id,title,image_url,stickers,categories,position,title_hidden,genre,players,description,voice_lang,ui_lang",
+    )
     .order("position", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as GameRow[];
 });
 
 const StickerEnum = z.enum(["hit", "new", "for_two", "for_four"]);
-const CategoryEnum = z.enum(["new", "hits", "fighting", "shooter", "coop", "racing", "sports", "kids", "horror", "exclusive"]);
+const CategoryEnum = z.enum([
+  "new",
+  "hits",
+  "fighting",
+  "shooter",
+  "coop",
+  "racing",
+  "sports",
+  "kids",
+  "horror",
+  "exclusive",
+]);
 const LangEnum = z.enum(["ru", "en"]);
 const PlayersEnum = z.union([z.literal(1), z.literal(2), z.literal(4)]);
 
@@ -63,14 +97,16 @@ const detailsShape = {
 export const adminCreateGame = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({
-      title: z.string().min(1).max(200),
-      stickers: z.array(StickerEnum).max(3).default([]),
-      categories: z.array(CategoryEnum).max(8).default([]),
-      image_url: z.string().nullable().optional(),
-      title_hidden: z.boolean().optional().default(false),
-      ...detailsShape,
-    }).parse(d),
+    z
+      .object({
+        title: z.string().min(1).max(200),
+        stickers: z.array(StickerEnum).max(3).default([]),
+        categories: z.array(CategoryEnum).max(8).default([]),
+        image_url: z.string().nullable().optional(),
+        title_hidden: z.boolean().optional().default(false),
+        ...detailsShape,
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
@@ -121,15 +157,17 @@ export const adminCreateGame = createServerFn({ method: "POST" })
 export const adminUpdateGame = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      title: z.string().min(1).max(200).optional(),
-      stickers: z.array(StickerEnum).max(3).optional(),
-      categories: z.array(CategoryEnum).max(8).optional(),
-      image_url: z.string().nullable().optional(),
-      title_hidden: z.boolean().optional(),
-      ...detailsShape,
-    }).parse(d),
+    z
+      .object({
+        id: z.string().uuid(),
+        title: z.string().min(1).max(200).optional(),
+        stickers: z.array(StickerEnum).max(3).optional(),
+        categories: z.array(CategoryEnum).max(8).optional(),
+        image_url: z.string().nullable().optional(),
+        title_hidden: z.boolean().optional(),
+        ...detailsShape,
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
@@ -160,12 +198,9 @@ export const adminUpdateGame = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-
 export const adminDeleteGame = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) =>
-    z.object({ id: z.string().uuid() }).parse(d),
-  )
+  .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     const { supabase } = context;
     // Best-effort cleanup of image
@@ -186,10 +221,12 @@ export const adminDeleteGame = createServerFn({ method: "POST" })
 export const adminMoveGame = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      direction: z.enum(["up", "down"]),
-    }).parse(d),
+    z
+      .object({
+        id: z.string().uuid(),
+        direction: z.enum(["up", "down"]),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
@@ -200,13 +237,11 @@ export const adminMoveGame = createServerFn({ method: "POST" })
       .single();
     if (e1 || !current) throw new Error(e1?.message ?? "Игра не найдена");
 
-    const q = supabase
-      .from("games")
-      .select("id,position")
-      .limit(1);
-    const { data: neighbor } = data.direction === "up"
-      ? await q.lt("position", current.position).order("position", { ascending: false })
-      : await q.gt("position", current.position).order("position", { ascending: true });
+    const q = supabase.from("games").select("id,position").limit(1);
+    const { data: neighbor } =
+      data.direction === "up"
+        ? await q.lt("position", current.position).order("position", { ascending: false })
+        : await q.gt("position", current.position).order("position", { ascending: true });
 
     const n = neighbor?.[0];
     if (!n) return { ok: true };
@@ -225,10 +260,12 @@ export const adminMoveGame = createServerFn({ method: "POST" })
 export const adminReorderGame = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      toPosition: z.number().int().min(1),
-    }).parse(d),
+    z
+      .object({
+        id: z.string().uuid(),
+        toPosition: z.number().int().min(1),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
@@ -286,11 +323,13 @@ export const adminReorderGame = createServerFn({ method: "POST" })
 export const adminUploadImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z.object({
-      filename: z.string().min(1),
-      contentType: z.string().min(1),
-      dataBase64: z.string().min(1),
-    }).parse(d),
+    z
+      .object({
+        filename: z.string().min(1),
+        contentType: z.string().min(1),
+        dataBase64: z.string().min(1),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;

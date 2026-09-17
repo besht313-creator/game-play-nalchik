@@ -64,18 +64,29 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
+  * {
+    border-color: var(--color-border);
   }
-  section[id] { scroll-margin-top: calc(64px - 6rem); }
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  section[id] {
+    scroll-margin-top: calc(64px - 6rem);
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
   }
@@ -89,12 +100,18 @@
 }
 
 @utility neon-border {
-  box-shadow: 0 0 0 1px var(--neon-magenta), 0 0 20px oklch(0.7 0.28 330 / 0.3);
+  box-shadow:
+    0 0 0 1px var(--neon-magenta),
+    0 0 20px oklch(0.7 0.28 330 / 0.3);
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @utility animate-marquee {
@@ -102,9 +119,17 @@
 }
 
 @keyframes btn-click {
-  0% { transform: scale(1); }
-  40% { transform: scale(0.92); filter: brightness(1.25); }
-  100% { transform: scale(1); filter: brightness(1); }
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.92);
+    filter: brightness(1.25);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
 }
 
 @utility animate-btn-click {
@@ -112,13 +137,18 @@
 }
 
 @keyframes attention-breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
-    box-shadow: 0 0 18px oklch(0.7 0.28 330 / 0.35), 0 0 0 0 oklch(0.7 0.28 330 / 0);
+    box-shadow:
+      0 0 18px oklch(0.7 0.28 330 / 0.35),
+      0 0 0 0 oklch(0.7 0.28 330 / 0);
   }
   50% {
     transform: scale(1.04);
-    box-shadow: 0 0 32px oklch(0.7 0.28 330 / 0.65), 0 0 0 6px oklch(0.7 0.28 330 / 0.15);
+    box-shadow:
+      0 0 32px oklch(0.7 0.28 330 / 0.65),
+      0 0 0 6px oklch(0.7 0.28 330 / 0.15);
   }
 }
 

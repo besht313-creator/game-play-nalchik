@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+# Админка закрыта и от индексации (на самой странице ещё стоит noindex).
+Disallow: /admin
+# Служебные MCP-эндпоинты — не страницы сайта.
+Disallow: /mcp
+Disallow: /.mcp/
+# /api/public/game-image/ намеренно открыт: через него отдаются обложки игр,
+# и поисковику они нужны, чтобы корректно отрисовать каталог.
 
 Sitemap: https://gameplay-nalchik.ru/sitemap.xml

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { getCookieConsent, setCookieConsent, loadAnalytics, type CookieConsentValue } from "@/lib/analytics";
+import {
+  getCookieConsent,
+  setCookieConsent,
+  loadAnalytics,
+  type CookieConsentValue,
+} from "@/lib/analytics";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -25,11 +30,12 @@ export function CookieConsent() {
     <div className="fixed inset-x-0 bottom-0 z-[100] p-4 sm:p-6">
       <div className="max-w-3xl mx-auto rounded-2xl border border-border bg-card/95 backdrop-blur-md shadow-[var(--shadow-neon)] p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-4">
         <p className="text-sm text-muted-foreground text-center sm:text-left flex-1">
-          Мы используем файлы cookie для аналитики и улучшения работы сайта. Продолжая
-          пользоваться сайтом, вы соглашаетесь с{" "}
+          Мы используем файлы cookie для аналитики и улучшения работы сайта. Продолжая пользоваться
+          сайтом, вы соглашаетесь с{" "}
           <Link to="/privacy-policy" className="text-primary underline hover:brightness-110">
             Политикой конфиденциальности
-          </Link>.
+          </Link>
+          .
         </p>
         <div className="flex items-center gap-2 shrink-0">
           <button
