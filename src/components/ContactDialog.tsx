@@ -13,6 +13,10 @@ const PHONE_HREF = "tel:+79034953348";
 const WHATSAPP_URL = "https://wa.me/message/573SWX2JZIG6C1";
 const TELEGRAM_URL = "https://t.me/Arenda_PS5";
 
+// Прозрачность подложек кнопок записана прямо в цвете (восьмизначный hex).
+// Утилиту вида bg-[#25D366]/20 Tailwind собирает через color-mix, и браузер
+// без его поддержки заливает кнопку сплошным цветом — значок мессенджера того
+// же цвета на ней пропадает.
 export function ContactDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
@@ -41,7 +45,7 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/30 transition font-display font-bold uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#25D36633] hover:bg-[#25D3664D] border border-[#25D3664D] transition font-display font-bold uppercase tracking-wider"
           >
             <MessageCircle className="h-5 w-5 text-[#25D366] shrink-0" />
             <span>WhatsApp</span>
@@ -50,7 +54,7 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
             href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#0088cc]/20 hover:bg-[#0088cc]/30 border border-[#0088cc]/30 transition font-display font-bold uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 rounded-xl px-5 py-4 bg-[#0088CC33] hover:bg-[#0088CC4D] border border-[#0088CC4D] transition font-display font-bold uppercase tracking-wider"
           >
             <Send className="h-5 w-5 text-[#0088cc] shrink-0" />
             <span>Telegram</span>

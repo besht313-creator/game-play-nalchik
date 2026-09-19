@@ -263,7 +263,7 @@ export function GameDetailsDialog({
                   aria-label="Закрыть"
                   // z-10 обязателен: блок с текстом анимируется transform'ом и
                   // из-за этого перекрывал бы кнопку.
-                  className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur transition hover:bg-background active:scale-90"
+                  className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full text-foreground backdrop-blur transition [background-color:rgba(4,6,19,0.7)] hover:[background-color:rgba(4,6,19,0.95)] active:scale-90"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -276,8 +276,8 @@ export function GameDetailsDialog({
                   {(game.players || game.genre) && (
                     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
                       {game.players && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-medium">
-                          <PlayersIcon count={game.players} className="h-4 w-4 text-primary" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium [background-color:rgba(241,79,240,0.12)] [border-color:rgba(241,79,240,0.45)]">
+                          <PlayersIcon count={game.players} className="h-4 w-4 text-[#F14FF0]" />
                           {game.players} {game.players === 1 ? "игрок" : "игрока"}
                         </span>
                       )}

@@ -37,11 +37,15 @@ export const Route = createFileRoute("/admin")({
 const STICKER_LIST: Sticker[] = ["hit", "new", "for_two", "for_four"];
 
 function StickerBadge({ s }: { s: Sticker }) {
+  // Прозрачность записана прямо в цвете (восьмизначный hex), а не утилитой
+  // вида bg-[#F14FF0]/15: такую утилиту Tailwind собирает через color-mix, и
+  // браузер без его поддержки заливает плашку сплошным цветом — надпись того
+  // же цвета на ней пропадает.
   const styles: Record<Sticker, string> = {
-    hit: "bg-[#F14FF0]/15 text-[#F14FF0] border-[#F14FF0]/40 shadow-[0_0_12px_#F14FF080]",
-    new: "bg-[#63D8FF]/15 text-[#63D8FF] border-[#63D8FF]/40 shadow-[0_0_12px_#63D8FF80]",
-    for_two: "bg-primary/15 text-primary border-primary/40 shadow-[var(--shadow-neon)]",
-    for_four: "bg-[#A78BFA]/15 text-[#A78BFA] border-[#A78BFA]/40 shadow-[0_0_12px_#A78BFA80]",
+    hit: "bg-[#F14FF026] text-[#F14FF0] border-[#F14FF066] shadow-[0_0_12px_#F14FF080]",
+    new: "bg-[#63D8FF26] text-[#63D8FF] border-[#63D8FF66] shadow-[0_0_12px_#63D8FF80]",
+    for_two: "bg-[#DF6DF826] text-primary border-[#DF6DF866] shadow-[var(--shadow-neon)]",
+    for_four: "bg-[#A78BFA26] text-[#A78BFA] border-[#A78BFA66] shadow-[0_0_12px_#A78BFA80]",
   };
   return (
     <span
