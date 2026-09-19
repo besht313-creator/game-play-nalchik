@@ -222,7 +222,7 @@ export function GameDetailsDialog({
         <DialogPrimitive.Overlay
           ref={overlayRef}
           onClick={close}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 backdrop-blur-sm [background-color:rgba(0,0,0,0.8)]"
         />
         <DialogPrimitive.Content
           className="fixed inset-0 z-50 flex items-center justify-center p-4 focus:outline-none"
@@ -240,19 +240,19 @@ export function GameDetailsDialog({
             className="pointer-events-auto relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-neon)] will-change-[transform,clip-path]"
           >
             {/* Обложка остаётся фоном окна: карточка разворачивается, а не подменяется. */}
-            <div className="absolute inset-0" aria-hidden>
+            <div className="absolute inset-0 bg-card" aria-hidden>
               {cover ? (
-                // Лёгкое размытие: обложка остаётся узнаваемой, но текст поверх
-                // читается на любой картинке, хоть светлой, хоть пёстрой.
+                // Обложка остаётся фоном окна, но приглушённой: размытие плюс
+                // низкая прозрачность поверх сплошного bg-card. Так текст
+                // читается на любой картинке — хоть тёмной, хоть светлой.
                 <img
                   src={cover}
                   alt=""
-                  className="h-full w-full scale-110 object-cover blur-[3px]"
+                  className="h-full w-full scale-110 object-cover opacity-10 blur-[6px]"
                 />
               ) : (
-                <div className="h-full w-full bg-gradient-to-br from-primary/30 to-accent/30" />
+                <div className="h-full w-full bg-gradient-to-br from-primary to-accent opacity-25" />
               )}
-              <div className="absolute inset-0 bg-gradient-to-b from-card/80 via-card/94 to-card" />
             </div>
 
             {game && (
