@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { PHONE, PHONE_HREF } from "@/lib/contact";
+
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
@@ -14,8 +16,6 @@ export const Route = createFileRoute("/terms")({
   component: TermsPage,
 });
 
-const PHONE = "+7 (903) 495-33-48";
-const PHONE_HREF = "tel:+79034953348";
 const SITE_URL = "gameplay-nalchik.ru";
 const LAST_UPDATED = "29 июля 2026 г.";
 
