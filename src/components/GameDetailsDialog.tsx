@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X, Volume2, Languages } from "lucide-react";
 import { ContactDialog } from "@/components/ContactDialog";
+import { askAboutGame } from "@/lib/contact";
 import type { GameRow, Lang, Players } from "@/lib/games.functions";
 import { gameImageSrc } from "@/lib/game-display";
 
@@ -315,7 +316,7 @@ export function GameDetailsDialog({
                   )}
 
                   <div className="mt-6 [&>button]:w-full">
-                    <ContactDialog>
+                    <ContactDialog about={askAboutGame(game.title)}>
                       <span className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 font-display font-bold tracking-wider uppercase text-primary-foreground transition-all duration-150 hover:brightness-110 hover:shadow-[var(--shadow-neon)] active:scale-[0.97]">
                         Забронировать
                       </span>

@@ -9,6 +9,15 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5-console.jpg";
 import ps4Img from "@/assets/ps4-console.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
+import {
+  askAboutConsole,
+  INSTAGRAM_URL,
+  PHONE,
+  PHONE_HREF,
+  telegramUrl,
+  VK_URL,
+  whatsappUrl,
+} from "@/lib/contact";
 import { FloatingContactButton } from "@/components/FloatingContactButton";
 import {
   MessageCircle,
@@ -20,9 +29,6 @@ import {
   Gamepad2,
   MapPin,
 } from "lucide-react";
-
-const INSTAGRAM_URL = "https://www.instagram.com/gameplay_nalchik?igsh=a3l4ZWFrYXp4MTh2";
-const VK_URL = "https://vk.ru/club237840986";
 
 const VkIcon = ({ className }: { className?: string }) => (
   <svg
@@ -55,9 +61,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const PHONE = "+7 (903) 495-33-48";
-const PHONE_HREF = "tel:+79034953348";
 
 const consoles = [
   {
@@ -265,7 +268,7 @@ function Index() {
             </a>
             <div className="flex items-center justify-center gap-4 pt-4 border-t border-border flex-wrap">
               <a
-                href="https://wa.me/message/573SWX2JZIG6C1"
+                href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -274,7 +277,7 @@ function Index() {
                 <MessageCircle className="w-7 h-7" />
               </a>
               <a
-                href="https://t.me/Arenda_PS5"
+                href={telegramUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram"
@@ -379,7 +382,7 @@ function Index() {
                         / сутки
                       </span>
                     </div>
-                    <ContactDialog>
+                    <ContactDialog about={askAboutConsole(c.name)}>
                       <span className="shrink-0 inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.92] active:brightness-125 transition-all duration-150 cursor-pointer animate-attention">
                         Арендовать
                       </span>
@@ -578,7 +581,7 @@ function Index() {
           </div>
           <div className="flex justify-center md:justify-end items-start gap-4 flex-wrap">
             <a
-              href="https://wa.me/message/573SWX2JZIG6C1"
+              href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#25D366] hover:border-[#25D366] hover:shadow-[0_0_15px_#25D36680] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150"
@@ -587,7 +590,7 @@ function Index() {
               <MessageCircle className="w-7 h-7" />
             </a>
             <a
-              href="https://t.me/Arenda_PS5"
+              href={telegramUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="w-14 h-14 rounded-full bg-card border border-border flex items-center justify-center text-[#0088cc] hover:border-[#0088cc] hover:shadow-[0_0_15px_#0088cc80] hover:scale-110 active:scale-90 active:brightness-125 transition-all duration-150"

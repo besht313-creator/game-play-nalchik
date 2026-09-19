@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Phone, MessageCircle, Send, Plus, X } from "lucide-react";
 
-const PHONE_HREF = "tel:+79034953348";
-const WHATSAPP_URL = "https://wa.me/message/573SWX2JZIG6C1";
-const TELEGRAM_URL = "https://t.me/Arenda_PS5";
-const VK_URL = "https://vk.ru/club237840986";
+import { PHONE_HREF, telegramUrl, VK_URL, whatsappUrl } from "@/lib/contact";
 
 const VkIcon = ({ className }: { className?: string }) => (
   <svg
@@ -21,12 +18,12 @@ const actions = [
   { icon: Phone, href: PHONE_HREF, label: "Позвонить", color: "#22c55e", shadow: "#22c55e80" },
   {
     icon: MessageCircle,
-    href: WHATSAPP_URL,
+    href: whatsappUrl(),
     label: "WhatsApp",
     color: "#25D366",
     shadow: "#25D36680",
   },
-  { icon: Send, href: TELEGRAM_URL, label: "Telegram", color: "#0088cc", shadow: "#0088cc80" },
+  { icon: Send, href: telegramUrl(), label: "Telegram", color: "#0088cc", shadow: "#0088cc80" },
   { icon: VkIcon, href: VK_URL, label: "VK", color: "#0077FF", shadow: "#0077FF80" },
 ];
 
