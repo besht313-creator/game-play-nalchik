@@ -9,6 +9,7 @@ import heroImg from "@/assets/hero-ps5.jpg";
 import ps5Img from "@/assets/ps5-console.jpg";
 import ps4Img from "@/assets/ps4-console.jpg";
 import { ContactDialog } from "@/components/ContactDialog";
+import { CookieSettingsButton } from "@/components/CookieConsent";
 import {
   askAboutConsole,
   INSTAGRAM_URL,
@@ -630,6 +631,7 @@ function Index() {
           <Link to="/terms" className="hover:text-primary transition normal-case tracking-normal">
             Пользовательское соглашение
           </Link>
+          <CookieSettingsButton />
         </div>
       </footer>
       {!menuOpen && <FloatingContactButton />}
