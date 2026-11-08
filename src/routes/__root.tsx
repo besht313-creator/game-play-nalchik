@@ -13,7 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieConsent } from "../components/CookieConsent";
-import { trackPageView } from "../lib/analytics";
+import { observeContactClicks, trackPageView } from "../lib/analytics";
 
 // Значения по умолчанию для всех страниц: конкретные маршруты при
 // необходимости переопределяют title/description своим head().
@@ -48,6 +48,8 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
+
+  useEffect(() => observeContactClicks(), []);
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);

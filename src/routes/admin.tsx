@@ -23,6 +23,7 @@ import {
 } from "@/lib/games.functions";
 import { optimizeImage, blobToBase64, formatBytes } from "@/lib/image-compress";
 import { CATEGORY_LABELS, STICKER_LABELS, gameImageSrc } from "@/lib/game-display";
+import { AdminAnalytics } from "@/components/AdminAnalytics";
 
 // Оригинал может быть тяжёлым: перед отправкой он всё равно ужимается в браузере.
 const MAX_UPLOAD_MB = 25;
@@ -187,6 +188,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
 
   const [editing, setEditing] = useState<GameRow | null>(null);
   const [adding, setAdding] = useState(false);
+  const [tab, setTab] = useState<"games" | "analytics">("games");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -217,93 +219,117 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        {games.isLoading && <p className="text-muted-foreground text-center py-12">Загрузка...</p>}
-        {games.error && (
-          <p className="text-destructive text-center py-12">
-            Ошибка: {(games.error as Error).message}
-          </p>
-        )}
-        {games.data && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {games.data.map((g, idx) => (
-              <article
-                key={g.id}
-                className="rounded-xl border border-border bg-card overflow-hidden flex flex-col"
-              >
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 relative">
-                  {gameImageSrc(g.image_url) ? (
-                    <img
-                      src={gameImageSrc(g.image_url)!}
-                      alt={g.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs uppercase">
-                      нет фото
+        <nav aria-label="Разделы админки" className="mb-8 flex gap-3 border-b border-border pb-4">
+          <button
+            aria-current={tab === "games" ? "page" : undefined}
+            className={`min-h-11 rounded-lg px-4 text-sm ${tab === "games" ? "bg-secondary text-foreground" : "text-muted-foreground"}`}
+            onClick={() => setTab("games")}
+          >
+            Каталог игр
+          </button>
+          <button
+            aria-current={tab === "analytics" ? "page" : undefined}
+            className={`min-h-11 rounded-lg px-4 text-sm ${tab === "analytics" ? "bg-secondary text-accent" : "text-muted-foreground"}`}
+            onClick={() => setTab("analytics")}
+          >
+            Аналитика
+          </button>
+        </nav>
+        {tab === "analytics" ? (
+          <AdminAnalytics />
+        ) : (
+          <>
+            {games.isLoading && (
+              <p className="text-muted-foreground text-center py-12">Загрузка...</p>
+            )}
+            {games.error && (
+              <p className="text-destructive text-center py-12">
+                Ошибка: {(games.error as Error).message}
+              </p>
+            )}
+            {games.data && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {games.data.map((g, idx) => (
+                  <article
+                    key={g.id}
+                    className="rounded-xl border border-border bg-card overflow-hidden flex flex-col"
+                  >
+                    <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 relative">
+                      {gameImageSrc(g.image_url) ? (
+                        <img
+                          src={gameImageSrc(g.image_url)!}
+                          alt={g.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs uppercase">
+                          нет фото
+                        </div>
+                      )}
+                      <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+                        {(g.stickers || []).map((s) => (
+                          <StickerBadge key={s} s={s} />
+                        ))}
+                      </div>
+                      <div className="absolute top-2 right-2 text-[10px] bg-background/70 backdrop-blur px-2 py-0.5 rounded">
+                        #{idx + 1}
+                      </div>
                     </div>
-                  )}
-                  <div className="absolute top-2 left-2 flex flex-wrap gap-1">
-                    {(g.stickers || []).map((s) => (
-                      <StickerBadge key={s} s={s} />
-                    ))}
-                  </div>
-                  <div className="absolute top-2 right-2 text-[10px] bg-background/70 backdrop-blur px-2 py-0.5 rounded">
-                    #{idx + 1}
-                  </div>
-                </div>
-                <div className="p-3 flex flex-col gap-2 flex-1">
-                  <h3 className="font-display font-bold text-sm leading-tight flex items-center gap-2">
-                    {g.title}
-                    {g.title_hidden && (
-                      <span
-                        className="shrink-0 text-[9px] font-normal normal-case tracking-normal text-muted-foreground border border-border rounded px-1.5 py-0.5"
-                        title="Название скрыто на сайте, но доступно в поиске"
-                      >
-                        скрыто
-                      </span>
-                    )}
-                  </h3>
-                  <div className="mt-auto flex items-center gap-1 flex-wrap">
-                    <button
-                      onClick={() => moveMut.mutate({ id: g.id, direction: "up" })}
-                      className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
-                      title="На одну позицию вверх"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() => moveMut.mutate({ id: g.id, direction: "down" })}
-                      className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
-                      title="На одну позицию вниз"
-                    >
-                      ↓
-                    </button>
-                    <PositionControl
-                      index={idx}
-                      total={games.data.length}
-                      disabled={reorderMut.isPending}
-                      onMove={(toPosition) => reorderMut.mutate({ id: g.id, toPosition })}
-                    />
-                    <button
-                      onClick={() => setEditing(g)}
-                      className="ml-auto px-3 h-8 rounded border border-border hover:border-primary text-xs"
-                    >
-                      Изменить
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (confirm(`Удалить «${g.title}»?`)) delMut.mutate(g.id);
-                      }}
-                      className="px-3 h-8 rounded border border-destructive/40 text-destructive text-xs hover:bg-destructive/10"
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                    <div className="p-3 flex flex-col gap-2 flex-1">
+                      <h3 className="font-display font-bold text-sm leading-tight flex items-center gap-2">
+                        {g.title}
+                        {g.title_hidden && (
+                          <span
+                            className="shrink-0 text-[9px] font-normal normal-case tracking-normal text-muted-foreground border border-border rounded px-1.5 py-0.5"
+                            title="Название скрыто на сайте, но доступно в поиске"
+                          >
+                            скрыто
+                          </span>
+                        )}
+                      </h3>
+                      <div className="mt-auto flex items-center gap-1 flex-wrap">
+                        <button
+                          onClick={() => moveMut.mutate({ id: g.id, direction: "up" })}
+                          className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
+                          title="На одну позицию вверх"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          onClick={() => moveMut.mutate({ id: g.id, direction: "down" })}
+                          className="w-8 h-8 rounded border border-border hover:border-primary text-sm"
+                          title="На одну позицию вниз"
+                        >
+                          ↓
+                        </button>
+                        <PositionControl
+                          index={idx}
+                          total={games.data.length}
+                          disabled={reorderMut.isPending}
+                          onMove={(toPosition) => reorderMut.mutate({ id: g.id, toPosition })}
+                        />
+                        <button
+                          onClick={() => setEditing(g)}
+                          className="ml-auto px-3 h-8 rounded border border-border hover:border-primary text-xs"
+                        >
+                          Изменить
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Удалить «${g.title}»?`)) delMut.mutate(g.id);
+                          }}
+                          className="px-3 h-8 rounded border border-destructive/40 text-destructive text-xs hover:bg-destructive/10"
+                        >
+                          Удалить
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </main>
 

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { MessageCircle, Send } from "lucide-react";
 import { PHONE, PHONE_HREF, telegramUrl, whatsappUrl } from "@/lib/contact";
+import { trackGoal } from "@/lib/analytics";
 
 // Прозрачность подложек кнопок записана прямо в цвете (восьмизначный hex).
 // Утилиту вида bg-[#25D366]/20 Tailwind собирает через color-mix, и браузер
@@ -28,7 +29,13 @@ export function ContactDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <button onClick={() => setOpen(true)} className="cursor-pointer">
+      <button
+        onClick={() => {
+          trackGoal("booking_open");
+          setOpen(true);
+        }}
+        className="cursor-pointer"
+      >
         {children}
       </button>
       <DialogContent className="sm:max-w-md border border-border bg-card text-card-foreground">

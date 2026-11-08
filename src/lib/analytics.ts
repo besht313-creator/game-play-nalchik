@@ -37,6 +37,7 @@ let lastTrackedUrl: string | null = null;
 // multiple times — it only ever injects the scripts once per page load.
 export function loadAnalytics() {
   if (analyticsLoaded || typeof window === "undefined") return;
+  if (window.location.pathname.startsWith("/admin")) return;
   if (getCookieConsent() !== "accepted") return;
   analyticsLoaded = true;
 
@@ -91,9 +92,46 @@ export function loadAnalytics() {
  */
 export function trackPageView(url: string) {
   if (typeof window === "undefined") return;
+  if (url.startsWith("/admin")) return;
   if (getCookieConsent() !== "accepted") return;
   if (!YANDEX_METRIKA_ID) return;
+  if (!analyticsLoaded) {
+    loadAnalytics();
+    return;
+  }
   if (url === lastTrackedUrl) return;
   lastTrackedUrl = url;
   window.ym?.(Number(YANDEX_METRIKA_ID), "hit", window.location.origin + url);
+}
+
+/** Business actions are counted only after consent, never inside the admin. */
+export function trackGoal(goal: string) {
+  if (typeof window === "undefined" || window.location.pathname.startsWith("/admin")) return;
+  if (getCookieConsent() !== "accepted") return;
+  window.ym?.(Number(YANDEX_METRIKA_ID), "reachGoal", goal);
+}
+
+/** Capture all contact links, including the footer and floating menu. */
+export function observeContactClicks() {
+  const listener = (event: MouseEvent) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest("a[href]");
+    if (!link) return;
+    const href = link.getAttribute("href") || "";
+    let goal: string | undefined;
+    if (href.startsWith("tel:")) goal = "contact_phone";
+    else {
+      try {
+        const host = new URL(href, window.location.href).hostname;
+        if (host === "wa.me" || host === "api.whatsapp.com") goal = "contact_whatsapp";
+        if (host === "t.me") goal = "contact_telegram";
+        if (host === "vk.ru" || host === "vk.com") goal = "contact_vk";
+      } catch {
+        return;
+      }
+    }
+    if (goal) trackGoal(goal);
+  };
+  document.addEventListener("click", listener, true);
+  return () => document.removeEventListener("click", listener, true);
 }
