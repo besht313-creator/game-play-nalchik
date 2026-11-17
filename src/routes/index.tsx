@@ -124,7 +124,7 @@ const faqs = [
   },
   {
     q: "Где мы находимся?",
-    a: "Находимся в г. Нальчик на улице Осетинская 8 (торговый ряд «КОЛОНКА»).",
+    a: "Находимся в г. Нальчик, ул. Кирова, 2В.",
   },
   {
     q: "Во сколько можно забрать приставку?",
@@ -550,7 +550,7 @@ function Index() {
               <span style={{ color: "#F14FF0" }}>PLAY</span>
             </div>
             <p className="text-muted-foreground text-sm mt-2">
-              Аренда консолей в Нальчике, ул.Осетинская 8
+              Аренда консолей в Нальчике, ул. Кирова, 2В
             </p>
           </div>
           <div>
@@ -558,7 +558,7 @@ function Index() {
             <div className="mb-4 rounded-2xl overflow-hidden border border-border bg-background">
               <iframe
                 title="GAMEPLAY на Яндекс Карте"
-                src="https://yandex.ru/map-widget/v1/?um=constructor%3A0f1b8e52624e78c080354b37ffa95a0f7f91b5ad6c2a821fae597127ff1d2d24&source=constructor"
+                src="https://yandex.ru/map-widget/v1/?text=Нальчик%2C%20улица%20Кирова%2C%202В&z=17"
                 width="100%"
                 height="220"
                 frameBorder="0"
