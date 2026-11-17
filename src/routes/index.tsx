@@ -558,9 +558,9 @@ function Index() {
             <div className="mb-4 rounded-2xl overflow-hidden border border-border bg-background">
               <iframe
                 title="GAMEPLAY на Яндекс Карте"
-                src="https://yandex.ru/map-widget/v1/?text=Нальчик%2C%20улица%20Кирова%2C%202В&z=17"
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A0f1b8e52624e78c080354b37ffa95a0f7f91b5ad6c2a821fae597127ff1d2d24&source=constructor"
                 width="100%"
-                height="220"
+                height="400"
                 frameBorder="0"
                 allowFullScreen
                 loading="lazy"
